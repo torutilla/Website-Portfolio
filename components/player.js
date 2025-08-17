@@ -1,3 +1,5 @@
+import Vector2 from "./math/vector.js";
+
 export class Sprite{
     constructor({sprite_option}){
         this.sprite_option = sprite_option
@@ -30,12 +32,13 @@ export class Sprite{
 export default class Player extends Sprite {
     constructor(options) {
         super(options);
+        this.center_point = new Vector2(this.sprite_option.sWidth / 2, this.sprite_option.sHeight/ 2);
     }
     play(deltaTime) {
         // console.info(`Delta Time: ${deltaTime}`);
         this.updateFrame(deltaTime);
     }
     move(){
-
+        
     }
 }
