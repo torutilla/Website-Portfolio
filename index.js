@@ -3,15 +3,16 @@ import SpriteOption from "./components/options/sprite_options.js";
 import AnimationPlayer from "./components/animation/animation_player.js";
 import SpriteImage from "./components/type/spriteImage.js";
 import InputBindings from "./key_bindings/bindings.js"
-const canvas = document.getElementById('gameCanvas');
+import Vector2 from "./components/math/vector.js";
+const canvas = document.getElementById('canvas');
 const ctx = canvas.getContext('2d');
 
-const player_action_sources = {
+const player_actions = {
     idle: './assets/Virtual Guy/Idle (32x32).png',
     run: './assets/Virtual Guy/Run (32x32).png',
     jump: './assets/Virtual Guy/Jump (32x32).png',
 };
-const img = new SpriteImage(player_action_sources.idle);
+const img = new SpriteImage(player_actions.idle);
 
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;

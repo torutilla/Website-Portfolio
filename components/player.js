@@ -40,5 +40,6 @@ export default class Player extends Sprite {
     }
     move(){
         
+        
     }
 }

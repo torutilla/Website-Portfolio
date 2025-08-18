@@ -26,4 +26,7 @@ export default class Vector2{
     dot(vector){
         return this.x * vector.x + this.y * vector.y;
     }
+    cross(vector){
+        return this.x * vector.y - this.y * vector.x;
+    }
 }
