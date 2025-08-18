@@ -55,7 +55,7 @@ export default class Vector2{
         return Math.atan2(this.y, this.x);
     }
     distance(vector) {
-        return Math.hypot(this.x - v.x, this.y - v.y);
+        return Math.hypot(this.x - vector.x, this.y - vector.y);
     }
     distanceSq(vector){
         const dx = this.x - vector.x, dy = this.y - vector.y;
