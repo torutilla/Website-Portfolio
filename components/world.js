@@ -22,7 +22,10 @@ export default class World {
     }
     update(deltaTime) {
         for (let entity of this.entities) {
-            if (entity.play) entity.play(deltaTime);
+            if (entity.play){
+                entity.play(deltaTime);
+                entity.physicsProcess(deltaTime);
+            } 
         }
     }
 }

@@ -1,12 +1,12 @@
-import Vector2 from "../type/vector";
+import Vector2 from "../math/vector.js";
 
-class CollisionShape{
+export default class CollisionShape{
     constructor(position, size){
         this.position = position;
         this.size = size;   
     }
 
-    rectangularCollision(obj){
+    collidesWith(obj){
         return (
             this.position.x < obj.position.x + obj.size.x &&
             this.position.x + this.size.x > obj.position.x &&
