@@ -1,7 +1,9 @@
-export default class SpriteOptions{
+export default class SpriteImage{
     constructor({image, sx, sy, sWidth, sHeight, dx, dy, dWidth, dHeight, frameInterval = 50, 
-        totalFrames, frameWidth, repeat = true}){
-            this.image = image;
+        totalFrames, repeat = true}){
+            const img = new Image();
+            img.src = image;
+            this.image = img;
             this.sx = sx;
             this.sy = sy;
             this.sWidth = sWidth;
@@ -12,7 +14,7 @@ export default class SpriteOptions{
             this.dHeight = dHeight;
             this.frameInterval = frameInterval;
             this.totalFrames = totalFrames;
-            this.frameWidth = frameWidth;
+           
             this.repeat = repeat;
         }
 }
