@@ -38,7 +38,7 @@ export default class Player extends Entity {
         this.currentState = player_state.idle.name;
         this.physics = new Physics(this, 800);
     }
-    move(delta){
+    move(){
         switch (this.currentKey) {
             case 'a':
                 // this.setAnimation('run');
@@ -53,7 +53,7 @@ export default class Player extends Entity {
                 break;
         } 
     }
-    jump(delta){
+    jump(){
         this.physics.velocity.y = this.jumpForce;
     }
     physicsProcess(delta){
@@ -63,10 +63,10 @@ export default class Player extends Entity {
         this.position.y += this.physics.velocity.y * delta;
         switch (this.currentState) {
             case "run":
-                this.move(delta);
+                this.move();
                 break;
             case "jump":
-                this.jump(delta);
+                this.jump();
                 // this.setAnimation(this.currentState);
                 break;
             case "idle":
