@@ -17,15 +17,20 @@ export default class World {
     }
     draw(){
         for(let entity of this.entities){
-            if(entity.draw) entity.draw(this.ctx); 
+            if(entity.draw) entity.draw(this.ctx, entity.position); 
         }
     }
     update(deltaTime) {
         for (let entity of this.entities) {
-            if (entity.play){
-                entity.play(deltaTime);
-                entity.physicsProcess(deltaTime);
-            } 
+            if (entity.process) entity.process(deltaTime);
+            
         }
     }
+    physicsUpdate(delta){
+        for (let entity of this.entities) {
+            if (entity.physicsProcess) entity.physicsProcess(delta);
+            
+        }
+    }
+
 }

@@ -1,18 +1,18 @@
 export default class Sprite{
     constructor(sprite_option){
-        this.sprite_option = sprite_option
+        this.sprite_option = sprite_option;
         this.currentFrame = 0;
         this.frameTimer = 0;
     }
-    draw(ctx) {
+    draw(ctx, position) {
         ctx.drawImage(
         this.sprite_option.image,
         this.currentFrame * this.sprite_option.sWidth, 
         this.sprite_option.sy, 
         this.sprite_option.sWidth, 
         this.sprite_option.sHeight, 
-        this.sprite_option.dx, 
-        this.sprite_option.dy, 
+        position.x,
+        position.y,
         this.sprite_option.dWidth, 
         this.sprite_option.dHeight  
     );

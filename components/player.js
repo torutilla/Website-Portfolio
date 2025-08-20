@@ -2,7 +2,7 @@ import Entity from "./entity.js";
 import SpriteImage from "./options/sprite_options.js";
 import CollisionShape from "./collision/collishionShape.js"
 import Vector2 from "./math/vector.js";
-export default class Player extends Entity{
+export default class Player extends Entity {
     constructor(){
         const player_actions = {
             idle: {
@@ -22,38 +22,45 @@ export default class Player extends Entity{
                 totalFrames: 1,
             }
         };
-        
+    
         const option = new SpriteImage({
-            image: player_actions.run.src,
+            image: player_actions.idle.src,
             sx: 0, sy: 0,
-            sWidth: 32, sHeight: 32,
-            dx: 0, dy: 0,
-            dWidth: 32, dHeight: 32, 
-            totalFrames: player_actions.run.totalFrames, 
+            sourceSize: {x: 32, y: 32},
+            destinationSize: {x: 32, y:32},
+            totalFrames: player_actions.idle.totalFrames, 
         });
+
         super(option);
+        this.position = new Vector2(20, 20);
         document.addEventListener('keypress', (event)=>{
             this.move(event.key);
+            this.currentKey = event.key;
         });
-        this.initial_position = new Vector2(0,0);
-        this.size = new Vector2(32, 32)
-        this.collision = new CollisionShape(this.initial_position, this.size);
+        document.addEventListener('keyup', (event)=>{
+            this.currentKey = '';
+        })
+        this.collision_shape = new CollisionShape(this.position, this.sprite_option.destinationSize);
+        this.currentKey = "";
+        this.movementSpeed = 300;
     }
     move(key){
         console.log(key);
-        // switch (key.toLowerCase()) {
-        //     case 'a':
-        //         this.sprite_option.dx -= 10;
-        //         break;
-        //     case 'd':
-        //         this.sprite_option.dx += 10
-        //         break;
-        //     default:
-        //         break;
-        // }
+        
     }
     physicsProcess(delta){
-        
+        switch (this.currentKey.toLowerCase()) {
+            case 'a':
+                this.position.x -=  this.movementSpeed * delta;
+                break;
+            case 'd':
+                this.position.x +=  this.movementSpeed * delta;
+                break;
+            default:
+                // this.position = Vector2.ZERO
+                break;
+        }
+        this.collision_shape.position = this.position;
     }
     
 }

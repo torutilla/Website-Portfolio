@@ -1,5 +1,5 @@
 class SpatialGrid{
-    constructor(size){
-        this.size = size;
+    constructor(cellSize){
+        this.cellSize = cellSize;
     }
 }
