@@ -25,4 +25,5 @@ export default class Sprite{
             this.frameTimer = 0;
         }
     }
+    
 }

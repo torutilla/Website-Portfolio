@@ -19,8 +19,8 @@ export default class Player extends Entity {
         this.currentState = player_state.idle.name;
         this.collision_shape = new CollisionShape(this.position, this.sprite_option.destinationSize);
         this.currentKey = "";
-        this.movementSpeed = 300;
-        this.jumpForce = -400;
+        this.movementSpeed = 200;
+        this.jumpForce = -300;
         this.physics = new Physics(this, 800);
         this.isGrounded = true;
         this.isJumping = false;
@@ -41,14 +41,16 @@ export default class Player extends Entity {
         
     }
     move(){
-        let dir = InputManager.get_action_strength('move_right') - InputManager.get_action_strength('move_left');
-        if ( dir > 0){
+        let dir = InputManager.get_vector('move_left', 'move_right', 'jump');
+        if ( dir.x > 0){
             this.physics.velocity.x = this.movementSpeed;
-        } else if (dir < 0){
+        } else if (dir.x < 0){
             this.physics.velocity.x = -this.movementSpeed;
         }else{
             this.physics.velocity.x = 0;
         }
+        this.jump(dir.y);
+        console.log(dir.y);
         // switch (this.currentKey) {
         //     case 'a':
         //         this.physics.velocity.x = -this.movementSpeed;
@@ -64,8 +66,10 @@ export default class Player extends Entity {
         //         break;
         // } 
     }
-    jump(){
-        this.physics.velocity.y = this.jumpForce;
+    jump(direction){
+        if(direction < 0 && this.isGrounded){
+            this.physics.velocity.y = this.jumpForce;
+        }
     }
     physicsProcess(delta){
         this.move();

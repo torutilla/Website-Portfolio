@@ -24,16 +24,16 @@ export default class Vector2{
         return new Vector2(this.x * s, this.y * s);
     }
     scaleSelf(s){
-        this.x *= s.x;
-        this.y *= s.y;
+        this.x *= s;
+        this.y *= s;
         return this;
     }
     div(s){
         return new Vector2(this.x /s, this.y/s);
     }
     divSelf(s){
-        this.x /= s.x;
-        this.y /= s.y;
+        this.x /= s;
+        this.y /= s;
         return this;
     }
     normalize(){
