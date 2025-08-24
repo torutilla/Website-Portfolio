@@ -20,4 +20,10 @@ export const player_state = {
         totalFrames: 1,
     }
 }
+export const player_image = {
+    idle: new Image(),
+    run: new Image(),
+    jump: new Image(),
+    fall: new Image(),
+}
 

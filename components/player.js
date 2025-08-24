@@ -2,7 +2,7 @@ import Entity from "./entity.js";
 import SpriteImage from "./options/sprite_options.js";
 import CollisionShape from "./collision/collishionShape.js"
 import Vector2 from "./math/vector.js";
-import { player_state } from "./playerConst.js";
+import { player_state, player_image } from "./playerConst.js";
 import Physics from "./physics.js";
 import InputManager from "./Input.js";
 export default class Player extends Entity {
@@ -15,7 +15,7 @@ export default class Player extends Entity {
             totalFrames: player_state.idle.totalFrames, 
         }); 
         super(option);
-        this.position = new Vector2(20, 250);
+        this.position = new Vector2(250, 250);
         this.currentState = player_state.idle.name;
         this.collision_shape = new CollisionShape(this.position, this.sprite_option.destinationSize);
         this.currentKey = "";
@@ -24,47 +24,23 @@ export default class Player extends Entity {
         this.physics = new Physics(this, 800);
         this.isGrounded = true;
         this.isJumping = false;
-        
-        // document.addEventListener('keypress', (event)=>{
-            
-        //     this.currentKey = event.key.toLowerCase();
-        //     if(this.currentKey == ' ' && this.isGrounded){
-        //         this.jump();
-        //         this.isGrounded = false;
-        //     }
-            
-            
-        // });
-        // document.addEventListener("keyup", (event) => {
-        //     if (event.key === this.currentKey) this.currentKey = "";
-        // });
-        
+        player_image.idle.src = player_state.idle.src;
+        player_image.run.src = player_state.run.src;
+        player_image.jump.src = player_state.jump.src;
+        player_image.fall.src = player_state.fall.src;
     }
     move(){
         let dir = InputManager.get_vector('move_left', 'move_right', 'jump');
         if ( dir.x > 0){
+            this.flipX = false;
             this.physics.velocity.x = this.movementSpeed;
         } else if (dir.x < 0){
+            this.flipX = true;
             this.physics.velocity.x = -this.movementSpeed;
         }else{
             this.physics.velocity.x = 0;
         }
         this.jump(dir.y);
-        console.log(dir.y);
-        // switch (this.currentKey) {
-        //     case 'a':
-        //         this.physics.velocity.x = -this.movementSpeed;
-        //         // this.setAnimation('run');
-        //         // this.position.x -=  this.movementSpeed * delta;
-        //         break;
-        //     case 'd':
-        //         // this.setAnimation('run');
-        //         this.physics.velocity.x = this.movementSpeed;
-        //         break;
-        //     default:
-        //         this.physics.velocity.x = 0;
-        //         break;
-        // } 
     }
     jump(direction){
         if(direction < 0 && this.isGrounded){
@@ -72,25 +48,7 @@ export default class Player extends Entity {
         }
     }
     physicsProcess(delta){
-        this.move();
-        // switch (this.currentState) {
-        //     case "run":
-        //         this.move();
-        //         break;
-        //     case "jump":
-        //         if (this.isJumping) {
-        //             this.jump();         
-        //             this.isJumping = false; 
-        //         }
-        //         // this.setAnimation(this.currentState);
-        //         break;
-        //     case "idle":
-        //         // this.setAnimation(this.currentState);
-        //         break;
-        //     default:
-        //         break;
-        // }
-        // console.log(this.isGrounded);    
+        this.move(); 
         this.physics.velocity.y += this.physics.gravity * delta;
         this.position.x += this.physics.velocity.x * delta;
         this.position.y += this.physics.velocity.y * delta; 
@@ -103,27 +61,26 @@ export default class Player extends Entity {
         } else {
             this.isGrounded = false;
         }
-        
-        // if (!this.isGrounded && this.physics.velocity.y > 0) {
-        //     // console.log(this.currentState);
-        //     this.currentState = player_state.fall.name;
-            
-        // }
+        let newState;
         if(!this.isGrounded){
-            this.currentState = this.physics.velocity.y > 0 ? player_state.fall.name : player_state.jump.name;
+            newState = this.physics.velocity.y > 0 ? player_state.fall.name : player_state.jump.name;
         }
         else{
-            this.currentState = this.physics.velocity.x !== 0
+            newState = this.physics.velocity.x != 0
                     ? player_state.run.name
                     : player_state.idle.name;
         }
-
-        this.setAnimation(this.currentState);
+        this.setAnimation(newState);
         this.collision_shape.position = this.position;
     }
     setAnimation(name){
-        this.sprite_option.image.src = player_state[name].src;
+        if(this.currentState != name){
+        this.currentState = name;
+        this.sprite_option.image = player_image[name];
         this.sprite_option.totalFrames = player_state[name].totalFrames;
+            this.currentFrame = 0;
+            this.frameTimer = 0;
+        }
     }
 }
 
