@@ -1,5 +1,5 @@
-import Vector2 from "./math/vector.js";
-import Sprite from "./sprite.js";
+import Vector2 from "../../../math/vector.js";
+import Sprite from "../../../type/sprite.js";
 export default class Entity extends Sprite {
     constructor(sprite_option) {
         super(sprite_option);

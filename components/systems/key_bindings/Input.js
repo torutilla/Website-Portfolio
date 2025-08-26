@@ -1,4 +1,4 @@
-import Vector2 from "./math/vector.js";
+import Vector2 from "../../math/vector.js";
 
 export default class InputManager{
     static keys_pressed = {};

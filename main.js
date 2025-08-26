@@ -1,8 +1,8 @@
-import World from "./components/world.js";
-import Game from "./components/game.js";
+import World from "./components/systems/game/world.js";
+import Game from "./components/systems/game/game.js";
 import Vector2 from "./components/math/vector.js";
 import Player from "./components/player.js";
-import InputManager from "./components/Input.js";
+import InputManager from "./components/systems/key_bindings/Input.js";
 
 InputManager.init();
 InputManager.add_action("move_left", ["a", "ArrowLeft"]);

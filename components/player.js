@@ -1,10 +1,11 @@
-import Entity from "./entity.js";
+import Entity from "./systems/game/entities/entity.js";
 import SpriteImage from "./options/sprite_options.js";
 import CollisionShape from "./collision/collishionShape.js"
 import Vector2 from "./math/vector.js";
 import { player_state, player_image } from "./playerConst.js";
-import Physics from "./physics.js";
-import InputManager from "./Input.js";
+import Physics from "./systems/physics/physics.js";
+import InputManager from "./systems/key_bindings/Input.js";
+
 export default class Player extends Entity {
     constructor(){
         const option = new SpriteImage({

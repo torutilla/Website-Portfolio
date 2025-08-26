@@ -5,7 +5,6 @@ export default class CollisionShape{
         this.position = position;
         this.size = size;   
     }
-
     collidesWith(obj){
         return (
             this.position.x < obj.position.x + obj.size.x &&
