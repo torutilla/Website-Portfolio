@@ -1,11 +1,17 @@
+import Vector2 from "../../math/vector.js";
+import SpatialGrid from "../grid/spatialGrid.js";
 export default class World {
+    /**
+     * @param {string} canvasId 
+     * @param {Vector2} size 
+     */
     constructor(canvasId, size){
         this.world = document.getElementById(canvasId);
+        /** @type {CanvasRenderingContext2D} */
         this.ctx = this.world.getContext('2d');
-        
         this.world.width = size.x;
         this.world.height = size.y;
-        
+        this.spatialGrid = new SpatialGrid(64);
         this.entities = [];
         
     }
@@ -22,8 +28,8 @@ export default class World {
     }
     update(deltaTime) {
         for (let entity of this.entities) {
+            this.spatialGrid.update(entity.collision_shape);    
             if (entity.process) entity.process(deltaTime);
-            
         }
     }
     physicsUpdate(delta){

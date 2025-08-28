@@ -1,4 +1,8 @@
 export default class Vector2{
+    /**
+     * @param {number} x 
+     * @param {number} y 
+     */
     constructor(x, y){
         this.x = x;
         this.y = y;
@@ -38,7 +42,7 @@ export default class Vector2{
     }
     normalize(){
         const magnitude = this.magnitude();
-        return magnitude === 0? new Vector(0, 0) : this.div(magnitude);
+        return magnitude === 0? new Vector2(0, 0) : this.div(magnitude);
     }
     magnitude(){
         return Math.hypot(this.x, this.y); 

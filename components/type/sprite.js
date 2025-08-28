@@ -1,10 +1,20 @@
+import Vector2 from "../math/vector.js";
+import SpriteImage from "../options/sprite_options.js";
+
 export default class Sprite{
+    /**
+     * @param {SpriteImage} sprite_option 
+     */
     constructor(sprite_option){
         this.sprite_option = sprite_option;
         this.currentFrame = 0;
         this.frameTimer = 0;
         this.flipX = false;
     }
+    /**
+     * @param {CanvasRenderingContext2D} ctx 
+     * @param {Vector2} position 
+     */
     draw(ctx, position) {
         ctx.save();
         if(this.flipX){
@@ -13,6 +23,7 @@ export default class Sprite{
         }else{
             ctx.translate(position.x, position.y);
         }
+
         ctx.drawImage(
             this.sprite_option.image,
             this.currentFrame * this.sprite_option.sWidth, 
@@ -24,6 +35,7 @@ export default class Sprite{
             this.sprite_option.dWidth, 
             this.sprite_option.dHeight  
         );
+
         ctx.restore();
     }
     updateFrame(delta){

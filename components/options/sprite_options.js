@@ -1,8 +1,9 @@
 export default class SpriteImage{
-    constructor({image, sx, sy, sourceSize, destinationSize, frameInterval = 0.03, 
+    constructor({imageSource, sx, sy, sourceSize, destinationSize, frameInterval = 0.03, 
         totalFrames, repeat = true}){
+            console.log(imageSource);
             const img = new Image();
-            img.src = image;
+            img.src = imageSource;
             this.image = img;
             this.sx = sx;
             this.sy = sy;

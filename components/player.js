@@ -9,7 +9,7 @@ import InputManager from "./systems/key_bindings/Input.js";
 export default class Player extends Entity {
     constructor(){
         const option = new SpriteImage({
-            image: player_state.idle.src,
+            imageSource: player_state.idle.src,
             sx: 0, sy: 0,
             sourceSize: {x: 32, y: 32},
             destinationSize: {x: 64, y:64},
@@ -18,11 +18,10 @@ export default class Player extends Entity {
         super(option);
         this.position = new Vector2(250, 250);
         this.currentState = player_state.idle.name;
-        this.collision_shape = new CollisionShape(this.position, this.sprite_option.destinationSize);
-        this.currentKey = "";
+        this.collision_shape = new CollisionShape(this.position, new Vector2(32, 32));
         this.movementSpeed = 200;
         this.jumpForce = -300;
-        this.physics = new Physics(this, 800);
+        
         this.isGrounded = true;
         this.isJumping = false;
         player_image.idle.src = player_state.idle.src;
