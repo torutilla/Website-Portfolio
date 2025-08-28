@@ -33,7 +33,7 @@ export default class SpatialGrid{
         const maxY = Math.floor((aabb.y + aabb.h) / this.cellSize);
         return {minX: minX, minY: minY, maxX: maxX, maxY: maxY};
     }
-
+    
     add(obj){
         this.#getCoveredCells(obj, (x, y)=>{
             const key = this._key(x,y);
@@ -42,6 +42,7 @@ export default class SpatialGrid{
             this.cells.get(key).add(obj);
         });
         obj.gridCells = this.getCells(obj);
+        console.log(this.cells);
     }
 
     update(obj){
@@ -72,15 +73,16 @@ export default class SpatialGrid{
     }
     
     getNearby(obj){
+        /** @type {Entity[]} */
         const neighbors = []
         this.#getCoveredCells(obj, (x, y)=>{
             const cell = this._key(x, y);
             const bucket = this.cells.get(cell);
-            
             if(bucket){
                 neighbors.push(...bucket);
             }
         });
+        
         return neighbors;
     }
 }

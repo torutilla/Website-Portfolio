@@ -16,14 +16,12 @@ export default class Player extends Entity {
             totalFrames: player_state.idle.totalFrames, 
         }); 
         super(option);
-        this.position = new Vector2(250, 250);
+        // this.position = new Vector2(250, 250);
         this.currentState = player_state.idle.name;
-        this.collision_shape = new CollisionShape(this.position, new Vector2(32, 32));
+        this.collision_shape.position = new Vector2(320, 100);
         this.movementSpeed = 200;
         this.jumpForce = -300;
-        
-        this.isGrounded = true;
-        this.isJumping = false;
+
         player_image.idle.src = player_state.idle.src;
         player_image.run.src = player_state.run.src;
         player_image.jump.src = player_state.jump.src;
@@ -48,19 +46,18 @@ export default class Player extends Entity {
         }
     }
     physicsProcess(delta){
+        
         this.move(); 
         this.physics.velocity.y += this.physics.gravity * delta;
-        this.position.x += this.physics.velocity.x * delta;
-        this.position.y += this.physics.velocity.y * delta; 
+        this.collision_shape.position.x += this.physics.velocity.x * delta;
+        this.collision_shape.position.y += this.physics.velocity.y * delta;
         
-        const groundLevel = 250;
-        if (this.position.y >= groundLevel) {
-            this.position.y = groundLevel;
-            this.physics.velocity.y = 0;
-            this.isGrounded = true;
-        } else {
-            this.isGrounded = false;
-        }
+        this.position = this.collision_shape.position;
+        
+        this.isGrounded = false;
+    }
+
+    updateAnimation(){
         let newState;
         if(!this.isGrounded){
             newState = this.physics.velocity.y > 0 ? player_state.fall.name : player_state.jump.name;
@@ -71,8 +68,8 @@ export default class Player extends Entity {
                     : player_state.idle.name;
         }
         this.setAnimation(newState);
-        this.collision_shape.position = this.position;
     }
+
     setAnimation(name){
         if(this.currentState != name){
         this.currentState = name;
