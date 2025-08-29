@@ -6,15 +6,18 @@ import CollisionShape from "../../../collision/collishionShape.js";
 
 let counter = 0;
 export default class Entity extends Sprite {
-    /**
-     * @param {SpriteImage} sprite_option 
-     */
+    /** @param {SpriteImage} sprite_option */
     constructor(sprite_option) {
         super(sprite_option);
         this.id = `Entity_${counter++}`;
         this.center_point = new Vector2(this.sprite_option.sWidth / 2, this.sprite_option.sHeight/ 2);
         this.physics = new Physics(this, 800);
-        this.collision_shape = new CollisionShape(new Vector2(250, 250), new Vector2(this.sprite_option.dWidth, this.sprite_option.dHeight));
+        this.collision_shape = new CollisionShape(
+            new Vector2(250, 250), 
+            new Vector2(
+                this.sprite_option.dWidth - 20, 
+                this.sprite_option.dHeight - 10
+            ));
         this.position = this.collision_shape.position;
         this.isGrounded = true;
     }

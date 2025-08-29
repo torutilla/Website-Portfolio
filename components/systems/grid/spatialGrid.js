@@ -73,7 +73,7 @@ export default class SpatialGrid{
     }
     
     getNearby(obj){
-        /** @type {Entity[]} */
+        /** @type {CollisionShape[]} */
         const neighbors = []
         this.#getCoveredCells(obj, (x, y)=>{
             const cell = this._key(x, y);

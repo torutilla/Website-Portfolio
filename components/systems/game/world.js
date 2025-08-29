@@ -15,6 +15,7 @@ export default class World {
         this.spatialGrid = new SpatialGrid(64);
         /** @type {Entity[]} */
         this.entities = [];
+        this.debugMode = true;
         
     }
     addEntity(entity){
@@ -31,6 +32,7 @@ export default class World {
     update(deltaTime) {
         for (let entity of this.entities) {
             if (entity.process) entity.process(deltaTime);
+            if (this.debugMode && entity.collision_shape) entity.collision_shape.debugDraw(this.ctx);
         }
     }
 
@@ -39,8 +41,9 @@ export default class World {
             if (entity.physicsProcess) entity.physicsProcess(delta);
             this.spatialGrid.update(entity.collision_shape);
             const nearbyEntities = this.spatialGrid.getNearby(entity.collision_shape);
-
+            
             for(let nearby of nearbyEntities){
+                
                 if(nearby.id !== entity.collision_shape.id && nearby.collidesWith(entity.collision_shape)){
                     entity.onCollision(nearby);
                 }

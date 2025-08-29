@@ -30,4 +30,12 @@ export default class CollisionShape{
             this.position.y + this.size.y > objAabb.y
         );
     }
+    /** @param {CanvasRenderingContext2D} ctx */
+    debugDraw(ctx){
+        ctx.save();
+        ctx.strokeStyle = "red";
+        ctx.lineWidth = 1;
+        ctx.strokeRect(this.position.x, this.position.y, this.size.x, this.size.y);
+        ctx.restore();
+    }
 }
