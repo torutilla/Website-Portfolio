@@ -1,6 +1,7 @@
 import Vector2 from "../../math/vector.js";
 import SpatialGrid from "../grid/spatialGrid.js";
 import Entity from "./entities/entity.js";
+import GameObject from "./objects/object.js";
 export default class World {
     /**
      * @param {string} canvasId 
@@ -15,11 +16,16 @@ export default class World {
         this.spatialGrid = new SpatialGrid(64);
         /** @type {Entity[]} */
         this.entities = [];
+        /** @type {GameObject[]} */
+        this.world_objects = [];
         this.debugMode = true;
         
     }
     addEntity(entity){
         this.entities.push(entity);
+    }
+    addObject(object){
+        this.world_objects.push(object);
     }
     clear(){
         this.ctx.clearRect(0, 0, this.world.width, this.world.height);
@@ -28,11 +34,18 @@ export default class World {
         for(let entity of this.entities){
             if(entity.draw) entity.draw(this.ctx, entity.position); 
         }
+        for(let object of this.world_objects){
+            if(object.draw) object.draw(this.ctx, object.position);
+        }
     }
     update(deltaTime) {
         for (let entity of this.entities) {
             if (entity.process) entity.process(deltaTime);
             if (this.debugMode && entity.collision_shape) entity.collision_shape.debugDraw(this.ctx);
+        }
+        for(let object of this.world_objects){
+            if(object.process) object.process(deltaTime);
+            if (this.debugMode && object.collision_shape) object.collision_shape.debugDraw(this.ctx);
         }
     }
 

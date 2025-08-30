@@ -7,7 +7,7 @@ import { Enemy } from "./components/systems/game/entities/enemy.js";
 InputManager.init();
 InputManager.add_action("move_left", ["a", "ArrowLeft"]);
 InputManager.add_action("move_right", ["d", "ArrowRight"]);
-InputManager.add_action("jump", [" ", "w"]);
+InputManager.add_action("jump", [" ", "w", "ArrowUp"]);
 
 const world = new World('canvas', new Vector2(window.innerWidth, window.innerHeight));
 const player = new Player();

@@ -21,7 +21,7 @@ export default class Player extends Entity {
         this.collision_shape.position = new Vector2(320, 100);
         this.movementSpeed = 200;
         this.jumpForce = -300;
-        this.offset = new Vector2(-10, -10)
+        this.offset = new Vector2(-15, -10)
         player_image.idle.src = player_state.idle.src;
         player_image.run.src = player_state.run.src;
         player_image.jump.src = player_state.jump.src;

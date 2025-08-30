@@ -15,7 +15,7 @@ export default class Entity extends Sprite {
         this.collision_shape = new CollisionShape(
             new Vector2(250, 250), 
             new Vector2(
-                this.sprite_option.dWidth - 20, 
+                this.sprite_option.dWidth - 35, 
                 this.sprite_option.dHeight - 10
             ));
         this.position = this.collision_shape.position;
@@ -24,7 +24,9 @@ export default class Entity extends Sprite {
     
     process(delta) {
         // console.info(`Delta Time: ${deltaTime}`);
-        this.updateFrame(delta);
+        if(this.sprite_option.totalFrames != 1){
+            this.updateFrame(delta);
+        }
     }
     physicsProces(delta){}
 
