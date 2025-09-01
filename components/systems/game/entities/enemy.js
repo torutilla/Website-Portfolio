@@ -16,7 +16,7 @@ export class Enemy extends Entity{
         });
         super(options);
         this.collision_shape.position.x = 320;
-        this.offset = new Vector2(0, 0);
+        this.offset = new Vector2(-10, -5);
         this.position = this.collision_shape.position.add(this.offset);
     }
 
