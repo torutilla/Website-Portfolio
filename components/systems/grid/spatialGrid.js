@@ -29,8 +29,8 @@ export default class SpatialGrid{
     getCells(aabb){
         const minX = Math.floor(aabb.x / this.cellSize);
         const minY = Math.floor(aabb.y / this.cellSize);
-        const maxX = Math.floor((aabb.x + aabb.w) / this.cellSize);
-        const maxY = Math.floor((aabb.y + aabb.h) / this.cellSize);
+        const maxX = Math.floor((aabb.x + aabb.width) / this.cellSize);
+        const maxY = Math.floor((aabb.y + aabb.height) / this.cellSize);
         return {minX: minX, minY: minY, maxX: maxX, maxY: maxY};
     }
     

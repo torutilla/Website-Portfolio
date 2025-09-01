@@ -10,13 +10,13 @@ export class Enemy extends Entity{
         const options = new SpriteImage({
             imageSource: enemies.masked_dude.idle.src,
             sx: 0, sy: 0,
-            destinationSize: {x: 64, y: 64},
+            destinationSize: {x: 32, y: 32},
             sourceSize: {x: 32, y: 32},
             totalFrames: enemies.masked_dude.idle.totalFrames,
         });
         super(options);
         this.collision_shape.position.x = 320;
-        this.offset = new Vector2(-15, -10)
+        this.offset = new Vector2(0, 0);
         this.position = this.collision_shape.position.add(this.offset);
     }
 

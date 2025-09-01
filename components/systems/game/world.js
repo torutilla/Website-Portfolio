@@ -2,6 +2,10 @@ import Vector2 from "../../math/vector.js";
 import SpatialGrid from "../grid/spatialGrid.js";
 import Entity from "./entities/entity.js";
 import GameObject from "./objects/object.js";
+import Rect from "../../math/rect.js";
+import Tilemap from "./objects/tilemap.js";
+import Camera2D from "../camera/camera.js";
+import Player from "../../player.js";
 export default class World {
     /**
      * @param {string} canvasId 
@@ -19,7 +23,8 @@ export default class World {
         /** @type {GameObject[]} */
         this.world_objects = [];
         this.debugMode = true;
-        
+        this.zoom = 1.5;
+        this.camera = new Camera2D(0, 0, 2, this.world);
     }
     addEntity(entity){
         this.entities.push(entity);
@@ -31,21 +36,27 @@ export default class World {
         this.ctx.clearRect(0, 0, this.world.width, this.world.height);
     }
     draw(){
+        
+        this.camera.begin(this.ctx);
         for(let entity of this.entities){
             if(entity.draw) entity.draw(this.ctx, entity.position); 
+            if (entity instanceof Player) this.camera.focusOn(entity);
+            if (this.debugMode && entity.collision_shape) entity.collision_shape.debugDraw(this.ctx);
         }
         for(let object of this.world_objects){
             if(object.draw) object.draw(this.ctx, object.position);
+            if (this.debugMode && object.collision_shape) object.collision_shape.debugDraw(this.ctx);
         }
+        this.camera.end(this.ctx)
     }
     update(deltaTime) {
         for (let entity of this.entities) {
             if (entity.process) entity.process(deltaTime);
-            if (this.debugMode && entity.collision_shape) entity.collision_shape.debugDraw(this.ctx);
+            
         }
         for(let object of this.world_objects){
             if(object.process) object.process(deltaTime);
-            if (this.debugMode && object.collision_shape) object.collision_shape.debugDraw(this.ctx);
+            
         }
     }
 

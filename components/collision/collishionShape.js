@@ -1,19 +1,18 @@
 import Vector2 from "../math/vector.js";
-
+import Rect from "../math/rect.js";
 let counter = 0;
 export default class CollisionShape{
     /**
-     * @param {Vector2} position 
-     * @param {Vector2} size 
+     * @param {Rect} rect
      */
-    constructor(position, size){
+    constructor(rect){
         this.id = `CollisionShape_${counter++}`;
-        this.position = position;
-        this.size = size;   
+        this.rect = rect;
+        this.position = new Vector2(rect.x, rect.y);
     }
     
     getAABB(){
-        return {x: this.position.x, y: this.position.y, w: this.size.x, h: this.size.y};
+        return this.rect;
     }
 
     /**
@@ -24,10 +23,10 @@ export default class CollisionShape{
     collidesWith(obj){
         const objAabb = obj.getAABB();
         return (
-            this.position.x < objAabb.x + objAabb.w &&
-            this.position.x + this.size.x > objAabb.x &&
-            this.position.y < objAabb.y + objAabb.h &&
-            this.position.y + this.size.y > objAabb.y
+            this.rect.x < objAabb.x + objAabb.width &&
+            this.rect.x + this.rect.width > objAabb.x &&
+            this.rect.y < objAabb.y + objAabb.height &&
+            this.rect.y + this.rect.height > objAabb.y
         );
     }
     /** @param {CanvasRenderingContext2D} ctx */
@@ -35,7 +34,7 @@ export default class CollisionShape{
         ctx.save();
         ctx.strokeStyle = "red";
         ctx.lineWidth = 1;
-        ctx.strokeRect(this.position.x, this.position.y, this.size.x, this.size.y);
+        ctx.strokeRect(this.position.x, this.position.y, this.rect.width, this.rect.height);
         ctx.restore();
     }
 }

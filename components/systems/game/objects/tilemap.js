@@ -2,12 +2,14 @@ import Rect from "../../../math/rect.js";
 import Vector2 from "../../../math/vector.js";
 export default class Tilemap{
     /**
-     * @param {HTMLImageElement} image  
+     * @param {string} imageSource  
      * @param {Vector2} tileSize
      * @param {Rect} imageRect 
     */
-    constructor(image, tileSize, imageRect){
-        this.image = image;
+    constructor(imageSource, tileSize, imageRect){
+        const img = new Image();
+        img.src = imageSource;
+        this.image = img;
         this.tileSize = tileSize;
         this.imageRect = imageRect;
     }
@@ -20,8 +22,8 @@ export default class Tilemap{
         ctx.save();
         ctx.drawImage(
             this.image, 
-            position.x,
-            position.y,
+            position.x * this.tileSize.x,
+            position.y * this.tileSize.y,
             this.tileSize.x,
             this.tileSize.y,
             this.imageRect.x,
@@ -30,5 +32,11 @@ export default class Tilemap{
             this.imageRect.height
         );
         ctx.restore();
+    }
+    getRowCount(){
+        return this.image.width / this.tileSize.x;
+    }
+    getColumnCount(){
+        return this.image.height / this.tileSize.y;
     }
 }

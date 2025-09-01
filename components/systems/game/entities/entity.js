@@ -3,6 +3,7 @@ import SpriteImage from "../../../options/sprite_options.js";
 import Sprite from "../../../type/sprite.js";
 import Physics from "../../physics/physics.js";
 import CollisionShape from "../../../collision/collishionShape.js";
+import Rect from "../../../math/rect.js";
 
 let counter = 0;
 export default class Entity extends Sprite {
@@ -13,11 +14,7 @@ export default class Entity extends Sprite {
         this.center_point = new Vector2(this.sprite_option.sWidth / 2, this.sprite_option.sHeight/ 2);
         this.physics = new Physics(this, 800);
         this.collision_shape = new CollisionShape(
-            new Vector2(250, 250), 
-            new Vector2(
-                this.sprite_option.dWidth - 35, 
-                this.sprite_option.dHeight - 10
-            ));
+            new Rect(0, 250, this.sprite_option.dWidth, this.sprite_option.dHeight));
         this.position = this.collision_shape.position;
         this.isGrounded = true;
     }
@@ -37,10 +34,10 @@ export default class Entity extends Sprite {
     onCollision(other){
         const a = this.collision_shape;
         const b = other;
-        const dx = (a.position.x + a.size.x / 2) - (b.position.x + b.size.x / 2);
-        const dy = (a.position.y + a.size.y / 2) - (b.position.y + b.size.y / 2);
-        const overlapX = (a.size.x / 2 + b.size.x / 2) - Math.abs(dx);
-        const overlapY = (a.size.y / 2 + b.size.y / 2) - Math.abs(dy);
+        const dx = (a.position.x + a.rect.width / 2) - (b.position.x + b.rect.width / 2);
+        const dy = (a.position.y + a.rect.height / 2) - (b.position.y + b.rect.height / 2);
+        const overlapX = (a.rect.width / 2 + b.rect.width / 2) - Math.abs(dx);
+        const overlapY = (a.rect.height / 2 + b.rect.height / 2) - Math.abs(dy);
 
         if(overlapX > 0 && overlapY > 0){
             if(overlapX < overlapY){
