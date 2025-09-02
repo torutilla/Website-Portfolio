@@ -7,36 +7,56 @@ export default class Tilemap{
      * @param {Rect} imageRect 
     */
     constructor(imageSource, tileSize, imageRect){
-        const img = new Image();
-        img.src = imageSource;
-        this.image = img;
+        this.image =  new Image();
+        this.image.src = imageSource;
         this.tileSize = tileSize;
         this.imageRect = imageRect;
+        this.rows = this.getRowCount();
+        this.columns = this.getColumnCount();
+    }
+
+    async ensureLoaded() {
+        if(this.image.complete){
+            console.log('loaded');
+            return;
+        }
+        return new Promise((resolve, reject)=>{
+            this.image.onload = () => resolve();
+            this.image.onerror = () => reject();
+        });
     }
 
     /** 
      * @param {CanvasRenderingContext2D} ctx 
+     * @param {number} tileId
      * @param {Vector2} position
      */
-    drawTile(ctx, position){
+    drawTile(ctx, tileId, position){
+        const coords = this.getCoordinatesFromId(tileId);
         ctx.save();
         ctx.drawImage(
             this.image, 
+            coords.x * this.tileSize.x,
+            coords.y * this.tileSize.y,
+            this.tileSize.x,
+            this.tileSize.y,
             position.x * this.tileSize.x,
             position.y * this.tileSize.y,
             this.tileSize.x,
             this.tileSize.y,
-            this.imageRect.x,
-            this.imageRect.y,
-            this.imageRect.width,
-            this.imageRect.height
         );
         ctx.restore();
     }
     getRowCount(){
-        return this.image.width / this.tileSize.x;
+        return this.image.height / this.tileSize.x;
     }
     getColumnCount(){
-        return this.image.height / this.tileSize.y;
+        return this.image.width / this.tileSize.y;
+    }
+
+    getCoordinatesFromId(id) {
+        const row = Math.floor(id / this.columns);
+        const col = id % this.columns;
+        return new Vector2(col, row);
     }
 }

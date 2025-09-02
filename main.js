@@ -15,6 +15,6 @@ const player = new Player();
 const masked_dude = new Enemy();
 world.addEntity(player);
 world.addEntity(masked_dude);
-console.log(world.entities);
+await world.init();
 const game = new Game(world);
 game.start();
