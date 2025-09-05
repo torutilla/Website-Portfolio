@@ -12,6 +12,8 @@ export default class CollisionShape{
     }
     
     getAABB(){
+        this.rect.x = this.position.x;
+        this.rect.y = this.position.y;
         return this.rect;
     }
 
@@ -21,12 +23,11 @@ export default class CollisionShape{
      * @returns boolean
      */
     collidesWith(obj){
-        const objAabb = obj.getAABB();
         return (
-            this.rect.x < objAabb.x + objAabb.width &&
-            this.rect.x + this.rect.width > objAabb.x &&
-            this.rect.y < objAabb.y + objAabb.height &&
-            this.rect.y + this.rect.height > objAabb.y
+            this.position.x < obj.position.x + obj.rect.width &&
+            this.position.x + this.rect.width > obj.position.x &&
+            this.position.y < obj.position.y + obj.rect.height &&
+            this.position.y + this.rect.height > obj.position.y
         );
     }
     /** @param {CanvasRenderingContext2D} ctx */

@@ -7,6 +7,9 @@ import Player from "../../player.js";
 import Level from "./levels/level.js";
 import Tilemap from "./objects/tilemap.js";
 import Rect from "../../math/rect.js";
+import Collider from "../../collision/collider.js";
+import CollisionShape from "../../collision/collishionShape.js";
+import { Enemy } from "./entities/enemy.js";
 export default class World {
     /**
      * @param {string} canvasId 
@@ -14,18 +17,16 @@ export default class World {
      */
     constructor(canvasId, size){
         this.world = document.getElementById(canvasId);
-        /** @type {CanvasRenderingContext2D} */
-        this.ctx = this.world.getContext('2d');
+        /** @type {CanvasRenderingContext2D} */ this.ctx = this.world.getContext('2d');
         this.world.width = size.x;
         this.world.height = size.y;
-        this.spatialGrid = new SpatialGrid(64);
-        /** @type {Entity[]} */
-        this.entities = [];
-        /** @type {GameObject[]} */
-        this.world_objects = [];
+        this.staticGrid = new SpatialGrid(64);
+        this.dynamicGrid = new SpatialGrid(64);
+        /** @type {Entity[]} */ this.entities = [];
+        /** @type {GameObject[]} */ this.world_objects = [];
         this.debugMode = true;
         this.zoom = 1.5;
-        this.camera = new Camera2D(0, 0, 2, this.world);
+        this.camera = new Camera2D(0, 0, 1, this.world);
         this.level = null;
         this.map = null;
         this.currentTilemap = new Tilemap(
@@ -33,6 +34,8 @@ export default class World {
             new Vector2(16,16), 
             new Rect(0, 0, 16, 16),
         );
+        this.collider = new Collider();
+        /**@type {CollisionShape[]} */ this.colliders = [];
     }
 
     async init(){
@@ -42,6 +45,19 @@ export default class World {
         try {
             this.map = await this.level.loadTiledMap();
             await this.currentTilemap.ensureLoaded();
+            const rects = this.collider.getRectFromTiles(this.map.data, this.map.width, this.map.height);
+            for(let rect of rects){
+                const pixelRect = new Rect(
+                    rect.x * this.currentTilemap.tileSize.x,
+                    rect.y * this.currentTilemap.tileSize.y,
+                    rect.width * this.currentTilemap.tileSize.x,
+                    rect.height * this.currentTilemap.tileSize.y
+                );
+                const collision = new CollisionShape(pixelRect);
+                this.staticGrid.update(collision);
+                this.colliders.push(collision);
+                console.log(this.staticGrid.cells);
+            }
         } catch (error) {
             console.error(`Error loading map: ${error}`);
         } 
@@ -59,8 +75,7 @@ export default class World {
                     new Vector2(col, row)      
                 );
             }
-        }
-        
+        } 
     }
 
     addEntity(entity){
@@ -76,7 +91,6 @@ export default class World {
         this.camera.begin(this.ctx);
         if (this.map){
             this.drawMap();  
-            
         } 
         for(let entity of this.entities){
             if(entity.draw) entity.draw(this.ctx, entity.position); 
@@ -86,10 +100,14 @@ export default class World {
             } 
             if (this.debugMode && entity.collision_shape) entity.collision_shape.debugDraw(this.ctx);
         }
-        for(let object of this.world_objects){
-            if(object.draw) object.draw(this.ctx, object.position);
-            if (this.debugMode && object.collision_shape) object.collision_shape.debugDraw(this.ctx);
+        for(let collider of this.colliders){
+            if (this.debugMode) collider.debugDraw(this.ctx);
         }
+        
+        if(this.debugMode){
+            this.dynamicGrid.debugDraw(this.ctx);
+            this.staticGrid.debugDraw(this.ctx);
+        } 
         this.camera.end(this.ctx)
     }
     update(deltaTime) {
@@ -106,15 +124,20 @@ export default class World {
     physicsUpdate(delta){
         for (let entity of this.entities) {
             if (entity.physicsProcess) entity.physicsProcess(delta);
-            this.spatialGrid.update(entity.collision_shape);
-            const nearbyEntities = this.spatialGrid.getNearby(entity.collision_shape);
-            
-            for(let nearby of nearbyEntities){
-                
+            this.dynamicGrid.update(entity.collision_shape);
+
+            const nearbyCollisionShapes = [
+                ...this.staticGrid.getNearby(entity.collision_shape),
+                ...this.dynamicGrid.getNearby(entity.collision_shape),
+            ];
+
+            for(let nearby of nearbyCollisionShapes){   
                 if(nearby.id !== entity.collision_shape.id && nearby.collidesWith(entity.collision_shape)){
+                    // console.log("HIT!", nearby, entity.collision_shape);
                     entity.onCollision(nearby);
                 }
             }
+            
             if (entity.updateAnimation) entity.updateAnimation();
         }
     }

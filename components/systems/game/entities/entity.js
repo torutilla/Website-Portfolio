@@ -17,6 +17,7 @@ export default class Entity extends Sprite {
             new Rect(0, 250, this.sprite_option.dWidth - 20, this.sprite_option.dHeight - 5));
         this.position = this.collision_shape.position;
         this.isGrounded = true;
+        console.log("Entity Collision Shape ID:", this.collision_shape.id);
     }
     
     process(delta) {

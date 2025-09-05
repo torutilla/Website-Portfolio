@@ -21,7 +21,7 @@ export default class SpatialGrid{
         const {minX, minY, maxX, maxY} = this.getCells(aabb);
         for(let y = minY; y<= maxY; y++){
             for(let x = minX; x<= maxX; x++){
-                fn(x, y);
+                fn(this._key(x,y));
             }
         }
     }
@@ -35,14 +35,14 @@ export default class SpatialGrid{
     }
     
     add(obj){
-        this.#getCoveredCells(obj, (x, y)=>{
-            const key = this._key(x,y);
-            const bucket = new Set();
-            if(!this.cells.has(key)) this.cells.set(key, bucket);
+        this.#getCoveredCells(obj, (key)=>{
+            if(!this.cells.has(key)) {
+                this.cells.set(key, new Set());
+            }
             this.cells.get(key).add(obj);
         });
-        obj.gridCells = this.getCells(obj);
-        console.log(this.cells);
+        obj.gridCells = this.getCells(obj.getAABB());
+        // console.log(this.cells);
     }
 
     update(obj){
@@ -52,21 +52,23 @@ export default class SpatialGrid{
             if(minX === newCells.minX && minY === newCells.minY && maxX === newCells.maxX && maxY === newCells.maxY){
                 return;
             }
+            this.remove(obj);
         }
-        this.remove(obj);
         this.add(obj);
         obj.gridCells = newCells;
-        console.log(newCells);
     }
 
     remove(obj){
         if(!obj.gridCells) return;
-        for(let key in obj.gridCells){
-            /** @type {Set<CollisionShape>}*/
-            const bucket= this.cells.get(key);
-            if(bucket){
-                bucket.delete(obj);
-                if(bucket.size === 0) this.cells.delete(key);
+        const { minX, minY, maxX, maxY } = obj.gridCells;
+        for (let y = minY; y <= maxY; y++) {
+            for (let x = minX; x <= maxX; x++) {
+                const key = this._key(x, y);
+                const bucket = this.cells.get(key);
+                if (bucket) {
+                    bucket.delete(obj);
+                    if (bucket.size === 0) this.cells.delete(key);
+                }
             }
         }
         delete obj.gridCells;
@@ -75,14 +77,35 @@ export default class SpatialGrid{
     getNearby(obj){
         /** @type {CollisionShape[]} */
         const neighbors = []
-        this.#getCoveredCells(obj, (x, y)=>{
-            const cell = this._key(x, y);
-            const bucket = this.cells.get(cell);
+        this.#getCoveredCells(obj, (key)=>{
+            const bucket = this.cells.get(key);
             if(bucket){
                 neighbors.push(...bucket);
             }
         });
         
         return neighbors;
+    }
+    /**@param {CanvasRenderingContext2D} ctx  */
+    debugDraw(ctx) {
+        ctx.save();
+        ctx.lineWidth = 1;
+    
+        for (let [key, bucket] of this.cells.entries()) {
+            const [cellX, cellY] = key.split(",").map(v => parseInt(v));
+            const x = cellX * this.cellSize;
+            const y = cellY * this.cellSize;
+    
+            ctx.strokeStyle = "rgba(0, 255, 0, 0.3)";
+            ctx.strokeRect(x, y, this.cellSize, this.cellSize);
+    
+            for (let obj of bucket) {
+                const aabb = obj.getAABB();
+                ctx.strokeStyle = "rgba(0, 81, 255, 0.7)";
+                ctx.strokeRect(aabb.x, aabb.y, aabb.width, aabb.height);
+            }
+        }
+    
+        ctx.restore();
     }
 }
