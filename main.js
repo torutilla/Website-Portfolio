@@ -4,12 +4,13 @@ import Vector2 from "./components/math/vector.js";
 import Player from "./components/player.js";
 import InputManager from "./components/systems/key_bindings/Input.js";
 import { Enemy } from "./components/systems/game/entities/enemy.js";
+import ImageLoader from "./components/type/imageLoader.js";
 
 InputManager.init();
 InputManager.add_action("move_left", ["a", "ArrowLeft"]);
 InputManager.add_action("move_right", ["d", "ArrowRight"]);
 InputManager.add_action("jump", [" ", "w", "ArrowUp"]);
-
+ImageLoader.preloadAll([]);
 const world = new World('game-canvas', new Vector2(window.innerWidth, window.innerHeight));
 const player = new Player();
 const masked_dude = new Enemy();

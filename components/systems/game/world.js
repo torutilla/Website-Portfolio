@@ -9,7 +9,7 @@ import Tilemap from "./objects/tilemap.js";
 import Rect from "../../math/rect.js";
 import Collider from "../../collision/collider.js";
 import CollisionShape from "../../collision/collishionShape.js";
-import { Enemy } from "./entities/enemy.js";
+import GlobalSettings from "../../../globalSettings.js";
 export default class World {
     /**
      * @param {string} canvasId 
@@ -24,9 +24,8 @@ export default class World {
         this.dynamicGrid = new SpatialGrid(64);
         /** @type {Entity[]} */ this.entities = [];
         /** @type {GameObject[]} */ this.world_objects = [];
-        this.debugMode = true;
         this.zoom = 1.5;
-        this.camera = new Camera2D(0, 0, 1, this.world);
+        this.camera = new Camera2D(0, 0, 2, this.world);
         this.level = null;
         this.map = null;
         this.currentTilemap = new Tilemap(
@@ -44,7 +43,7 @@ export default class World {
         );
         try {
             this.map = await this.level.loadTiledMap();
-            await this.currentTilemap.ensureLoaded();
+            // await this.currentTilemap.ensureLoaded();
             const rects = this.collider.getRectFromTiles(this.map.data, this.map.width, this.map.height);
             for(let rect of rects){
                 const pixelRect = new Rect(
@@ -96,18 +95,14 @@ export default class World {
             if(entity.draw) entity.draw(this.ctx, entity.position); 
             if (entity instanceof Player && this.map){
                 this.camera.focusOn(entity);
-                // entity.collision_shape.position = this.map.playerposition;
+                entity.collision_shape.position = this.map.playerposition;
             } 
-            if (this.debugMode && entity.collision_shape) entity.collision_shape.debugDraw(this.ctx);
+            if (GlobalSettings.debugMode && entity.collision_shape){
+                entity.collision_shape.debugDraw(this.ctx);
+                this.dynamicGrid.debugDraw(this.ctx);
+                this.staticGrid.debugDraw(this.ctx);
+            } 
         }
-        for(let collider of this.colliders){
-            if (this.debugMode) collider.debugDraw(this.ctx);
-        }
-        
-        if(this.debugMode){
-            this.dynamicGrid.debugDraw(this.ctx);
-            this.staticGrid.debugDraw(this.ctx);
-        } 
         this.camera.end(this.ctx)
     }
     update(deltaTime) {

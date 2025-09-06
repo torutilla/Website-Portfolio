@@ -16,12 +16,15 @@ export default class Tilemap{
     }
 
     async ensureLoaded() {
-        if(this.image.complete){
-            console.log('loaded');
+        if(this.image.complete && this.image.naturalHeight != 0){
+            console.log('Image loaded');
             return;
         }
         return new Promise((resolve, reject)=>{
-            this.image.onload = () => resolve();
+            this.image.onload = () => {
+                resolve();
+
+            };
             this.image.onerror = () => reject();
         });
     }
