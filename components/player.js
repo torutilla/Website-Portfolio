@@ -3,6 +3,7 @@ import SpriteImage from "./options/sprite_options.js";
 import Vector2 from "./math/vector.js";
 import { player_state, player_image } from "./playerConst.js";
 import InputManager from "./systems/key_bindings/Input.js";
+import ImageLoader from "./type/imageLoader.js";
 
 export default class Player extends Entity {
     constructor(){
@@ -20,6 +21,7 @@ export default class Player extends Entity {
         this.movementSpeed = 200;
         this.jumpForce = -300;
         this.offset = new Vector2(-10, -5);
+        
         player_image.idle.src = player_state.idle.src;
         player_image.run.src = player_state.run.src;
         player_image.jump.src = player_state.jump.src;

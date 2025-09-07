@@ -13,6 +13,7 @@ export default class ImageLoader{
         this.images.set(url, promise)
         return promise;
     }
+    
     /**@param {string[]} urls  */
     static async preloadAll(urls){
         return await Promise.all(urls.map(url=> this.load(url)));

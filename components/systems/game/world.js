@@ -10,6 +10,7 @@ import Rect from "../../math/rect.js";
 import Collider from "../../collision/collider.js";
 import CollisionShape from "../../collision/collishionShape.js";
 import GlobalSettings from "../../../globalSettings.js";
+import { terrainTilemap } from "../../tilemapConst.js";
 export default class World {
     /**
      * @param {string} canvasId 
@@ -29,7 +30,7 @@ export default class World {
         this.level = null;
         this.map = null;
         this.currentTilemap = new Tilemap(
-            '../../../assets/Terrain/Terrain (16x16).png', 
+            terrainTilemap,
             new Vector2(16,16), 
             new Rect(0, 0, 16, 16),
         );
@@ -43,7 +44,7 @@ export default class World {
         );
         try {
             this.map = await this.level.loadTiledMap();
-            // await this.currentTilemap.ensureLoaded();
+            await this.currentTilemap.ensureLoaded();
             const rects = this.collider.getRectFromTiles(this.map.data, this.map.width, this.map.height);
             for(let rect of rects){
                 const pixelRect = new Rect(

@@ -1,5 +1,6 @@
 import Rect from "../../../math/rect.js";
-import Vector2 from "../../../math/vector.js";
+import Vector2 from "../../../math/vector.js"; 
+import ImageLoader from "../../../type/imageLoader.js";
 export default class Tilemap{
     /**
      * @param {string} imageSource  
@@ -7,26 +8,22 @@ export default class Tilemap{
      * @param {Rect} imageRect 
     */
     constructor(imageSource, tileSize, imageRect){
-        this.image =  new Image();
-        this.image.src = imageSource;
+        this.image = null;
+        this.imageSource = imageSource;
         this.tileSize = tileSize;
         this.imageRect = imageRect;
-        this.rows = this.getRowCount();
-        this.columns = this.getColumnCount();
+        this.rows = 0;
+        this.columns = 0;
     }
 
     async ensureLoaded() {
+        this.image = await ImageLoader.load(this.imageSource);
+        this.rows = this.getRowCount();
+        this.columns = this.getColumnCount();
         if(this.image.complete && this.image.naturalHeight != 0){
             console.log('Image loaded');
             return;
         }
-        return new Promise((resolve, reject)=>{
-            this.image.onload = () => {
-                resolve();
-
-            };
-            this.image.onerror = () => reject();
-        });
     }
 
     /** 
