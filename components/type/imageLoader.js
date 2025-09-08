@@ -18,5 +18,4 @@ export default class ImageLoader{
     static async preloadAll(urls){
         return await Promise.all(urls.map(url=> this.load(url)));
     }
-    
 }

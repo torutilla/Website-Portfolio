@@ -61,6 +61,9 @@ export default class World {
         } catch (error) {
             console.error(`Error loading map: ${error}`);
         } 
+        for(let entity of this.entities){
+            if(entity.init) await entity.init();
+        }
     }
 
     drawMap(){

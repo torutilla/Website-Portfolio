@@ -17,7 +17,8 @@ export default class Tilemap{
     }
 
     async ensureLoaded() {
-        this.image = await ImageLoader.load(this.imageSource);
+        const img = await ImageLoader.load(this.imageSource);
+        this.image = img;
         this.rows = this.getRowCount();
         this.columns = this.getColumnCount();
         if(this.image.complete && this.image.naturalHeight != 0){

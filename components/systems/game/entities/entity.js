@@ -19,6 +19,8 @@ export default class Entity extends Sprite {
         this.isGrounded = true;
         console.log("Entity Collision Shape ID:", this.collision_shape.id);
     }
+
+    async init(){}
     
     process(delta) {
         // console.info(`Delta Time: ${deltaTime}`);

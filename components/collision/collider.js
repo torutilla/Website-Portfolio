@@ -1,5 +1,4 @@
 import Rect from "../math/rect.js";
-import Vector2 from "../math/vector.js";
 
 export default class Collider{
     /**

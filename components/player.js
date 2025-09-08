@@ -22,11 +22,19 @@ export default class Player extends Entity {
         this.jumpForce = -300;
         this.offset = new Vector2(-10, -5);
         
-        player_image.idle.src = player_state.idle.src;
-        player_image.run.src = player_state.run.src;
-        player_image.jump.src = player_state.jump.src;
-        player_image.fall.src = player_state.fall.src;
+        // player_image.idle.src = player_state.idle.src;
+        // player_image.run.src = player_state.run.src;
+        // player_image.jump.src = player_state.jump.src;
+        // player_image.fall.src = player_state.fall.src;
     }
+
+    async init(){
+        player_image.idle = await ImageLoader.load(player_state.idle.src);
+        player_image.run = await ImageLoader.load(player_state.run.src);
+        player_image.jump = await ImageLoader.load(player_state.jump.src);
+        player_image.fall = await ImageLoader.load(player_state.fall.src);
+    }
+    
     move(){
         let dir = InputManager.get_vector('move_left', 'move_right', 'jump');
         if ( dir.x > 0){

@@ -9,6 +9,7 @@ export default class CollisionShape{
         this.id = `CollisionShape_${counter++}`;
         this.rect = rect;
         this.position = new Vector2(rect.x, rect.y);
+        this.collisionBlocking = true;
     }
     
     getAABB(){
@@ -18,7 +19,6 @@ export default class CollisionShape{
     }
 
     /**
-     * 
      * @param {CollisionShape} obj 
      * @returns boolean
      */

@@ -1,3 +1,5 @@
+import ImageLoader from "./type/imageLoader.js";
+
 export const player_state = {
     idle: {
         name: "idle",
@@ -20,6 +22,7 @@ export const player_state = {
         totalFrames: 1,
     }
 }
+
 export const player_image = {
     idle: new Image(),
     run: new Image(),
