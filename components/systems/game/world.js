@@ -26,7 +26,7 @@ export default class World {
         /** @type {Entity[]} */ this.entities = [];
         /** @type {GameObject[]} */ this.world_objects = [];
         this.zoom = 1.5;
-        this.camera = new Camera2D(0, 0, 2, this.world);
+        this.camera = new Camera2D(0, 0, this.zoom, this.world);
         this.level = null;
         this.map = null;
         this.currentTilemap = new Tilemap(

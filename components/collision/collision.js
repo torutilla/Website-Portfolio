@@ -1,7 +1,6 @@
 export default class Collision{
-    constructor(){}
-    getAABB(){ 
-        throw new Error('Not Implemented'); 
+    constructor(){
+        this.id = crypto.randomUUID();
     }
     /**@param {Collision} other  */
     collidesWith(other){ 

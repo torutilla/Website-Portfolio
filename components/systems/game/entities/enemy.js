@@ -15,7 +15,7 @@ export class Enemy extends Entity{
             totalFrames: enemies.masked_dude.idle.totalFrames,
         });
         super(options);
-        this.collision_shape.position.x = 320;
+        this.collision_shape.position.x = 520;
         this.offset = new Vector2(-10, -5);
         this.position = this.collision_shape.position.add(this.offset);
     }

@@ -1,7 +1,7 @@
-import CollisionShape from "./collishionShape.js";
+import RectCollisionShape from "./collishionShape.js";
 
 export default class Area2D {
-    /**@param {CollisionShape} collisionShape  */
+    /**@param {RectCollisionShape} collisionShape  */
     constructor(collisionShape){
         this.collisionShape = collisionShape;
     }

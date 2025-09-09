@@ -1,12 +1,12 @@
 import Vector2 from "../math/vector.js";
 import Rect from "../math/rect.js";
-let counter = 0;
-export default class CollisionShape{
+import Collision from "./collision.js";
+export default class RectCollisionShape extends Collision{
     /**
      * @param {Rect} rect
      */
     constructor(rect){
-        this.id = `CollisionShape_${counter++}`;
+        super();
         this.rect = rect;
         this.position = new Vector2(rect.x, rect.y);
         this.collisionBlocking = true;
@@ -19,7 +19,7 @@ export default class CollisionShape{
     }
 
     /**
-     * @param {CollisionShape} obj 
+     * @param {RectCollisionShape} obj 
      * @returns boolean
      */
     collidesWith(obj){
