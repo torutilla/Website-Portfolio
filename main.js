@@ -12,6 +12,7 @@ InputManager.init();
 InputManager.add_action("move_left", ["a", "ArrowLeft"]);
 InputManager.add_action("move_right", ["d", "ArrowRight"]);
 InputManager.add_action("jump", [" ", "w", "ArrowUp"]);
+
 await ImageLoader.preloadAll([
     player_state.idle.src, 
     player_state.run.src, 
@@ -22,9 +23,9 @@ await ImageLoader.preloadAll([
 
 const world = new World('game-canvas', new Vector2(window.innerWidth, window.innerHeight));
 const player = new Player();
-const masked_dude = new Enemy();
+
 world.addEntity(player);
-world.addEntity(masked_dude);
+
 await world.init();
 const game = new Game(world);
 game.start();
