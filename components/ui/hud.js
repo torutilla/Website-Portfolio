@@ -1,4 +1,8 @@
+import Vector2 from "../math/vector.js";
+
 export default class HUD{
+    /**@type {Map<number, Vector2>} */
+    static clickPos = {};
     /**@param {HTMLCanvasElement} canvas*/
     constructor(canvas){
         this.canvas = canvas;
@@ -6,9 +10,11 @@ export default class HUD{
     }
 
     init(){
-        this.canvas.addEventListener('click',(event)=>{
-            const x = event.offsetX;
-            const y = event.offsetY;
+        this.canvas.addEventListener('pointerdown',(event)=>{
+            HUD.clickPos.set(event.pointerId, Vector2(event.offsetX, event.offsetY));
+        });
+        this.canvas.addEventListener('pointerup', (event)=> {
+            HUD.clickPos.delete(event.pointerId);
         });
     }
     

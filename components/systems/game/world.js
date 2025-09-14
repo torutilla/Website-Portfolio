@@ -25,7 +25,7 @@ export default class World {
         this.dynamicGrid = new SpatialGrid(64);
         /** @type {Entity[]} */ this.entities = [];
         /** @type {GameObject[]} */ this.world_objects = [];
-        this.zoom = 1.5;
+        this.zoom = size.x < 1366 ? 1.5 : 2.0;
         this.camera = new Camera2D(0, 0, this.zoom, this.world);
         this.level = null;
         this.map = null;

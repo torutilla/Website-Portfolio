@@ -20,7 +20,6 @@ await ImageLoader.preloadAll([
     player_state.fall.src,
     terrainTilemap,
 ]);
-
 const world = new World('game-canvas', new Vector2(window.innerWidth, window.innerHeight));
 const player = new Player();
 
