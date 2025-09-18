@@ -3,9 +3,10 @@ import Vector2 from "../math/vector.js";
 export default class HUD{
     /**@type {Map<number, Vector2>} */
     static clickPos = {};
-    /**@param {HTMLCanvasElement} canvas*/
-    constructor(canvas){
-        this.canvas = canvas;
+    /**@param {string} canvasId*/
+    constructor(canvasId){
+        /**@type {HTMLCanvasElement} */
+        this.canvas = document.getElementById(canvasId);
         this.init();
     }
 
