@@ -1,5 +1,6 @@
 export default class Collision{
     constructor(){
+        this.collisionBlocking = true;
         this.id = crypto.randomUUID();
     }
     /**@param {Collision} other  */

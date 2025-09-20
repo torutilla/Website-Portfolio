@@ -2,7 +2,7 @@ import Vector2 from "../../../math/vector.js";
 import SpriteImage from "../../../options/sprite_options.js";
 import Sprite from "../../../type/sprite.js";
 import Physics from "../../physics/physics.js";
-import CollisionShape from "../../../collision/collishionShape.js";
+import RectCollisionShape from "../../../collision/rectCollisionShape.js";
 import Rect from "../../../math/rect.js";
 
 let counter = 0;
@@ -13,7 +13,7 @@ export default class Entity extends Sprite {
         this.id = `Entity_${counter++}`;
         this.center_point = new Vector2(this.sprite_option.sWidth / 2, this.sprite_option.sHeight/ 2);
         this.physics = new Physics(this, 800);
-        this.collision_shape = new CollisionShape(
+        this.collision_shape = new RectCollisionShape(
             new Rect(0, 250, this.sprite_option.dWidth - 20, this.sprite_option.dHeight - 5));
         this.position = this.collision_shape.position;
         this.isGrounded = true;
@@ -32,7 +32,7 @@ export default class Entity extends Sprite {
 
     updateAnimation(){}
     /**
-     * @param {CollisionShape} other 
+     * @param {RectCollisionShape} other 
      */
     onCollision(other){
         const a = this.collision_shape;

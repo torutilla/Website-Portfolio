@@ -8,7 +8,7 @@ import Level from "./levels/level.js";
 import Tilemap from "./objects/tilemap.js";
 import Rect from "../../math/rect.js";
 import Collider from "../../collision/collider.js";
-import CollisionShape from "../../collision/collishionShape.js";
+import CollisionShape from "../../collision/rectCollisionShape.js";
 import GlobalSettings from "../../../globalSettings.js";
 import { terrainTilemap } from "../../tilemapConst.js";
 export default class World {
@@ -132,8 +132,7 @@ export default class World {
 
             for(let nearby of nearbyCollisionShapes){   
                 if(nearby.id !== entity.collision_shape.id && nearby.collidesWith(entity.collision_shape)){
-                    // console.log("HIT!", nearby, entity.collision_shape);
-                    entity.onCollision(nearby);
+                    if(nearby.collisionBlocking) entity.onCollision(nearby);
                 }
             }
             

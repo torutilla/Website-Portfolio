@@ -1,4 +1,4 @@
-import CollisionShape from "../../collision/collishionShape.js";
+import RectCollisionShape from "../../collision/rectCollisionShape.js";
 
 export default class SpatialGrid{
     /**
@@ -6,14 +6,14 @@ export default class SpatialGrid{
      */
     constructor(cellSize){
         this.cellSize = cellSize;
-        /** @type {Map<string, CollisionShape[]>}*/
+        /** @type {Map<string, RectCollisionShape[]>}*/
         this.cells = new Map();
     }
 
     _key(x, y){return `${x}, ${y}`;}
 
     /**
-     * @param {CollisionShape} obj 
+     * @param {RectCollisionShape} obj 
      * @param {(x:number, y:number) => void} fn 
     */
     #getCoveredCells(obj, fn){
@@ -75,7 +75,7 @@ export default class SpatialGrid{
     }
     
     getNearby(obj){
-        /** @type {CollisionShape[]} */
+        /** @type {RectCollisionShape[]} */
         const neighbors = []
         this.#getCoveredCells(obj, (key)=>{
             const bucket = this.cells.get(key);

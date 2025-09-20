@@ -1,7 +1,7 @@
 import SpriteImage from "../../../options/sprite_options.js";
 import Sprite from "../../../type/sprite.js";
 import Vector2 from "../../../math/vector.js";
-import CollisionShape from "../../../collision/collishionShape.js";
+import CollisionShape from "../../../collision/rectCollisionShape.js";
 export default class GameObject extends Sprite{
 /**
  * @param {SpriteImage} sprite_options 

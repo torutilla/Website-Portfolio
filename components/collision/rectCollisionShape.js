@@ -9,7 +9,6 @@ export default class RectCollisionShape extends Collision{
         super();
         this.rect = rect;
         this.position = new Vector2(rect.x, rect.y);
-        this.collisionBlocking = true;
     }
     
     getAABB(){

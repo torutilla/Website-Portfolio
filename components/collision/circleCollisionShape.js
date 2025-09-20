@@ -1,6 +1,6 @@
 import Circle from "../math/circle.js";
 import Collision from "./collision.js";
-import RectCollisionShape from "./collishionShape.js";
+import RectCollisionShape from "./rectCollisionShape.js";
 export default class CircleCollisionShape extends Collision{
     /**@param {Circle} circle  */
     constructor(circle){
