@@ -5,12 +5,11 @@ import Physics from "../../physics/physics.js";
 import RectCollisionShape from "../../../collision/rectCollisionShape.js";
 import Rect from "../../../math/rect.js";
 
-let counter = 0;
 export default class Entity extends Sprite {
     /** @param {SpriteImage} sprite_option */
     constructor(sprite_option) {
         super(sprite_option);
-        this.id = `Entity_${counter++}`;
+        this.id = crypto.randomUUID();
         this.center_point = new Vector2(this.sprite_option.sWidth / 2, this.sprite_option.sHeight/ 2);
         this.physics = new Physics(this, 800);
         this.collision_shape = new RectCollisionShape(
