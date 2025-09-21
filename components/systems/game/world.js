@@ -92,15 +92,14 @@ export default class World {
     }
     draw(){   
         this.camera.begin(this.ctx);
-        if (this.map){
-            this.drawMap();  
-        } 
+        if (this.map) this.drawMap();  
         for(let entity of this.entities){
             if(entity.draw) entity.draw(this.ctx, entity.position); 
             if (entity instanceof Player && this.map){
                 this.camera.focusOn(entity);
                 entity.collision_shape.position = this.map.playerposition;
             } 
+            if(GlobalSettings.debugMode && entity.area) entity.area.debugDraw(this.ctx);
             if (GlobalSettings.debugMode && entity.collision_shape){
                 entity.collision_shape.debugDraw(this.ctx);
                 this.dynamicGrid.debugDraw(this.ctx);

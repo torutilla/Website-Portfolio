@@ -4,7 +4,9 @@ import Vector2 from "./math/vector.js";
 import { player_state, player_image } from "./playerConst.js";
 import InputManager from "./systems/key_bindings/Input.js";
 import ImageLoader from "./type/imageLoader.js";
-
+import Area2D from "./collision/area2d.js";
+import CircleCollisionShape from "./collision/CircleCollisionShape.js";
+import Circle from "./math/circle.js";
 export default class Player extends Entity {
     constructor(){
         const option = new SpriteImage({
@@ -21,13 +23,17 @@ export default class Player extends Entity {
         this.movementSpeed = 200;
         this.jumpForce = -300;
         this.offset = new Vector2(-10, -5);
-        
+        this.area_position = this.collision_shape.rect.getCenter();
+        this.area = new Area2D(
+            new CircleCollisionShape(
+                new Circle(this.area_position, 50)
+            )
+        );
         // player_image.idle.src = player_state.idle.src;
         // player_image.run.src = player_state.run.src;
         // player_image.jump.src = player_state.jump.src;
         // player_image.fall.src = player_state.fall.src;
     }
-
     async init(){
         player_image.idle = await ImageLoader.load(player_state.idle.src);
         player_image.run = await ImageLoader.load(player_state.run.src);
@@ -61,7 +67,7 @@ export default class Player extends Entity {
         this.collision_shape.position.y += this.physics.velocity.y * delta;
         
         this.position = this.collision_shape.position.add(this.offset);
-        
+        this.area.collisionShape.updatePosition(this.collision_shape.rect.getCenter());
         this.isGrounded = false;
     }
 

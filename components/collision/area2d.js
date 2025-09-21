@@ -1,3 +1,4 @@
+import Vector2 from "../math/vector.js";
 import Collision from "./collision.js";
 
 export default class Area2D {
@@ -6,4 +7,9 @@ export default class Area2D {
         this.collisionShape = collisionShape;
         this.collisionShape.collisionBlocking = false;
     }
+
+    debugDraw(ctx){
+        this.collisionShape.debugDraw(ctx);
+    }
+
 }

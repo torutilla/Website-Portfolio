@@ -1,8 +1,12 @@
 import Vector2 from "./vector.js";
 
 export default class Circle{
-    constructor(x, y, radius){
-        this.center = new Vector2(x, y);
+    /**
+     * @param {Vector2} center
+     * @param {number} radius 
+     */
+    constructor(center, radius){
+        this.center = center;
         this.radius = radius;
     }
 

@@ -1,8 +1,12 @@
+import Vector2 from "../math/vector.js";
+
 export default class Collision{
     constructor(){
+        this.position = Vector2.ZERO;
         this.collisionBlocking = true;
         this.id = crypto.randomUUID();
     }
+    updatePosition(pos){}
     /**@param {Collision} other  */
     collidesWith(other){ 
         throw new Error('Not Implemented'); 

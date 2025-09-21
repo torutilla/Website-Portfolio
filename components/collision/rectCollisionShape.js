@@ -16,7 +16,12 @@ export default class RectCollisionShape extends Collision{
         this.rect.y = this.position.y;
         return this.rect;
     }
-
+    /**@param {Vector2} pos  */
+    updatePosition(pos){
+        this.rect.x = pos.x;
+        this.rect.y = pos.y;
+        this.position = pos;
+    }
     /**
      * @param {RectCollisionShape} obj 
      * @returns boolean
