@@ -6,6 +6,7 @@ export default class Collision{
         this.collisionBlocking = true;
         this.id = crypto.randomUUID();
     }
+    getAABB(){ throw new Error('Not Implemented'); }
     updatePosition(pos){}
     /**@param {Collision} other  */
     collidesWith(other){ 
