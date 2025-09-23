@@ -55,7 +55,6 @@ export default class SpatialGrid{
             this.remove(obj);
         }
         this.add(obj);
-        obj.gridCells = newCells;
     }
 
     remove(obj){
