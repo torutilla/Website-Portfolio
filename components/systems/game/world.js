@@ -121,6 +121,7 @@ export default class World {
 
     physicsUpdate(delta){
         for (let entity of this.entities) {
+            if(entity.area) this.dynamicGrid.update(entity.area.collisionShape);
             if (entity.physicsProcess) entity.physicsProcess(delta);
             this.dynamicGrid.update(entity.collision_shape);
 

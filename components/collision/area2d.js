@@ -1,5 +1,5 @@
 import Collision from "./collision.js";
-
+import { GlobalBus } from "../systems/event/eventBus.js";
 export default class Area2D {
     /**@param {Collision} collisionShape  */
     constructor(collisionShape){
@@ -21,6 +21,7 @@ export default class Area2D {
         if(!this.areas.some(a => a.id == area.id)){
             this.areas.push(area);
         }
+        GlobalBus.emit('area_entered', area);
     }
     areaExited(){}
     /**@param {Entity} body  */

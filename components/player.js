@@ -7,6 +7,7 @@ import ImageLoader from "./type/imageLoader.js";
 import Area2D from "./collision/area2d.js";
 import CircleCollisionShape from "./collision/CircleCollisionShape.js";
 import Circle from "./math/circle.js";
+import { GlobalBus } from "./systems/event/eventBus.js";
 export default class Player extends Entity {
     constructor(){
         const option = new SpriteImage({
@@ -34,6 +35,11 @@ export default class Player extends Entity {
         // player_image.jump.src = player_state.jump.src;
         // player_image.fall.src = player_state.fall.src;
     }
+
+    process(delta){
+        super.process(delta);
+    }
+
     async init(){
         player_image.idle = await ImageLoader.load(player_state.idle.src);
         player_image.run = await ImageLoader.load(player_state.run.src);

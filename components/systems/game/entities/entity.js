@@ -4,6 +4,7 @@ import Sprite from "../../../type/sprite.js";
 import Physics from "../../physics/physics.js";
 import RectCollisionShape from "../../../collision/rectCollisionShape.js";
 import Rect from "../../../math/rect.js";
+import Area2D from "../../../collision/area2d.js";
 
 export default class Entity extends Sprite {
     /** @param {SpriteImage} sprite_option */
@@ -16,6 +17,7 @@ export default class Entity extends Sprite {
             new Rect(0, 250, this.sprite_option.dWidth - 20, this.sprite_option.dHeight - 5));
         this.position = this.collision_shape.position;
         this.isGrounded = true;
+        /**@type {null|Area2D} */
         this.area = null;
         console.log("Entity Collision Shape ID:", this.collision_shape.id);
     }
