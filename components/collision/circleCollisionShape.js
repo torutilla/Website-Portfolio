@@ -3,28 +3,28 @@ import Rect from "../math/rect.js";
 import Collision from "./collision.js";
 import RectCollisionShape from "./rectCollisionShape.js";
 export default class CircleCollisionShape extends Collision{
-    /**@param {Circle} circle  */
-    constructor(circle){
+    /**@param {Circle} shape  */
+    constructor(shape){
         super();
-        this.circle = circle;
+        this.shape = shape;
     }
     getAABB(){
         return new Rect(
-            this.circle.center.x - this.circle.radius, 
-            this.circle.center.y - this.circle.radius, 
-            this.circle.radius * 2, this.circle.radius * 2
+            this.shape.center.x - this.shape.radius, 
+            this.shape.center.y - this.shape.radius, 
+            this.shape.radius * 2, this.shape.radius * 2
         );
     }
     /** @param {Collision} other  */
     collidesWith(other){
-        if (other instanceof RectCollisionShape) return this.circle.instersectsRect(other.rect);
-        if(other instanceof CircleCollisionShape) return this.circle.intersectsCircle(other.circle);
+        if (other instanceof RectCollisionShape) return this.shape.instersectsRect(other.shape);
+        if(other instanceof CircleCollisionShape) return this.shape.intersectsCircle(other.shape);
     }
     updatePosition(pos){
-        this.circle.center = pos;
+        this.shape.center = pos;
     }
 
     debugDraw(ctx){
-        this.circle.draw(ctx);
+        this.shape.draw(ctx);
     }
 }

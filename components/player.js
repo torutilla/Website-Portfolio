@@ -24,7 +24,7 @@ export default class Player extends Entity {
         this.movementSpeed = 200;
         this.jumpForce = -300;
         this.offset = new Vector2(-10, -5);
-        this.area_position = this.collision_shape.rect.getCenter();
+        this.area_position = this.collision_shape.shape.getCenter();
         this.area = new Area2D(
             new CircleCollisionShape(
                 new Circle(this.area_position, 50)
@@ -49,7 +49,7 @@ export default class Player extends Entity {
     
     move(){
         let dir = InputManager.get_vector('move_left', 'move_right', 'jump');
-        if ( dir.x > 0){
+        if (dir.x > 0){
             this.flipX = false;
             this.physics.velocity.x = this.movementSpeed;
         } else if (dir.x < 0){
@@ -73,7 +73,7 @@ export default class Player extends Entity {
         this.collision_shape.position.y += this.physics.velocity.y * delta;
         
         this.position = this.collision_shape.position.add(this.offset);
-        this.area.collisionShape.updatePosition(this.collision_shape.rect.getCenter());
+        this.area.collisionShape.updatePosition(this.collision_shape.shape.getCenter());
         this.isGrounded = false;
     }
 

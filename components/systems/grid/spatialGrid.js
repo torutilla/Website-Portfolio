@@ -1,3 +1,4 @@
+import Collision from "../../collision/collision.js";
 import RectCollisionShape from "../../collision/rectCollisionShape.js";
 
 export default class SpatialGrid{
@@ -74,7 +75,7 @@ export default class SpatialGrid{
     }
     
     getNearby(obj){
-        /** @type {RectCollisionShape[]} */
+        /** @type {Collision[]} */
         const neighbors = []
         this.#getCoveredCells(obj, (key)=>{
             const bucket = this.cells.get(key);

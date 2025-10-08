@@ -5,6 +5,7 @@ import Physics from "../../physics/physics.js";
 import RectCollisionShape from "../../../collision/rectCollisionShape.js";
 import Rect from "../../../math/rect.js";
 import Area2D from "../../../collision/area2d.js";
+import Collision from "../../../collision/collision.js";
 
 export default class Entity extends Sprite {
     /** @param {SpriteImage} sprite_option */
@@ -34,15 +35,15 @@ export default class Entity extends Sprite {
 
     updateAnimation(){}
     /**
-     * @param {RectCollisionShape} other 
+     * @param {Collision} other 
      */
     onCollision(other){
         const a = this.collision_shape;
         const b = other;
-        const dx = (a.position.x + a.rect.width / 2) - (b.position.x + b.rect.width / 2);
-        const dy = (a.position.y + a.rect.height / 2) - (b.position.y + b.rect.height / 2);
-        const overlapX = (a.rect.width / 2 + b.rect.width / 2) - Math.abs(dx);
-        const overlapY = (a.rect.height / 2 + b.rect.height / 2) - Math.abs(dy);
+        const dx = (a.position.x + a.shape.width / 2) - (b.position.x + b.shape.width / 2);
+        const dy = (a.position.y + a.shape.height / 2) - (b.position.y + b.shape.height / 2);
+        const overlapX = (a.shape.width / 2 + b.shape.width / 2) - Math.abs(dx);
+        const overlapY = (a.shape.height / 2 + b.shape.height / 2) - Math.abs(dy);
 
         if(overlapX > 0 && overlapY > 0){
             if(overlapX < overlapY){

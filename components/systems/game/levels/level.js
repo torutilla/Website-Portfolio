@@ -16,6 +16,7 @@ export default class Level{
         const data = await response.json();
         let mapData;
         let playerInitialPosition = Vector2.ZERO;
+        let texts = [];
         for(let layer of data.layers){
             if(layer.data) mapData = layer.data;
             if(layer.objects && layer.name.toLowerCase() == "playerposition") {
@@ -23,12 +24,18 @@ export default class Level{
                 const y = layer.objects[0].y;
                 playerInitialPosition = new Vector2(x, y);
             }
+            if(layer.objects && layer.name.toLowerCase() == "texts"){
+                for(let textObjects of layer.objects){
+                    texts.push(textObjects);
+                }
+            }
         }
         return {
             height: data.height,
             width: data.width,
             data: mapData,
             playerposition: playerInitialPosition,
+            texts: texts,
         };
     }
 }

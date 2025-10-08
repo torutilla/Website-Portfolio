@@ -25,7 +25,7 @@ export default class World {
         this.dynamicGrid = new SpatialGrid(64);
         /** @type {Entity[]} */ this.entities = [];
         /** @type {GameObject[]} */ this.world_objects = [];
-        this.zoom = size.x < 1366 ? 1.5 : 2.0;
+        this.zoom = size.x < 1366 ? 1.5 : 1.8;
         this.camera = new Camera2D(0, 0, this.zoom, this.world);
         this.level = null;
         this.map = null;
@@ -35,12 +35,13 @@ export default class World {
             new Rect(0, 0, 16, 16),
         );
         this.collider = new Collider();
+        
         /**@type {CollisionShape[]} */ this.colliders = [];
     }
 
     async init(){
         this.level = new Level(
-            '../../../assets/TiledMap/samp.tmj'
+            '../../../assets/TiledMap/WebsitePortolioMap.tmj'
         );
         try {
             this.map = await this.level.loadTiledMap();
@@ -57,6 +58,12 @@ export default class World {
                 this.staticGrid.update(collision);
                 this.colliders.push(collision);
                 console.log(this.staticGrid.cells);
+            }
+            for(let texts of this.map.texts){
+                console.log(texts.name);
+                this.ctx.font = '50px "Arial"';
+                this.ctx.fillStyle =texts.properties.value;
+                this.ctx.fillText(texts.name, texts.x, texts.y)
             }
         } catch (error) {
             console.error(`Error loading map: ${error}`);
@@ -121,7 +128,7 @@ export default class World {
 
     physicsUpdate(delta){
         for (let entity of this.entities) {
-            if(entity.area) this.dynamicGrid.update(entity.area.collisionShape);
+            // if(entity.area) this.dynamicGrid.update(entity.area.collisionShape);
             if (entity.physicsProcess) entity.physicsProcess(delta);
             this.dynamicGrid.update(entity.collision_shape);
 
@@ -132,7 +139,10 @@ export default class World {
 
             for(let nearby of nearbyCollisionShapes){   
                 if(nearby.id !== entity.collision_shape.id && nearby.collidesWith(entity.collision_shape)){
-                    if(nearby.collisionBlocking) entity.onCollision(nearby);
+                    if(nearby.collisionBlocking){
+                        entity.onCollision(nearby);
+                        nearby.onCollision(entity.collision_shape);
+                    }    
                 }
             }
             

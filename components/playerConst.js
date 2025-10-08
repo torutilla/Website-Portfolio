@@ -1,4 +1,4 @@
-import ImageLoader from "./type/imageLoader.js";
+
 
 export const player_state = {
     idle: {

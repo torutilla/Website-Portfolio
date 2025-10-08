@@ -2,6 +2,7 @@ import Vector2 from "../math/vector.js";
 
 export default class Collision{
     constructor(){
+        this.shape = null;
         this.position = Vector2.ZERO;
         this.collisionBlocking = true;
         this.id = crypto.randomUUID();
@@ -16,4 +17,5 @@ export default class Collision{
     debugDraw(ctx){ 
         throw new Error('Not Implemented'); 
     }
+    onCollision(other){ }
 }

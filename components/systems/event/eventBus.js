@@ -1,6 +1,6 @@
 import Signal from "../signal/signal.js";
 
-class EventBus{
+export default class EventBus{
     constructor(){
         /**@type {Object<string, Signal>} */
         this.signals = {};
