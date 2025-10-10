@@ -28,9 +28,9 @@ export default class Circle{
     intersectsCircle(other){
         const dx = other.center.x - this.center.x;
         const dy = other.center.y - this.center.y;
-        const rSum = this.radius + other.radius;
+        const radiusSum = this.radius + other.radius;
 
-        return dx * dx + dy * dy <= rSum * rSum; 
+        return dx * dx + dy * dy <= radiusSum * radiusSum; 
     }
     
     draw(ctx) {
