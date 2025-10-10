@@ -4,7 +4,7 @@ import Sprite from "../../../type/sprite.js";
 import Physics from "../../physics/physics.js";
 import Rect from "../../../math/rect.js";
 import Area2D from "../../../collision/area2d.js";
-import CircleCollisionShape from "../../../collision/CircleCollisionShape.js";
+import CircleCollisionShape from "../../../collision/circleCollisionShape.js";
 import RectCollisionShape from "../../../collision/rectCollisionShape.js";
 import CollisionSystem from "../objects/collisionSystem.js";
 
