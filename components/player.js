@@ -5,7 +5,7 @@ import { player_state, player_image } from "./playerConst.js";
 import InputManager from "./systems/key_bindings/Input.js";
 import ImageLoader from "./type/imageLoader.js";
 import Area2D from "./collision/area2d.js";
-import CircleCollisionShape from "./collision/CircleCollisionShape.js";
+import CircleCollisionShape from "./collision/circleCollisionShape.js";
 import Circle from "./math/circle.js";
 import { GlobalBus } from "./systems/event/eventBus.js";
 export default class Player extends Entity {

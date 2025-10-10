@@ -1,7 +1,7 @@
 import Vector2 from "../math/vector.js";
 import Rect from "../math/rect.js";
 import Collision from "./collision.js";
-import CircleCollisionShape from "./CircleCollisionShape.js"; 
+import CircleCollisionShape from "./circleCollisionShape.js"; 
 
 export default class RectCollisionShape extends Collision{
     /**
