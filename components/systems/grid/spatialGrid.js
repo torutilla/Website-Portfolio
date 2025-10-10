@@ -1,5 +1,4 @@
 import Collision from "../../collision/collision.js";
-import RectCollisionShape from "../../collision/rectCollisionShape.js";
 
 export default class SpatialGrid{
     /**
@@ -7,14 +6,14 @@ export default class SpatialGrid{
      */
     constructor(cellSize){
         this.cellSize = cellSize;
-        /** @type {Map<string, RectCollisionShape[]>}*/
+        /** @type {Map<string, Collision[]>}*/
         this.cells = new Map();
     }
 
     _key(x, y){return `${x}, ${y}`;}
 
     /**
-     * @param {RectCollisionShape} obj 
+     * @param {Collision} obj 
      * @param {(x:number, y:number) => void} fn 
     */
     #getCoveredCells(obj, fn){
@@ -50,7 +49,10 @@ export default class SpatialGrid{
         const newCells = this.getCells(obj.getAABB());
         if(obj.gridCells){
             const {minX, maxX, minY, maxY} = obj.gridCells;
-            if(minX === newCells.minX && minY === newCells.minY && maxX === newCells.maxX && maxY === newCells.maxY){
+            if(minX === newCells.minX && 
+                minY === newCells.minY && 
+                maxX === newCells.maxX && 
+                maxY === newCells.maxY) {
                 return;
             }
             this.remove(obj);

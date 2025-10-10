@@ -21,7 +21,7 @@ export default class Player extends Entity {
         this.position = new Vector2(250, 250);
         this.currentState = player_state.idle.name;
         this.collision_shape.position = new Vector2(320, 100);
-        this.movementSpeed = 200;
+        this.movementSpeed = 140;
         this.jumpForce = -300;
         this.offset = new Vector2(-10, -5);
         this.area_position = this.collision_shape.shape.getCenter();

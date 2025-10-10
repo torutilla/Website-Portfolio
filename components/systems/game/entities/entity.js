@@ -2,10 +2,11 @@ import Vector2 from "../../../math/vector.js";
 import SpriteImage from "../../../options/sprite_options.js";
 import Sprite from "../../../type/sprite.js";
 import Physics from "../../physics/physics.js";
-import RectCollisionShape from "../../../collision/rectCollisionShape.js";
 import Rect from "../../../math/rect.js";
 import Area2D from "../../../collision/area2d.js";
-import Collision from "../../../collision/collision.js";
+import CircleCollisionShape from "../../../collision/CircleCollisionShape.js";
+import RectCollisionShape from "../../../collision/rectCollisionShape.js";
+import CollisionSystem from "../objects/collisionSystem.js";
 
 export default class Entity extends Sprite {
     /** @param {SpriteImage} sprite_option */
@@ -16,6 +17,8 @@ export default class Entity extends Sprite {
         this.physics = new Physics(this, 800);
         this.collision_shape = new RectCollisionShape(
             new Rect(0, 250, this.sprite_option.dWidth - 20, this.sprite_option.dHeight - 5));
+        this.collision_shape.attachOwner(this);
+        CollisionSystem.addDynamic(this.collision_shape);
         this.position = this.collision_shape.position;
         this.isGrounded = true;
         /**@type {null|Area2D} */
@@ -34,10 +37,13 @@ export default class Entity extends Sprite {
     physicsProces(delta){}
 
     updateAnimation(){}
-    /**
-     * @param {Collision} other 
-     */
+
     onCollision(other){
+        if(other instanceof RectCollisionShape) this.#onRectCollision(other);
+        if(other instanceof CircleCollisionShape) this.#onCircleCollision(other);
+    }
+    /** @param {RectCollisionShape} other */
+    #onRectCollision(other){
         const a = this.collision_shape;
         const b = other;
         const dx = (a.position.x + a.shape.width / 2) - (b.position.x + b.shape.width / 2);
@@ -52,12 +58,29 @@ export default class Entity extends Sprite {
             }else{
                 if(dy > 0){
                     a.position.y += overlapY; 
-                }else{
+                }else{ 
                     a.position.y -= overlapY;
                     this.isGrounded = true;
                 }
                 this.physics.velocity.y = 0;
             }
         } 
+    }
+    /**@param {CircleCollisionShape} other  */
+    #onCircleCollision(other){
+        const a  = this.collision_shape.shape;
+        const b = other.shape;
+        const closestX = Math.max(a.x, Math.min(b.center.x, a.x + a.width));
+        const closestY = Math.max(a.y, Math.min(b.center.y, a.y + a.height));
+
+        const dx = b.center.x - closestX;
+        const dy = b.center.y - closestY;
+
+        const distSq = dx * dx + dy * dy;
+        const dist = Math.sqrt(distSq);
+
+        const overlap = b.radius - dist;
+
+        if(overlap > 0){}
     }
 }

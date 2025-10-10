@@ -1,7 +1,9 @@
 import Vector2 from "../math/vector.js";
+import CollisionSystem from "../systems/game/objects/collisionSystem.js";
 
 export default class Collision{
     constructor(){
+        this.owner = null;
         this.shape = null;
         this.position = Vector2.ZERO;
         this.collisionBlocking = true;
@@ -17,5 +19,8 @@ export default class Collision{
     debugDraw(ctx){ 
         throw new Error('Not Implemented'); 
     }
-    onCollision(other){ }
+    attachOwner(owner) {
+        this.owner = owner;
+    }
+    
 }

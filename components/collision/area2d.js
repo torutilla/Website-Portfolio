@@ -1,5 +1,5 @@
 import EventBus from "../systems/event/eventBus.js";
-import {CollisionSys} from "../systems/game/objects/collisionSystem.js";
+import CollisionSystem from "../systems/game/objects/collisionSystem.js";
 import Collision from "./collision.js";
 
 export default class Area2D extends EventBus {
@@ -8,7 +8,8 @@ export default class Area2D extends EventBus {
         super();
         this.collisionShape = shape;
         this.overlaps = new Set();
-        CollisionSys.addArea(this);
+        CollisionSystem.addArea(this);
+    
     }
 
     getAABB() {

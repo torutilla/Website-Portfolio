@@ -1,47 +1,59 @@
 import Collision from "../../../collision/collision.js";
 import SpatialGrid from "../../grid/spatialGrid.js";
 
-export default class CollisionSystem{
-    constructor(){
-        this.staticGrid = new SpatialGrid(64);
-        this.dynamicGrid = new SpatialGrid(64);
-        /**@type {Set<Collision>} */
-        this.staticShapes = new Set();
-        /**@type {Set<Collision>} */
-        this.dynamicShapes = new Set();
-        this.areas = new Set();
+export default class CollisionSystem {
+    static staticGrid;
+    static dynamicGrid;
+    static staticShapes = new Set();
+    static dynamicShapes = new Set();
+    static areas = new Set();
+
+    static init() {
+        if (!this.staticGrid) {
+            this.staticGrid = new SpatialGrid(64);
+            this.dynamicGrid = new SpatialGrid(64);
+        }
     }
-    addStatic(collision){
+    /**
+     * @param {Collision} collision
+     */
+    static addStatic(collision) {
         this.staticGrid.update(collision);
         this.staticShapes.add(collision);
     }
-    addDynamic(collision){
+
+    /**
+     * @param {Collision} collision
+     */
+    static addDynamic(collision) {
         this.dynamicGrid.update(collision);
         this.dynamicShapes.add(collision);
     }
-    addArea(area) {
-        this.dynamicGrid.add(area); 
+
+    /**
+     * @param {Collision} area
+     */
+    static addArea(area) {
+        this.dynamicGrid.add(area);
         this.areas.add(area);
     }
-    update(delta){
-        for(let dyn of this.dynamicShapes){
 
+    static update() {
+        for (let dyn of this.dynamicShapes) {
             this.dynamicGrid.update(dyn);
             const nearbyShapes = [
-                ...this.staticGrid.getNearby(dyn), 
-                ...this.dynamicGrid.getNearby(dyn)
+                ...this.staticGrid.getNearby(dyn),
+                ...this.dynamicGrid.getNearby(dyn),
             ];
-            for(let near of nearbyShapes){
-                if (dyn === near) continue;
+            // console.log(nearbyShapes);
 
-                if(dyn.collidesWith(near)){
-                    dyn.onCollision(near);
-                    near.onCollision(dyn);
+            for (let near of nearbyShapes) {
+                if (dyn.id !== near.id && dyn.collidesWith(near)) {
+                    dyn.owner?.onCollision(near);
+                    near.owner?.onCollision(dyn);
                 }
             }
         }
-        
     }
 }
 
-export const CollisionSys = new CollisionSystem();
