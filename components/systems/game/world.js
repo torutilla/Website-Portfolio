@@ -40,7 +40,7 @@ export default class World {
         /** @type {Entity[]} */ this.entities = [];
         /** @type {GameObject[]} */ this.world_objects = [];
 
-        this.zoom = size.x < 1366 ? 1.2 : 3;
+        this.zoom = size.x < 1366 ? 1.2 : 2.5;
         this.camera = new Camera2D(0, 0, this.zoom, this.world);
 
         this.level = null;
@@ -67,7 +67,7 @@ export default class World {
         );
         try {
             this.bg.rect(0, 0, this.world.width * this.zoom, this.world.height * this.zoom);
-            this.bg.fillStyle = "#CCF1FF";
+            this.bg.fillStyle = "#85CDED";
             this.bg.fill();
             this.map = await this.level.loadTiledMap();
             await this.currentTilemap.ensureLoaded();
@@ -109,10 +109,24 @@ export default class World {
             for(let col = 0; col < this.map.width; col++){
                 const index = row * this.map.width + col;
                 const tileId = this.map.data[index];
-                if (tileId === 0) continue;
+                const overlayTileId = this.map.overlaydata[index];
+                const decorationsId = this.map.deco[index];
+                if (tileId === 0 && overlayTileId === 0 && decorationsId === 0){
+                    continue;
+                }
+                this.currentTilemap.drawTile(
+                    this.mapBufferCtx,
+                    decorationsId - 1,                
+                    new Vector2(col, row)      
+                );
                 this.currentTilemap.drawTile(
                     this.mapBufferCtx,
                     tileId - 1,                
+                    new Vector2(col, row)      
+                );
+                this.currentTilemap.drawTile(
+                    this.mapBufferCtx,
+                    overlayTileId - 1,                
                     new Vector2(col, row)      
                 );
             }

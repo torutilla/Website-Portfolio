@@ -15,10 +15,14 @@ export default class Level{
         const response = await fetch(this.levelPath);
         const data = await response.json();
         let mapData;
+        let overlayTiles;
+        let decorations;
         let playerInitialPosition = Vector2.ZERO;
         let texts = [];
         for(let layer of data.layers){
-            if(layer.data) mapData = layer.data;
+            if(layer.data && layer.name.toLowerCase() == "overlaytiles") overlayTiles = layer.data;
+            if(layer.data && layer.name.toLowerCase() == "decorations") decorations = layer.data;
+            if(layer.data && layer.name.toLowerCase() == "tiles") mapData = layer.data;
             if(layer.objects && layer.name.toLowerCase() == "playerposition") {
                 const x = layer.objects[0].x;
                 const y = layer.objects[0].y;
@@ -36,6 +40,8 @@ export default class Level{
             data: mapData,
             playerposition: playerInitialPosition,
             texts: texts,
+            overlaydata: overlayTiles,
+            deco: decorations,
         };
     }
 }

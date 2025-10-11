@@ -14,16 +14,16 @@ export default class Player extends Entity {
             imageSource: player_state.idle.src,
             sx: 0, sy: 0,
             sourceSize: {x: 32, y: 32},
-            destinationSize: {x: 32, y:32},
+            destinationSize: {x: 24, y:24},
             totalFrames: player_state.idle.totalFrames, 
         }); 
         super(option);
         this.position = new Vector2(250, 250);
         this.currentState = player_state.idle.name;
         this.collision_shape.position = new Vector2(320, 100);
-        this.movementSpeed = 140;
-        this.jumpForce = -300;
-        this.offset = new Vector2(-10, -5);
+        this.movementSpeed = 100;
+        this.jumpForce = -280;
+        this.offset = new Vector2(-5, -5);
         this.area_position = this.collision_shape.shape.getCenter();
         this.area = new Area2D(
             new CircleCollisionShape(
