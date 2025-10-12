@@ -14,15 +14,15 @@ export default class Player extends Entity {
             imageSource: player_state.idle.src,
             sx: 0, sy: 0,
             sourceSize: {x: 32, y: 32},
-            destinationSize: {x: 24, y:24},
+            destinationSize: {x: 48, y:48},
             totalFrames: player_state.idle.totalFrames, 
         }); 
         super(option);
         this.position = new Vector2(250, 250);
         this.currentState = player_state.idle.name;
         this.collision_shape.position = new Vector2(320, 100);
-        this.movementSpeed = 100;
-        this.jumpForce = -280;
+        this.movementSpeed = 150;
+        this.jumpForce = -350;
         this.offset = new Vector2(-5, -5);
         this.area_position = this.collision_shape.shape.getCenter();
         this.area = new Area2D(
@@ -30,6 +30,7 @@ export default class Player extends Entity {
                 new Circle(this.area_position, 50)
             )
         );
+        this.area.on('player_area_entered', this.area_entered);
         // player_image.idle.src = player_state.idle.src;
         // player_image.run.src = player_state.run.src;
         // player_image.jump.src = player_state.jump.src;
@@ -99,6 +100,7 @@ export default class Player extends Entity {
             this.frameTimer = 0;
         }
     }
+    
 }
 
 

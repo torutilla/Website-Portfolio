@@ -1,3 +1,4 @@
+import Area2D from "../../../collision/area2d.js";
 import Collision from "../../../collision/collision.js";
 import SpatialGrid from "../../grid/spatialGrid.js";
 
@@ -6,6 +7,7 @@ export default class CollisionSystem {
     static dynamicGrid;
     static staticShapes = new Set();
     static dynamicShapes = new Set();
+    /**@type {Set<Area2D>} */
     static areas = new Set();
 
     static init() {
@@ -53,6 +55,9 @@ export default class CollisionSystem {
                     near.owner?.onCollision(dyn);
                 }
             }
+        }
+        for(let area of this.areas){
+            
         }
     }
 }

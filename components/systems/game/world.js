@@ -40,7 +40,7 @@ export default class World {
         /** @type {Entity[]} */ this.entities = [];
         /** @type {GameObject[]} */ this.world_objects = [];
 
-        this.zoom = size.x < 1366 ? 1.2 : 2.5;
+        this.zoom = size.x < 1366 ? 0.8 : 1.5;
         this.camera = new Camera2D(0, 0, this.zoom, this.world);
 
         this.level = null;
@@ -86,12 +86,7 @@ export default class World {
                 this.colliders.push(collision);
                 // console.log(this.staticGrid.cells);
             }
-            for(let texts of this.map.texts){
-                console.log(texts.name);
-                this.ctx.font = '50px "Arial"';
-                this.ctx.fillStyle =texts.properties.value;
-                this.ctx.fillText(texts.name, texts.x, texts.y)
-            }
+            
             
         } catch (error) {
             console.error(`Error loading map: ${error}`);
@@ -104,7 +99,7 @@ export default class World {
     drawMap(){
         this.mapBuffer.width = this.map.width * this.currentTilemap.tileSize.x;
         this.mapBuffer.height = this.map.height * this.currentTilemap.tileSize.y;
-
+        
         for(let row = 0; row < this.map.height; row++){
             for(let col = 0; col < this.map.width; col++){
                 const index = row * this.map.width + col;
@@ -148,6 +143,11 @@ export default class World {
         
         if (this.mapLoaded){
             this.ctx.drawImage(this.mapBuffer, 0, 0);
+            for(let texts of this.map.texts){
+                this.ctx.font = `${texts.properties[1].value}px "PixelFont"`;
+                this.ctx.fillStyle = texts.properties[0].value;
+                this.ctx.fillText(texts.name.toUpperCase(), texts.x, texts.y)
+            }
         } 
         for(let entity of this.entities){
             if(entity.draw) entity.draw(this.ctx, entity.position); 
@@ -179,9 +179,9 @@ export default class World {
 
     physicsUpdate(delta){
         for (let entity of this.entities) {
-            // if(entity.area) this.dynamicGrid.update(entity.area.collisionShape);
             if (entity.physicsProcess) entity.physicsProcess(delta);
             CollisionSystem.update();
+            // if(entity.area) this.dynamicGrid.update(entity.area.collisionShape);
             // this.dynamicGrid.update(entity.collision_shape);
 
             // const nearbyCollisionShapes = [

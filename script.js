@@ -6,7 +6,7 @@ import InputManager from "./components/systems/key_bindings/Input.js";
 import ImageLoader from "./components/type/imageLoader.js";
 import { player_state } from "./components/playerConst.js";
 import { terrainTilemap } from "./components/tilemapConst.js";
-
+import CustomFont from "./components/type/fonts.js";
 
 InputManager.init();
 InputManager.add_action("move_left", ["a", "ArrowLeft"]);
@@ -19,6 +19,12 @@ await ImageLoader.preloadAll([
     player_state.jump.src, 
     player_state.fall.src,
     terrainTilemap.src,
+]);
+
+await CustomFont.preload([{
+        name: "PixelFont",
+        link: "/assets/fonts/editundo.ttf",
+    },
 ]);
 const world = new World('game-canvas', new Vector2(window.innerWidth, window.innerHeight));
 
