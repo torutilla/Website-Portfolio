@@ -1,3 +1,4 @@
+import Vector2 from "../../math/vector.js";
 export default class Camera2D {
     /**@param {HTMLCanvasElement} canvas */
     constructor(x = 0, y = 0, zoom = 1, canvas) {
@@ -10,6 +11,13 @@ export default class Camera2D {
     focusOn(entity) {
         this.x = entity.position.x - this.canvas.width / (2 * this.zoom);
         this.y = entity.position.y - this.canvas.height / (2 * this.zoom);
+    }
+
+    getOffset() {
+        return new Vector2(
+            this.x,
+            this.y
+        );
     }
 
     worldToScreen(wx, wy) {
