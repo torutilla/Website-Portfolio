@@ -18,15 +18,24 @@ export default class World {
      * @param {Vector2} size 
      */
     constructor(canvasId, size){
-        const background = document.getElementById('background-canvas');
-        background.width = size.x;
-        background.height = size.y;
+        this.background = document.getElementById('background-canvas');
+        /** @type {CanvasRenderingContext2D} */ this.bg = this.background.getContext('2d');
+        this.bg.imageSmoothingEnabled = false;
+
+        this.mapBackground = document.getElementById('game-background');
+        this.mapBackgroundCtx = this.mapBackground.getContext('2d');
+        this.mapBackgroundCtx.imageSmoothingEnabled = false;
+        
 
         this.mapBuffer = document.createElement('canvas');
         this.mapBufferCtx = this.mapBuffer.getContext('2d');
         this.mapBufferCtx.imageSmoothingEnabled = false;
 
-        /** @type {CanvasRenderingContext2D} */ this.bg = background.getContext('2d');
+        this.mapForeground = document.getElementById('game-foreground');
+        this.mapForegroundCtx = this.mapForeground.getContext('2d');
+        this.mapForegroundCtx.imageSmoothingEnabled = false;
+        
+
         this.world = document.getElementById(canvasId);
         /** @type {CanvasRenderingContext2D} */ this.ctx = this.world.getContext('2d');
         this.ctx.imageSmoothingEnabled = false;
@@ -40,7 +49,7 @@ export default class World {
         /** @type {Entity[]} */ this.entities = [];
         /** @type {GameObject[]} */ this.world_objects = [];
 
-        this.zoom = size.x < 1366 ? 0.8 : 1.5;
+        this.zoom = size.x < 1366 ? 1 : 1.5;
         this.camera = new Camera2D(0, 0, this.zoom, this.world);
 
         this.level = null;
@@ -66,12 +75,11 @@ export default class World {
             '../../../assets/TiledMap/WebsitePortolioMap.tmj'
         );
         try {
-            this.bg.rect(0, 0, this.world.width * this.zoom, this.world.height * this.zoom);
-            this.bg.fillStyle = "#85CDED";
-            this.bg.fill();
             this.map = await this.level.loadTiledMap();
             await this.currentTilemap.ensureLoaded();
+            this.initializeBg();
             this.drawMap();
+            this.initializeFg();
             this.mapLoaded = true;  
             const rects = this.collider.getRectFromTiles(this.map.data, this.map.width, this.map.height);
             for(let rect of rects){
@@ -97,38 +105,64 @@ export default class World {
     }
 
     drawMap(){
-        this.mapBuffer.width = this.map.width * this.currentTilemap.tileSize.x;
-        this.mapBuffer.height = this.map.height * this.currentTilemap.tileSize.y;
-        
+        this.changeCanvasSize(this.mapBackground);
+        this.changeCanvasSize(this.mapBuffer);
+        this.changeCanvasSize(this.mapForeground);
+        this.changeCanvasStyle(this.mapForeground);
+
         for(let row = 0; row < this.map.height; row++){
             for(let col = 0; col < this.map.width; col++){
                 const index = row * this.map.width + col;
                 const tileId = this.map.data[index];
                 const overlayTileId = this.map.overlaydata[index];
-                const decorationsId = this.map.deco[index];
-                if (tileId === 0 && overlayTileId === 0 && decorationsId === 0){
-                    continue;
+                if (tileId > 0){
+                    this.currentTilemap.drawTile(
+                        this.mapBufferCtx,
+                        tileId - 1,                
+                        new Vector2(col, row)      
+                    );
                 }
-                this.currentTilemap.drawTile(
-                    this.mapBufferCtx,
-                    decorationsId - 1,                
-                    new Vector2(col, row)      
-                );
-                this.currentTilemap.drawTile(
-                    this.mapBufferCtx,
-                    tileId - 1,                
-                    new Vector2(col, row)      
-                );
-                this.currentTilemap.drawTile(
-                    this.mapBufferCtx,
-                    overlayTileId - 1,                
-                    new Vector2(col, row)      
-                );
+                if(overlayTileId > 0){
+                    this.currentTilemap.drawTile(
+                        this.mapBufferCtx,
+                        overlayTileId - 1,                
+                        new Vector2(col, row)      
+                    );
+                }
             }
         } 
         
     }
+    initializeBg(){
+        this.changeCanvasSize(this.background);
+        this.bg.rect(0, 0, this.world.width * this.zoom, this.world.height * this.zoom);
+        this.bg.fillStyle = "#85CDED";
+        this.bg.fill();
+    }
 
+    initializeFg(){
+        for(let row = 0; row < this.map.height; row++){
+            for(let col = 0; col < this.map.width; col++){
+                const index = row * this.map.width + col;
+                const decorationsId = this.map.deco[index];
+                const backgroundId = this.map.bg[index];
+                if (backgroundId > 0) {
+                    this.currentTilemap.drawTile(
+                        this.mapBackgroundCtx,
+                        backgroundId - 1,
+                        new Vector2(col, row)
+                    ); 
+                }
+                if (decorationsId > 0) {
+                    this.currentTilemap.drawTile(
+                        this.mapForegroundCtx,
+                        decorationsId - 1,
+                        new Vector2(col, row)
+                    );
+                }
+            }
+        }
+    }
     addEntity(entity){
         this.entities.push(entity);
     }
@@ -139,6 +173,9 @@ export default class World {
         this.ctx.clearRect(0, 0, this.world.width, this.world.height);
     }
     draw(){   
+        
+        this.transformCanvas(this.mapBackground);
+        this.transformCanvas(this.mapForeground);
         this.camera.begin(this.ctx);
         
         if (this.mapLoaded){
@@ -164,16 +201,15 @@ export default class World {
                 // this.staticGrid.debugDraw(this.ctx);
             } 
         }
+        
         this.camera.end(this.ctx)
     }
     update(deltaTime) {
         for (let entity of this.entities) {
-            if (entity.process) entity.process(deltaTime);
-            
+            if (entity.process) entity.process(deltaTime);    
         }
         for(let object of this.world_objects){
-            if(object.process) object.process(deltaTime);
-            
+            if(object.process) object.process(deltaTime);    
         }
     }
 
@@ -202,4 +238,20 @@ export default class World {
         }
     }
 
+    transformCanvas(canvas){
+        canvas.style.transform = `translate(${-this.camera.x * this.camera.zoom}px, ${-this.camera.y * this.camera.zoom}px) scale(${this.camera.zoom})`;
+        canvas.style.transformOrigin = 'top left';
+    }
+
+    /**@param {HTMLCanvasElement} canvas  */
+    changeCanvasStyle(canvas){
+        canvas.style.position = 'absolute';
+        canvas.style.top = '0';
+        canvas.style.left = '0';
+    }
+
+    changeCanvasSize(canvas){
+        canvas.width = this.map.width * this.currentTilemap.tileSize.x;
+        canvas.height = this.map.height * this.currentTilemap.tileSize.y; 
+    }
 }

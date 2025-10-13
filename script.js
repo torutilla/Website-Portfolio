@@ -7,6 +7,7 @@ import ImageLoader from "./components/type/imageLoader.js";
 import { player_state } from "./components/playerConst.js";
 import { terrainTilemap } from "./components/tilemapConst.js";
 import CustomFont from "./components/type/fonts.js";
+import checkOrientation from "./orientationChecker.js";
 
 InputManager.init();
 InputManager.add_action("move_left", ["a", "ArrowLeft"]);
@@ -26,7 +27,15 @@ await CustomFont.preload([{
         link: "/assets/fonts/editundo.ttf",
     },
 ]);
-const world = new World('game-canvas', new Vector2(window.innerWidth, window.innerHeight));
+
+window.addEventListener('load', checkOrientation);
+window.addEventListener('resize', checkOrientation);
+window.addEventListener('orientationchange', checkOrientation);
+
+const world = new World(
+    'game-canvas', 
+    new Vector2(window.innerWidth, window.innerHeight)
+);
 
 const player = new Player();
 world.addEntity(player);
