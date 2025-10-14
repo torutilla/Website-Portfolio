@@ -32,7 +32,7 @@ window.addEventListener('load', checkOrientation);
 window.addEventListener('resize', checkOrientation);
 window.addEventListener('orientationchange', checkOrientation);
 
-const world = new World(
+export const world = new World(
     'game-canvas', 
     new Vector2(window.innerWidth, window.innerHeight)
 );

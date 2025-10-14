@@ -18,6 +18,7 @@ export default class World {
      * @param {Vector2} size 
      */
     constructor(canvasId, size){
+        this.canvasId = canvasId;
         this.background = document.getElementById('background-canvas');
         /** @type {CanvasRenderingContext2D} */ this.bg = this.background.getContext('2d');
         this.bg.imageSmoothingEnabled = false;
@@ -35,7 +36,7 @@ export default class World {
         this.mapForegroundCtx = this.mapForeground.getContext('2d');
         this.mapForegroundCtx.imageSmoothingEnabled = false;
         
-
+        /**@type {HTMLCanvasElement} */
         this.world = document.getElementById(canvasId);
         /** @type {CanvasRenderingContext2D} */ this.ctx = this.world.getContext('2d');
         this.ctx.imageSmoothingEnabled = false;
@@ -157,8 +158,6 @@ export default class World {
         
     }
     initializeBg(){
-        this.background.width = this.map.width;
-        this.background.height = this.map.height; 
         this.bg.rect(0, 0, this.world.width * this.zoom, this.world.height * this.zoom);
         this.bg.fillStyle = "#85CDED";
         this.bg.fill();
@@ -245,4 +244,22 @@ export default class World {
         canvas.style.transform = `translate(${-this.camera.x * this.camera.zoom}px, ${-this.camera.y * this.camera.zoom}px) scale(${this.camera.zoom})`;
         canvas.style.transformOrigin = 'top left';
     }
+
+    resizeWorld() {
+        this.world.width = window.innerWidth;
+        this.world.height = window.innerHeight;
+
+        this.zoom = this.world.width < 1366 ? 1 : 1.5;
+        this.camera.zoom = this.zoom;
+    
+        const player = this.entities.find(e => e instanceof Player);
+        if (player && this.map) {
+            this.camera.focusOn(player);
+        }
+
+        this.clear();
+    
+        this.draw();
+    }
+    
 }

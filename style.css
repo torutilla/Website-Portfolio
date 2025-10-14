@@ -11,6 +11,12 @@ canvas{
     left: 0;
 }
 
+#background-canvas{
+    width: 100dvw;
+    height: 100dvh;
+}
+
+
 #orientation-blocker{
     position: fixed;
     top: 0;
