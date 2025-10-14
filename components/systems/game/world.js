@@ -187,12 +187,13 @@ export default class World {
                 this.ctx.fillText(texts.name.toUpperCase(), texts.x, texts.y)
             }
         } 
+        const player = this.entities.find(e => e instanceof Player);
+        if (player && this.map) {
+            this.camera.focusOn(player);
+            player.collision_shape.position = this.map.playerposition;
+        }
         for(let entity of this.entities){
             if(entity.draw) entity.draw(this.ctx, entity.position); 
-            if (entity instanceof Player && this.map){
-                this.camera.focusOn(entity);
-                entity.collision_shape.position = this.map.playerposition;
-            } 
             if(GlobalSettings.debugMode && entity.area) entity.area.debugDraw(this.ctx);
             if (GlobalSettings.debugMode && entity.collision_shape){
                 entity.collision_shape.debugDraw(this.ctx);
@@ -201,6 +202,10 @@ export default class World {
                 // this.dynamicGrid.debugDraw(this.ctx);
                 // this.staticGrid.debugDraw(this.ctx);
             } 
+            // if (entity instanceof Player && this.map){
+            //     this.camera.focusOn(entity);
+            //     entity.collision_shape.position = this.map.playerposition;
+            // } 
         }
         this.ctx.drawImage(this.mapForeground, 0, 0);
         
@@ -251,14 +256,8 @@ export default class World {
 
         this.zoom = this.world.width < 1366 ? 1 : 1.5;
         this.camera.zoom = this.zoom;
-    
-        const player = this.entities.find(e => e instanceof Player);
-        if (player && this.map) {
-            this.camera.focusOn(player);
-        }
 
         this.clear();
-    
         this.draw();
     }
     
