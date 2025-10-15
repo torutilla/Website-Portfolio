@@ -10,8 +10,9 @@ import Rect from "../../math/rect.js";
 import Collider from "../../collision/collider.js";
 import CollisionShape from "../../collision/rectCollisionShape.js";
 import GlobalSettings from "../../../globalSettings.js";
-import { terrainTilemap } from "../../tilemapConst.js";
+import { backgroundClouds, terrainTilemap } from "../../tilemapConst.js";
 import CollisionSystem from "./objects/collisionSystem.js";
+import ImageLoader from "../../type/imageLoader.js";
 export default class World {
     /**
      * @param {string} canvasId 
@@ -78,7 +79,7 @@ export default class World {
         try {
             this.map = await this.level.loadTiledMap();
             await this.currentTilemap.ensureLoaded();
-            
+            await this.initializeBg();
             this.drawMap();
             
             this.mapLoaded = true;  
@@ -106,7 +107,7 @@ export default class World {
     }
 
     drawMap(){
-        this.initializeBg();
+        
 
         this.mapBackground.width = this.map.width * this.currentTilemap.tileSize.x;
         this.mapBackground.height = this.map.height * this.currentTilemap.tileSize.y; 
@@ -157,10 +158,12 @@ export default class World {
         } 
         
     }
-    initializeBg(){
+    async initializeBg(){
         this.bg.rect(0, 0, this.world.width * this.zoom, this.world.height * this.zoom);
         this.bg.fillStyle = "#85CDED";
         this.bg.fill();
+        // const clouds = await ImageLoader.load(backgroundClouds);
+        // this.mapBackgroundCtx.drawImage(clouds, 0, 0);
     }
 
     addEntity(entity){

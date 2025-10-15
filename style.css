@@ -1,3 +1,7 @@
+@font-face {
+    font-family: 'Pixel Font';
+    src: url(assets/fonts/editundo.ttf);
+}
 *{
     box-sizing: border-box;
     margin: 0;
@@ -9,18 +13,49 @@ canvas{
     position: absolute;
     top: 0;
     left: 0;
-    width: 100dvw;
-    height: 100dvh;
+    width: 100vw;
+    height: 100vh;
 }
 
+.ui{
+    width: 100vw;
+    height: 100vh;
+    position: relative;
+    z-index: 999;
+}
 
+#mobile-hud{
+    width: 100vw;
+    position: absolute;
+    bottom: 20px;
+    align-items: center;
+    display: flex;
+    justify-content: space-between;
+    padding: 2rem;
+}
+
+#mobile-hud div{
+    display: flex;
+    gap: 10px;
+}
+
+.directional-button{
+    font-family: 'Pixel Font';
+    font-size: 2rem;
+    color: white;
+    opacity: 50%;
+    background-color: black;
+    border-radius: 50%;
+    width: 4rem;
+    height: 4rem;
+}
 
 #orientation-blocker{
     position: fixed;
     top: 0;
     left: 0;
-    width: 100vw;
-    height: 100vh;
+    width: 100dvw;
+    height: 100dvh;
     background: rgba(0, 0, 0, 0.9);
     color: white;
     display: none;          

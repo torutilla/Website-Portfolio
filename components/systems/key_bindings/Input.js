@@ -4,6 +4,18 @@ export default class InputManager{
     static keys_pressed = {};
     static input_mappings = {};
     static init(){
+        const mobileHud = document.getElementById('mobile-hud');
+
+        mobileHud.addEventListener('pointerdown', (event)=>{
+            if(event.target.classList.contains('directional-button')){
+                const direction = event.target.dataset.direction;
+                InputManager.keys_pressed[direction.toLowerCase()] = true;
+            }
+        });
+        mobileHud.addEventListener('pointerup', (event)=>{
+            const direction = event.target.dataset.direction;
+            InputManager.keys_pressed[direction.toLowerCase()] = false;
+        });
         document.addEventListener('keydown', (event)=>{
             InputManager.keys_pressed[event.key.toLowerCase()] = true;
         });
