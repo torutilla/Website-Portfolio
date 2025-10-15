@@ -5,7 +5,7 @@ import Player from "./components/player.js";
 import InputManager from "./components/systems/key_bindings/Input.js";
 import ImageLoader from "./components/type/imageLoader.js";
 import { player_state } from "./components/playerConst.js";
-import { terrainTilemap } from "./components/tilemapConst.js";
+import { backgroundClouds, terrainTilemap } from "./components/tilemapConst.js";
 import CustomFont from "./components/type/fonts.js";
 import checkOrientation from "./orientationChecker.js";
 
@@ -20,6 +20,7 @@ await ImageLoader.preloadAll([
     player_state.jump.src, 
     player_state.fall.src,
     terrainTilemap.src,
+    backgroundClouds,
 ]);
 
 await CustomFont.preload([{
