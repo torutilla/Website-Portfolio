@@ -6,3 +6,5 @@ export const terrainTilemap = {
     size: new Vector2(32, 32),
     rect: new Rect(0, 0, 32, 32),
 };
+
+export const backgroundClouds = "../assets/Terrain/clouds.png";
