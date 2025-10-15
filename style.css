@@ -18,8 +18,8 @@ canvas{
 }
 
 .ui{
-    width: 100vw;
-    height: 100vh;
+    width: 100dvw;
+    height: 100dvh;
     position: relative;
     z-index: 999;
 }
@@ -48,6 +48,10 @@ canvas{
     border-radius: 50%;
     width: 4rem;
     height: 4rem;
+    user-select: none;               
+    -webkit-user-select: none;      
+    -ms-user-select: none;          
+    -webkit-tap-highlight-color: transparent;
 }
 
 #orientation-blocker{
