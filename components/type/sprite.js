@@ -10,6 +10,7 @@ export default class Sprite{
         this.currentFrame = 0;
         this.frameTimer = 0;
         this.flipX = false;
+        this.speed = 1;
     }
     /**
      * @param {CanvasRenderingContext2D} ctx 
@@ -39,7 +40,7 @@ export default class Sprite{
         ctx.restore();
     }
     updateFrame(delta){
-        this.frameTimer += delta;
+        this.frameTimer += delta / this.speed;
         // console.info(`Frame Timer: ${this.frameTimer}`);
         if(this.frameTimer >= this.sprite_option.frameInterval){
             this.currentFrame = (this.currentFrame + 1) % this.sprite_option.totalFrames;
