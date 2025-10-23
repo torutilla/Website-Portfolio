@@ -8,6 +8,8 @@ import { player_state } from "./components/playerConst.js";
 import { backgroundClouds, terrainTilemap } from "./components/tilemapConst.js";
 import CustomFont from "./components/type/fonts.js";
 import checkOrientation from "./orientationChecker.js";
+import { npcs } from "./components/npcConst.js";
+import { Me } from "./components/systems/game/entities/me.js";
 
 InputManager.init();
 InputManager.add_action("move_left", ["a", "ArrowLeft"]);
@@ -21,6 +23,7 @@ await ImageLoader.preloadAll([
     player_state.fall.src,
     terrainTilemap.src,
     backgroundClouds,
+    npcs.me.idle.src,
 ]);
 
 await CustomFont.preload([{
@@ -39,8 +42,9 @@ export const world = new World(
 );
 
 const player = new Player();
+const me = new Me();
 world.addEntity(player);
-
+world.addEntity(me);
 await world.init();
 const game = new Game(world);
 game.start();
