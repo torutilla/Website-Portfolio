@@ -13,6 +13,7 @@ import GlobalSettings from "../../../globalSettings.js";
 import { backgroundClouds, terrainTilemap } from "../../tilemapConst.js";
 import CollisionSystem from "./objects/collisionSystem.js";
 import ImageLoader from "../../type/imageLoader.js";
+import { Me } from "./entities/me.js";
 export default class World {
     /**
      * @param {string} canvasId 
@@ -191,9 +192,18 @@ export default class World {
             }
         } 
         const player = this.entities.find(e => e instanceof Player);
+        const me = this.entities.find(e => e instanceof Me);
+        
         if (player && this.map) {
             this.camera.focusOn(player);
             player.collision_shape.position = this.map.playerposition;
+            
+        }
+        if(me && this.map){
+            const pos = this.map.npc.find(e => {
+                if (e.type.toLowerCase() == "me") return e;
+            });
+            me.collision_shape.position = new Vector2(pos.x, pos.y);
         }
         for(let entity of this.entities){
             if(entity.draw) entity.draw(this.ctx, entity.position); 
