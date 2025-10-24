@@ -1,7 +1,6 @@
 import Area2D from "../../../collision/area2d.js";
 import Collision from "../../../collision/collision.js";
 import SpatialGrid from "../../grid/spatialGrid.js";
-
 export default class CollisionSystem {
     static staticGrid;
     static dynamicGrid;
@@ -55,9 +54,11 @@ export default class CollisionSystem {
                     near.owner?.onCollision(dyn);
                 }
             }
-        }
-        for(let area of this.areas){
-            
+            for(let area of this.areas){
+                if(area.collidesWith(dyn) && area.get_owner() !== dyn.owner){
+                    area.addOverlap(dyn.owner);
+                } 
+            }
         }
     }
 }

@@ -29,6 +29,7 @@ export default class RectCollisionShape extends Collision{
      * @returns boolean
      */
     collidesWith(obj){
+        super.collidesWith(obj);
         if(obj instanceof RectCollisionShape){
             return obj.shape.intersects(this.shape);
         }else if(obj instanceof CircleCollisionShape){

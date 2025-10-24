@@ -26,7 +26,9 @@ export default class Entity extends Sprite {
         console.log("Entity Collision Shape ID:", this.collision_shape.id);
     }
 
-    async init(){}
+    async init(){
+        
+    }
     
     process(delta) {
         // console.info(`Delta Time: ${deltaTime}`);
@@ -34,7 +36,7 @@ export default class Entity extends Sprite {
             this.updateFrame(delta);
         }
     }
-    physicsProces(delta){}
+    physicsProcess(delta){}
 
     updateAnimation(){}
 

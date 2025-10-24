@@ -31,15 +31,14 @@ export default class Player extends Entity {
             )
         );
         this.area.on('player_area_entered', this.area_entered);
+        this.area.attach_owner(this);
+        this.area.on('body_entered', this.area_body_entered);
         // player_image.idle.src = player_state.idle.src;
         // player_image.run.src = player_state.run.src;
         // player_image.jump.src = player_state.jump.src;
         // player_image.fall.src = player_state.fall.src;
     }
 
-    process(delta){
-        super.process(delta);
-    }
 
     async init(){
         player_image.idle = await ImageLoader.load(player_state.idle.src);
@@ -101,6 +100,9 @@ export default class Player extends Entity {
         }
     }
     
+    area_body_entered(body){
+        console.log('entered');
+    }
 }
 
 
