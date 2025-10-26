@@ -16,7 +16,7 @@ export default class Entity extends Sprite {
         this.center_point = new Vector2(this.sprite_option.sWidth / 2, this.sprite_option.sHeight/ 2);
         this.physics = new Physics(this, 800);
         this.collision_shape = new RectCollisionShape(
-            new Rect(0, 250, this.sprite_option.dWidth - 10, this.sprite_option.dHeight - 5));
+            new Rect(0, 0, this.sprite_option.dWidth, this.sprite_option.dHeight));
         this.collision_shape.attachOwner(this);
         CollisionSystem.addDynamic(this.collision_shape);
         this.position = this.collision_shape.position;
