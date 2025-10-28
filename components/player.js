@@ -7,7 +7,6 @@ import ImageLoader from "./type/imageLoader.js";
 import Area2D from "./collision/area2d.js";
 import CircleCollisionShape from "./collision/circleCollisionShape.js";
 import Circle from "./math/circle.js";
-import { GlobalBus } from "./systems/event/eventBus.js";
 export default class Player extends Entity {
     constructor(){
         const option = new SpriteImage({
@@ -23,14 +22,13 @@ export default class Player extends Entity {
         this.collision_shape.position = new Vector2(320, 100);
         this.movementSpeed = 150;
         this.jumpForce = -350;
-        this.offset = new Vector2(-5, -5);
+        this.offset = new Vector2(0, 0);
         this.area_position = this.collision_shape.shape.getCenter();
         this.area = new Area2D(
             new CircleCollisionShape(
                 new Circle(this.area_position, 50)
             )
         );
-        this.area.on('player_area_entered', this.area_entered);
         this.area.attach_owner(this);
         this.area.on('body_entered', this.area_body_entered);
         // player_image.idle.src = player_state.idle.src;
