@@ -10,7 +10,7 @@ export default class Sprite{
         this.currentFrame = 0;
         this.frameTimer = 0;
         this.flipX = false;
-        this.speed = 1;
+        
     }
     /**
      * @param {CanvasRenderingContext2D} ctx 
@@ -19,10 +19,16 @@ export default class Sprite{
     draw(ctx, position) {
         ctx.save();
         if(this.flipX){
-            ctx.translate(position.x + this.sprite_option.dWidth, position.y);
+            ctx.translate(
+                position.x + this.sprite_option.dWidth - this.sprite_option.offset.x, 
+                position.y - this.sprite_option.offset.y
+            );
             ctx.scale(-1, 1);
         }else{
-            ctx.translate(position.x, position.y);
+            ctx.translate(
+                position.x - this.sprite_option.offset.x, 
+                position.y - this.sprite_option.offset.y
+            );
         }
 
         ctx.drawImage(
@@ -40,7 +46,7 @@ export default class Sprite{
         ctx.restore();
     }
     updateFrame(delta){
-        this.frameTimer += delta / this.speed;
+        this.frameTimer += delta;
         // console.info(`Frame Timer: ${this.frameTimer}`);
         if(this.frameTimer >= this.sprite_option.frameInterval){
             this.currentFrame = (this.currentFrame + 1) % this.sprite_option.totalFrames;
