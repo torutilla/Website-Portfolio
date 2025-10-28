@@ -8,3 +8,10 @@ export const terrainTilemap = {
 };
 
 export const backgroundClouds = "../assets/Terrain/clouds.png";
+export const backgroundTrees = {
+    l1: "../assets/parallax-background/plx-1.png",
+    l2: "../assets/parallax-background/plx-2.png",
+    l3: "../assets/parallax-background/plx-3.png",
+    l4: "../assets/parallax-background/plx-4.png",
+    l5: "../assets/parallax-background/plx-5.png",
+}
