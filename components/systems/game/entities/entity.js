@@ -88,6 +88,8 @@ export default class Entity extends Sprite {
 
         const overlap = b.radius - dist;
 
-        if(overlap > 0){}
+        if(overlap > 0){
+            this.physics.velocity.x = 0;
+        }
     }
 }

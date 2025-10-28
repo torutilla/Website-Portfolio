@@ -51,7 +51,7 @@ export default class CollisionSystem {
             for (let near of nearbyShapes) {
                 if (dyn.id !== near.id && dyn.collidesWith(near)) {
                     dyn.owner?.onCollision(near);
-                    near.owner?.onCollision(dyn);
+                    // near.owner?.onCollision(dyn);
                 }
             }
             for(let area of this.areas){

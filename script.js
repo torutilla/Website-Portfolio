@@ -5,7 +5,7 @@ import Player from "./components/player.js";
 import InputManager from "./components/systems/key_bindings/Input.js";
 import ImageLoader from "./components/type/imageLoader.js";
 import { player_state } from "./components/playerConst.js";
-import { backgroundClouds, terrainTilemap } from "./components/tilemapConst.js";
+import { backgroundClouds, backgroundTrees, terrainTilemap } from "./components/tilemapConst.js";
 import CustomFont from "./components/type/fonts.js";
 import checkOrientation from "./orientationChecker.js";
 import { npcs } from "./components/npcConst.js";
@@ -24,6 +24,11 @@ await ImageLoader.preloadAll([
     terrainTilemap.src,
     backgroundClouds,
     npcs.me.idle.src,
+    backgroundTrees.l1,
+    backgroundTrees.l2,
+    backgroundTrees.l3,
+    backgroundTrees.l4,
+    backgroundTrees.l5,
 ]);
 
 await CustomFont.preload([{

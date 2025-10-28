@@ -12,8 +12,8 @@ export default class Player extends Entity {
         const option = new SpriteImage({
             imageSource: player_state.idle.src,
             sx: 0, sy: 0,
-            sourceSize: {x: 32, y: 32},
-            destinationSize: {x: 48, y:48},
+            sourceSize: {x: 64, y: 64},
+            destinationSize: {x: 48, y: 48},
             totalFrames: player_state.idle.totalFrames, 
             offset: {x: 10, y: 10}
         }); 
