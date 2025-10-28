@@ -10,21 +10,21 @@ export class Me extends Entity{
         const options = new SpriteImage({
             imageSource: npcs.me.idle.src,
             sx: 0, sy: 0,
-            destinationSize: {x: 64, y: 64},
-            sourceSize: {x: 32 * 3, y: 32 * 3},
+            destinationSize: {x: 84, y: 84},
+            sourceSize: {x: 96, y: 96},
             totalFrames: npcs.me.idle.totalFrames,
+            frameInterval: 0.05,
+            offset: {x: 25, y: 12},
         });
         super(options);
-        this.speed = 1.3;
-        this.collision_shape.position.x = 520;
-        this.collision_shape.shape.width = this.sprite_option.dWidth - 30;
+        // this.collision_shape.position.x = 520;
         this.collision_shape.collisionBlocking = false;
-        this.offset = new Vector2(-15, 0);
-        this.flipX = true;
+        
+        
     }
     
     physicsProcess(delta){
-        this.position = this.collision_shape.position.add(this.offset);
+        this.position = this.collision_shape.position;
     }
 
 }

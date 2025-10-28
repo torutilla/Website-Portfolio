@@ -15,6 +15,7 @@ export default class Player extends Entity {
             sourceSize: {x: 32, y: 32},
             destinationSize: {x: 48, y:48},
             totalFrames: player_state.idle.totalFrames, 
+            offset: {x: 10, y: 10}
         }); 
         super(option);
         this.position = new Vector2(250, 250);
@@ -22,7 +23,6 @@ export default class Player extends Entity {
         this.collision_shape.position = new Vector2(320, 100);
         this.movementSpeed = 150;
         this.jumpForce = -350;
-        this.offset = new Vector2(0, 0);
         this.area_position = this.collision_shape.shape.getCenter();
         this.area = new Area2D(
             new CircleCollisionShape(
@@ -70,7 +70,7 @@ export default class Player extends Entity {
         this.collision_shape.position.x += this.physics.velocity.x * delta;
         this.collision_shape.position.y += this.physics.velocity.y * delta;
         
-        this.position = this.collision_shape.position.add(this.offset);
+        this.position = this.collision_shape.position;
         this.area.collisionShape.updatePosition(this.collision_shape.shape.getCenter());
         this.isGrounded = false;
     }
