@@ -171,12 +171,11 @@ export default class World {
         const l4 = await ImageLoader.load(backgroundTrees.l4);
         const l5 = await ImageLoader.load(backgroundTrees.l5);
         this.parallaxBackground.layers = [
-            {image: l1, speed: 0.1},
-            {image: l2, speed: 0.1},
-            {image: l3, speed: 0.15},
-            {image: l4, speed: 0.2},
-            {image: l5, speed: 0.3},
-        ]
+            {image: l2, speed: 0.2},
+            {image: l3, speed: 0.25},
+            {image: l4, speed: 0.27},
+            {image: l5, speed: 0.35},
+        ];
         // this.bg.drawImage(l1, 0, 0);
         // this.bg.drawImage(l2, 0, 0);
         // this.bg.drawImage(l3, 0, 0);

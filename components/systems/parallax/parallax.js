@@ -5,6 +5,18 @@ export class Parallax{
         this.repeat = true;
         this.layers = null;
     }
+
+    createCanvas(image){
+        const canvas = document.createElement('canvas');
+        canvas.width = image.width * 2;
+        canvas.height = image.height;
+        const ctx = canvas.getContext('2d');
+
+        ctx.drawImage(image, 0, 0);
+        ctx.drawImage(image, image.width, 0);
+        return canvas;
+    }
+    
     /**
      * @param {Camera2D} camera
      * @param {CanvasRenderingContext2D} ctx 
