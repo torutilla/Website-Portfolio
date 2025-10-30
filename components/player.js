@@ -7,15 +7,15 @@ import ImageLoader from "./type/imageLoader.js";
 import Area2D from "./collision/area2d.js";
 import CircleCollisionShape from "./collision/circleCollisionShape.js";
 import Circle from "./math/circle.js";
-import { GlobalBus } from "./systems/event/eventBus.js";
 export default class Player extends Entity {
     constructor(){
         const option = new SpriteImage({
             imageSource: player_state.idle.src,
             sx: 0, sy: 0,
-            sourceSize: {x: 32, y: 32},
-            destinationSize: {x: 48, y:48},
+            sourceSize: {x: 64, y: 64},
+            destinationSize: {x: 48, y: 48},
             totalFrames: player_state.idle.totalFrames, 
+            offset: {x: 10, y: 10}
         }); 
         super(option);
         this.position = new Vector2(250, 250);
@@ -23,23 +23,20 @@ export default class Player extends Entity {
         this.collision_shape.position = new Vector2(320, 100);
         this.movementSpeed = 150;
         this.jumpForce = -350;
-        this.offset = new Vector2(-5, -5);
         this.area_position = this.collision_shape.shape.getCenter();
         this.area = new Area2D(
             new CircleCollisionShape(
                 new Circle(this.area_position, 50)
             )
         );
-        this.area.on('player_area_entered', this.area_entered);
+        this.area.attach_owner(this);
+        this.area.on('body_entered', this.area_body_entered);
         // player_image.idle.src = player_state.idle.src;
         // player_image.run.src = player_state.run.src;
         // player_image.jump.src = player_state.jump.src;
         // player_image.fall.src = player_state.fall.src;
     }
 
-    process(delta){
-        super.process(delta);
-    }
 
     async init(){
         player_image.idle = await ImageLoader.load(player_state.idle.src);
@@ -73,7 +70,7 @@ export default class Player extends Entity {
         this.collision_shape.position.x += this.physics.velocity.x * delta;
         this.collision_shape.position.y += this.physics.velocity.y * delta;
         
-        this.position = this.collision_shape.position.add(this.offset);
+        this.position = this.collision_shape.position;
         this.area.collisionShape.updatePosition(this.collision_shape.shape.getCenter());
         this.isGrounded = false;
     }
@@ -101,6 +98,9 @@ export default class Player extends Entity {
         }
     }
     
+    area_body_entered(body){
+        console.log('entered');
+    }
 }
 
 

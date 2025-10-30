@@ -1,6 +1,7 @@
 export default class ImageLoader{
     static images = new Map();
 
+    /**@returns {HTMLImageElement | Promise<HTMLImageElement>} */
     static load(url){
         if (this.images.has(url)) return this.images.get(url);
 

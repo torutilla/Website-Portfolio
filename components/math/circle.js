@@ -10,8 +10,6 @@ export default class Circle{
         this.radius = radius;
     }
 
-    
-
     /**@param {Rect} rect  */
     instersectsRect(rect){
 

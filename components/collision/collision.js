@@ -1,5 +1,4 @@
 import Vector2 from "../math/vector.js";
-import CollisionSystem from "../systems/game/objects/collisionSystem.js";
 
 export default class Collision{
     constructor(){
@@ -13,7 +12,7 @@ export default class Collision{
     updatePosition(pos){}
     /**@param {Collision} other  */
     collidesWith(other){ 
-        throw new Error('Not Implemented'); 
+        if(this.collisionBlocking == false) return false;
     }
     /**@param {CanvasRenderingContext2D} ctx  */
     debugDraw(ctx){ 

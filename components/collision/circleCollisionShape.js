@@ -17,6 +17,7 @@ export default class CircleCollisionShape extends Collision{
     }
     /** @param {Collision} other  */
     collidesWith(other){
+        super.collidesWith(other);
         if (other instanceof RectCollisionShape) return this.shape.instersectsRect(other.shape);
         if(other instanceof CircleCollisionShape) return this.shape.intersectsCircle(other.shape);
     }

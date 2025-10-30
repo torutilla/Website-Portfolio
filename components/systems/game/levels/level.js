@@ -11,40 +11,80 @@ export default class Level{
     }
     /**@param {CanvasRenderingContext2D} ctx  */
 
-    async loadTiledMap(){
+    async loadTiledMap() {
         const response = await fetch(this.levelPath);
         const data = await response.json();
+    
         let mapData;
         let overlayTiles;
         let background;
         let decorations;
+        let npcs;
+        let objects;
         let playerInitialPosition = Vector2.ZERO;
         let texts = [];
-        for(let layer of data.layers){
-            if(layer.data && layer.name.toLowerCase() == "overlaytiles") overlayTiles = layer.data;
-            if(layer.data && layer.name.toLowerCase() == "background") background = layer.data;
-            if(layer.data && layer.name.toLowerCase() == "decorations") decorations = layer.data;
-            if(layer.data && layer.name.toLowerCase() == "tiles") mapData = layer.data;
-            if(layer.objects && layer.name.toLowerCase() == "playerposition") {
-                const x = layer.objects[0].x;
-                const y = layer.objects[0].y;
-                playerInitialPosition = new Vector2(x, y);
-            }
-            if(layer.objects && layer.name.toLowerCase() == "texts"){
-                for(let textObjects of layer.objects){
-                    texts.push(textObjects);
-                }
+    
+        for (let layer of data.layers) {
+            const layerName = layer.name.toLowerCase();
+    
+            switch (layerName) {
+                case "overlaytiles":
+                    if (layer.data) overlayTiles = layer.data;
+                    break;
+    
+                case "background":
+                    if (layer.data) background = layer.data;
+                    break;
+    
+                case "decorations":
+                    if (layer.data) decorations = layer.data;
+                    break;
+    
+                case "tiles":
+                    if (layer.data) mapData = layer.data;
+                    break;
+
+                case "npc":
+                    if (layer.objects) {
+                        npcs = layer.objects;
+                    }
+                    break;
+    
+                case "objects":
+                    if (layer.objects){
+                        objects = layer.objects;  
+                    } 
+                    break;
+    
+                case "playerposition":
+                    if (layer.objects && layer.objects.length > 0) {
+                        const { x, y } = layer.objects[0];
+                        playerInitialPosition = new Vector2(x, y);
+                    }
+                    break;
+    
+                case "texts":
+                    if (layer.objects) {
+                        for (let textObj of layer.objects) {
+                            texts.push(textObj);
+                        }
+                    }
+                    break;
             }
         }
+    
         return {
             height: data.height,
             width: data.width,
             data: mapData,
             playerposition: playerInitialPosition,
-            texts: texts,
+            texts,
             overlaydata: overlayTiles,
             deco: decorations,
             bg: background,
+            npc: npcs,
+            gameObjects: objects,
         };
     }
+    
 }

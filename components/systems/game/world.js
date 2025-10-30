@@ -10,33 +10,48 @@ import Rect from "../../math/rect.js";
 import Collider from "../../collision/collider.js";
 import CollisionShape from "../../collision/rectCollisionShape.js";
 import GlobalSettings from "../../../globalSettings.js";
-import { backgroundClouds, terrainTilemap } from "../../tilemapConst.js";
+import { backgroundClouds, backgroundTrees, terrainTilemap } from "../../tilemapConst.js";
 import CollisionSystem from "./objects/collisionSystem.js";
 import ImageLoader from "../../type/imageLoader.js";
+import { Parallax } from "../parallax/parallax.js";
+import { Me } from "./entities/me.js";
+import CustomFont from "../../type/fonts.js";
+import CanvasHandler from "../canvas/canvasHandler.js";
+
 export default class World {
     /**
      * @param {string} canvasId 
      * @param {Vector2} size 
      */
+
     constructor(canvasId, size){
         this.canvasId = canvasId;
+        this.canvasHandler = new CanvasHandler();
+
         this.background = document.getElementById('background-canvas');
         /** @type {CanvasRenderingContext2D} */ this.bg = this.background.getContext('2d');
         this.bg.imageSmoothingEnabled = false;
+        this.background.width = window.innerWidth;
+        this.background.height = window.innerHeight;
 
-        this.mapBackground = document.createElement('canvas');
+        this.mapBackground = this.canvasHandler.createCanvas();
         this.mapBackgroundCtx = this.mapBackground.getContext('2d');
-        this.mapBackgroundCtx.imageSmoothingEnabled = false;
-        
-
-        this.mapBuffer = document.createElement('canvas');
+ 
+        this.mapBuffer = this.canvasHandler.createCanvas();
         this.mapBufferCtx = this.mapBuffer.getContext('2d');
-        this.mapBufferCtx.imageSmoothingEnabled = false;
 
-        this.mapForeground = document.createElement('canvas');
+        this.mapForeground = this.canvasHandler.createCanvas();
         this.mapForegroundCtx = this.mapForeground.getContext('2d');
-        this.mapForegroundCtx.imageSmoothingEnabled = false;
         
+        this.fontCanvas = this.canvasHandler.createCanvas();
+        this.fontCtx = this.mapForeground.getContext('2d');
+
+
+        this.player = null;
+        // this.fontCanvas.width = window.innerWidth;
+        // this.fontCanvas.height = window.innerHeight;
+
+
         /**@type {HTMLCanvasElement} */
         this.world = document.getElementById(canvasId);
         /** @type {CanvasRenderingContext2D} */ this.ctx = this.world.getContext('2d');
@@ -65,8 +80,10 @@ export default class World {
         this.mapLoaded = false;
         this.collider = new Collider();
         
+        this.parallaxBackground = new Parallax()
         /**@type {CollisionShape[]} */ this.colliders = [];
 
+        this.fontHandler = new CustomFont();
 
         CollisionSystem.init();
     }
@@ -81,7 +98,7 @@ export default class World {
             await this.currentTilemap.ensureLoaded();
             await this.initializeBg();
             this.drawMap();
-            
+            this.player = this.entities.find(e => e instanceof Player);
             this.mapLoaded = true;  
             const rects = this.collider.getRectFromTiles(this.map.data, this.map.width, this.map.height);
             for(let rect of rects){
@@ -104,11 +121,11 @@ export default class World {
         for(let entity of this.entities){
             if(entity.init) await entity.init();
         }
+
     }
 
     drawMap(){
-        
-
+    
         this.mapBackground.width = this.map.width * this.currentTilemap.tileSize.x;
         this.mapBackground.height = this.map.height * this.currentTilemap.tileSize.y; 
 
@@ -157,11 +174,33 @@ export default class World {
             }
         } 
         
+        const me = this.entities.find(e => e instanceof Me);
+        if(me){
+            const pos = this.map.npc.find(e => {
+                if (e.type.toLowerCase() == "me") return e;
+            });
+            me.collision_shape.position = new Vector2(pos.x, pos.y);
+        }
     }
     async initializeBg(){
         this.bg.rect(0, 0, this.world.width * this.zoom, this.world.height * this.zoom);
         this.bg.fillStyle = "#85CDED";
         this.bg.fill();
+        const l1 = await ImageLoader.load(backgroundTrees.l1);
+        const l2 = await ImageLoader.load(backgroundTrees.l2);
+        const l3 = await ImageLoader.load(backgroundTrees.l3);
+        const clouds = await ImageLoader.load(backgroundClouds);
+        this.parallaxBackground.layers = [
+            {image: clouds, speed: 0.2},
+            {image: l1, speed: 0.2},
+            {image: l2, speed: 0.3},
+            {image: l3, speed: 0.4},
+        ];
+        // this.bg.drawImage(l1, 0, 0);
+        // this.bg.drawImage(l2, 0, 0);
+        // this.bg.drawImage(l3, 0, 0);
+        // this.bg.drawImage(l4, 0, 0);
+        // this.bg.drawImage(l5, 0, 0);
         // const clouds = await ImageLoader.load(backgroundClouds);
         // this.mapBackgroundCtx.drawImage(clouds, 0, 0);
     }
@@ -176,25 +215,22 @@ export default class World {
         this.ctx.clearRect(0, 0, this.world.width, this.world.height);
     }
     draw(){   
+        this.bg.clearRect(0, 0, this.background.width, this.background.height);
+        if(this.parallaxBackground.layers) this.parallaxBackground.draw(this.bg, this.camera);
         
         // this.transformCanvas(this.mapBackground);
         // this.transformCanvas(this.mapForeground);
         this.camera.begin(this.ctx);
-        
         if (this.mapLoaded){
             this.ctx.drawImage(this.mapBackground, 0, 0);
             this.ctx.drawImage(this.mapBuffer, 0, 0);
-            for(let texts of this.map.texts){
-                this.ctx.font = `${texts.properties[1].value}px "PixelFont"`;
-                this.ctx.fillStyle = texts.properties[0].value;
-                this.ctx.fillText(texts.name.toUpperCase(), texts.x, texts.y)
-            }
         } 
-        const player = this.entities.find(e => e instanceof Player);
-        if (player && this.map) {
-            this.camera.focusOn(player);
-            player.collision_shape.position = this.map.playerposition;
+        
+        if (this.player && this.map) {
+            this.camera.focusOn(this.player);
+            this.player.collision_shape.position = this.map.playerposition;
         }
+
         for(let entity of this.entities){
             if(entity.draw) entity.draw(this.ctx, entity.position); 
             if(GlobalSettings.debugMode && entity.area) entity.area.debugDraw(this.ctx);
@@ -211,8 +247,7 @@ export default class World {
             // } 
         }
         this.ctx.drawImage(this.mapForeground, 0, 0);
-        
-        this.camera.end(this.ctx)
+        this.camera.end(this.ctx);
     }
     update(deltaTime) {
         for (let entity of this.entities) {
@@ -248,14 +283,16 @@ export default class World {
         }
     }
 
-    transformCanvas(canvas){
-        canvas.style.transform = `translate(${-this.camera.x * this.camera.zoom}px, ${-this.camera.y * this.camera.zoom}px) scale(${this.camera.zoom})`;
-        canvas.style.transformOrigin = 'top left';
-    }
 
     resizeWorld() {
-        this.world.width = window.innerWidth;
-        this.world.height = window.innerHeight;
+        this.canvasHandler.resizeCanvas(
+            this.world, 
+            {x: window.innerWidth, y: window.innerHeight}
+        );
+        this.canvasHandler.resizeCanvas(
+            this.background, 
+            {x: window.innerWidth, y: window.innerHeight}
+        );
 
         this.zoom = this.world.width < 1366 ? 1 : 1.5;
         this.camera.zoom = this.zoom;

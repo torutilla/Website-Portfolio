@@ -7,9 +7,25 @@ export default class Area2D extends EventBus {
     constructor(shape) {
         super();
         this.collisionShape = shape;
-        this.overlaps = new Set();
+        this.overlaps = new Map();
         CollisionSystem.addArea(this);
-    
+    }
+
+    getOverlaps(){
+        return this.overlaps;
+    }
+
+    addOverlap(overlap){
+        if(!this.overlaps.has(this.id)) {
+            this.emit('body_entered', overlap);
+            this.overlaps.set(this.id, new Set())
+        }
+        this.overlaps.get(this.id).add(overlap.id);
+    }
+
+    removeOverlap(overlap){
+        this.overlaps.delete(overlap);
+        this.emit('body_exited', overlap);
     }
 
     getAABB() {
@@ -26,5 +42,17 @@ export default class Area2D extends EventBus {
 
     debugDraw(ctx) {
         this.collisionShape.debugDraw(ctx);
+    }
+
+    attach_owner(owner){
+        this.collisionShape.attachOwner(owner);
+    }
+
+    get_owner(){
+        return this.collisionShape.owner;
+    }
+    
+    get_collision_id(){
+        return this.collisionShape.id;
     }
 }
