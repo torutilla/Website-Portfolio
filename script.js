@@ -27,8 +27,6 @@ await ImageLoader.preloadAll([
     backgroundTrees.l1,
     backgroundTrees.l2,
     backgroundTrees.l3,
-    backgroundTrees.l4,
-    backgroundTrees.l5,
 ]);
 
 await CustomFont.preload([{
