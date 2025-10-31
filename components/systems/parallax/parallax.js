@@ -23,13 +23,14 @@ export class Parallax{
       */
     draw(ctx, camera){
         for(let layer of this.layers){
-            const offset = -camera.x * layer.speed;
+            const offset = (-camera.x * layer.speed) % layer.image.width;
             const imgWidth = layer.image.width;
-            let x = offset % imgWidth;
+            let x = offset;
+
             if (x > 0) x -= imgWidth;
             
             while (x < ctx.canvas.width) {
-                ctx.drawImage(layer.image, x, 0);
+                ctx.drawImage(layer.image, Math.round(x), 0);
                 x += imgWidth;
             }
         }

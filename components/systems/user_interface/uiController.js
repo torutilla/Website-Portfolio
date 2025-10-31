@@ -1,9 +1,12 @@
 export default class UserInterfaceController{
-    constructor(){
-        this.ui = document.getElementById('main-ui');
+    constructor(id){
+        this.ui = document.getElementById(id);
     }
 
-    hideHud(){
-        
+    hideMobileHud(id){
+        document.getElementById(id).style.display = 'none';
+    }
+    showMobileHud(id){
+        document.getElementById(id).style.display = 'flex';
     }
 }
