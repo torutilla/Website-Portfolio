@@ -183,16 +183,14 @@ export default class World {
         }
     }
     async initializeBg(){
-        this.bg.rect(0, 0, this.world.width * this.zoom, this.world.height * this.zoom);
-        this.bg.fillStyle = "#85CDED";
-        this.bg.fill();
+        this.background.style.backgroundColor = '#36422A';
         const l1 = await ImageLoader.load(backgroundTrees.l1);
         const l2 = await ImageLoader.load(backgroundTrees.l2);
         const l3 = await ImageLoader.load(backgroundTrees.l3);
         const clouds = await ImageLoader.load(backgroundClouds);
         this.parallaxBackground.layers = [
-            {image: clouds, speed: 0.2},
-            {image: l1, speed: 0.2},
+            {image: clouds, speed: 0.15},
+            {image: l1, speed: 0.25},
             {image: l2, speed: 0.3},
             {image: l3, speed: 0.4},
         ];
