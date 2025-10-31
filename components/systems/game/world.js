@@ -46,7 +46,6 @@ export default class World {
         this.fontCanvas = this.canvasHandler.createCanvas();
         this.fontCtx = this.mapForeground.getContext('2d');
 
-
         this.player = null;
         // this.fontCanvas.width = window.innerWidth;
         // this.fontCanvas.height = window.innerHeight;
@@ -84,7 +83,7 @@ export default class World {
         /**@type {CollisionShape[]} */ this.colliders = [];
 
         this.fontHandler = new CustomFont();
-
+        this.fontLoaded = false;
         CollisionSystem.init();
     }
 
@@ -125,7 +124,7 @@ export default class World {
     }
 
     drawMap(){
-    
+        
         this.mapBackground.width = this.map.width * this.currentTilemap.tileSize.x;
         this.mapBackground.height = this.map.height * this.currentTilemap.tileSize.y; 
 
@@ -173,7 +172,9 @@ export default class World {
                 }
             }
         } 
-        
+        for(let text of this.map.texts){
+            this.fontHandler.draw(this.fontCtx, text);
+        }
         const me = this.entities.find(e => e instanceof Me);
         if(me){
             const pos = this.map.npc.find(e => {
@@ -191,16 +192,12 @@ export default class World {
         this.parallaxBackground.layers = [
             {image: clouds, speed: 0.15},
             {image: l1, speed: 0.25},
-            {image: l2, speed: 0.3},
-            {image: l3, speed: 0.4},
-        ];
-        // this.bg.drawImage(l1, 0, 0);
-        // this.bg.drawImage(l2, 0, 0);
-        // this.bg.drawImage(l3, 0, 0);
-        // this.bg.drawImage(l4, 0, 0);
-        // this.bg.drawImage(l5, 0, 0);
-        // const clouds = await ImageLoader.load(backgroundClouds);
-        // this.mapBackgroundCtx.drawImage(clouds, 0, 0);
+            {image: l2, speed: 0.35},
+            {image: l3, speed: 0.5},
+        ].map(layer=>({
+            ...layer,
+            buffer: this.parallaxBackground.createCanvas(layer.image)
+        }));
     }
 
     addEntity(entity){
@@ -214,6 +211,7 @@ export default class World {
     }
     draw(){   
         this.bg.clearRect(0, 0, this.background.width, this.background.height);
+        
         if(this.parallaxBackground.layers) this.parallaxBackground.draw(this.bg, this.camera);
         
         // this.transformCanvas(this.mapBackground);
@@ -223,10 +221,11 @@ export default class World {
             this.ctx.drawImage(this.mapBackground, 0, 0);
             this.ctx.drawImage(this.mapBuffer, 0, 0);
         } 
-        
+
         if (this.player && this.map) {
             this.camera.focusOn(this.player);
             this.player.collision_shape.position = this.map.playerposition;
+            
         }
 
         for(let entity of this.entities){
