@@ -9,8 +9,14 @@ export default function checkOrientation(){
     }else{
         document.getElementById('orientation-blocker').style.display = 'none';
     }
-
-    if(window.innerWidth > 1024){
-        uiController.hideMobileHud();
+    if(isDesktop()){
+        uiController.hideMobileHud('mobile-hud');
+    }else{
+        uiController.showMobileHud('mobile-hud');
     }
+}
+
+function isDesktop() {
+    const isTouch = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+    return !isTouch && window.innerWidth >= 1280;
 }

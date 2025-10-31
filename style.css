@@ -42,13 +42,13 @@ canvas{
 
 .directional-button{
     font-family: 'Pixel Font';
-    font-size: 2rem;
+    font-size: clamp(1.5rem, 2rem, 5rem);
     color: white;
     opacity: 50%;
     background-color: black;
     border-radius: 50%;
-    width: 4rem;
-    height: 4rem;
+    width: clamp(3rem, 10vw, 7rem);
+    height: clamp(3rem, 10vw, 7rem);
     user-select: none;               
     -webkit-user-select: none;      
     -ms-user-select: none;          
