@@ -8,12 +8,10 @@ export class Parallax{
 
     createCanvas(image){
         const canvas = document.createElement('canvas');
-        canvas.width = image.width * 2;
+        canvas.width = image.width;
         canvas.height = image.height;
         const ctx = canvas.getContext('2d');
-
         ctx.drawImage(image, 0, 0);
-        ctx.drawImage(image, image.width, 0);
         return canvas;
     }
     
@@ -23,14 +21,14 @@ export class Parallax{
       */
     draw(ctx, camera){
         for(let layer of this.layers){
-            const offset = (-camera.x * layer.speed) % layer.image.width;
-            const imgWidth = layer.image.width;
+            const offset = (-camera.x * layer.speed) % layer.buffer.width;
+            const imgWidth = layer.buffer.width;
             let x = offset;
 
             if (x > 0) x -= imgWidth;
             
             while (x < ctx.canvas.width) {
-                ctx.drawImage(layer.image, Math.round(x), 0);
+                ctx.drawImage(layer.buffer, Math.round(x), -30);
                 x += imgWidth;
             }
         }
