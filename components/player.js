@@ -26,11 +26,12 @@ export default class Player extends Entity {
         this.area_position = this.collision_shape.shape.getCenter();
         this.area = new Area2D(
             new CircleCollisionShape(
-                new Circle(this.area_position, 50)
+                new Circle(this.area_position, 70)
             )
         );
         this.area.attach_owner(this);
         this.area.on('body_entered', this.area_body_entered);
+        this.area.on('body_exited', this.area_body_exited);
         // player_image.idle.src = player_state.idle.src;
         // player_image.run.src = player_state.run.src;
         // player_image.jump.src = player_state.jump.src;
@@ -99,7 +100,11 @@ export default class Player extends Entity {
     }
     
     area_body_entered(body){
-        console.log('entered');
+        console.log('entered', body);
+    }
+
+    area_body_exited(body){
+        console.log('exited', body);
     }
 }
 

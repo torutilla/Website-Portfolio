@@ -8,7 +8,7 @@ export default class CollisionSystem {
     static dynamicShapes = new Set();
     /**@type {Set<Area2D>} */
     static areas = new Set();
-
+    static previousCollisions = new Map();
     static init() {
         if (!this.staticGrid) {
             this.staticGrid = new SpatialGrid(64);
@@ -39,26 +39,23 @@ export default class CollisionSystem {
         this.areas.add(area);
     }
 
-    static update() {
+    static physicsUpdate() {
         for (let dyn of this.dynamicShapes) {
             this.dynamicGrid.update(dyn);
             const nearbyShapes = [
                 ...this.staticGrid.getNearby(dyn),
                 ...this.dynamicGrid.getNearby(dyn),
             ];
-            // console.log(nearbyShapes);
-
             for (let near of nearbyShapes) {
                 if (dyn.id !== near.id && dyn.collidesWith(near)) {
                     dyn.owner?.onCollision(near);
                     // near.owner?.onCollision(dyn);
                 }
             }
-            for(let area of this.areas){
-                if(area.collidesWith(dyn) && area.get_owner() !== dyn.owner){
-                    area.addOverlap(dyn.owner);
-                } 
-            }
+        }
+        for(let area of this.areas){
+            const nearby = this.dynamicGrid.getNearby(area);
+            area.checkOverlap(nearby);
         }
     }
 }
