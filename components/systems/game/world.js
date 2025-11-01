@@ -28,15 +28,12 @@ export default class World {
         this.canvasId = canvasId;
         this.canvasHandler = new CanvasHandler();
 
-        this.background = document.getElementById('background-canvas');
+        this.background = this.canvasHandler.getCanvas('background-canvas');
         /** @type {CanvasRenderingContext2D} */ this.bg = this.background.getContext('2d');
-        this.bg.imageSmoothingEnabled = false;
-        this.background.width = window.innerWidth;
-        this.background.height = window.innerHeight;
-
+        
         this.mapBackground = this.canvasHandler.createCanvas();
         this.mapBackgroundCtx = this.mapBackground.getContext('2d');
- 
+
         this.mapBuffer = this.canvasHandler.createCanvas();
         this.mapBufferCtx = this.mapBuffer.getContext('2d');
 
@@ -44,7 +41,7 @@ export default class World {
         this.mapForegroundCtx = this.mapForeground.getContext('2d');
         
         this.fontCanvas = this.canvasHandler.createCanvas();
-        this.fontCtx = this.mapForeground.getContext('2d');
+        this.fontCtx = this.fontCanvas.getContext('2d');
 
         this.player = null;
         // this.fontCanvas.width = window.innerWidth;
@@ -52,9 +49,8 @@ export default class World {
 
 
         /**@type {HTMLCanvasElement} */
-        this.world = document.getElementById(canvasId);
+        this.world = this.canvasHandler.getCanvas(canvasId);
         /** @type {CanvasRenderingContext2D} */ this.ctx = this.world.getContext('2d');
-        this.ctx.imageSmoothingEnabled = false;
 
         this.world.width = size.x;
         this.world.height = size.y;
@@ -220,6 +216,7 @@ export default class World {
         if (this.mapLoaded){
             this.ctx.drawImage(this.mapBackground, 0, 0);
             this.ctx.drawImage(this.mapBuffer, 0, 0);
+            this.ctx.drawImage(this.fontCanvas, 0, 0);
         } 
 
         if (this.player && this.map) {
@@ -258,7 +255,7 @@ export default class World {
     physicsUpdate(delta){
         for (let entity of this.entities) {
             if (entity.physicsProcess) entity.physicsProcess(delta);
-            CollisionSystem.update();
+            CollisionSystem.physicsUpdate();
             // if(entity.area) this.dynamicGrid.update(entity.area.collisionShape);
             // this.dynamicGrid.update(entity.collision_shape);
 
