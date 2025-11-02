@@ -18,9 +18,32 @@ canvas{
 }
 
 .ui{
+    position: absolute;
     width: 100dvw;
     height: 100dvh;
+    z-index: 998;
+}
+
+#dialouge-box{
+    max-height: 60px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    scroll-behavior: smooth;
+    position: absolute;
+    max-width: 200px;
+    top: 50%;
+    right: 20vw;
+    display: block;
+    align-items: center;
+    justify-content: center;
     z-index: 999;
+    scrollbar-width: none;       
+    -ms-overflow-style: none;
+}
+
+.dialouge-option{
+    height: 30px;
+    width: 130px;
 }
 
 #main-ui{
