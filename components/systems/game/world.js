@@ -214,9 +214,9 @@ export default class World {
         // this.transformCanvas(this.mapForeground);
         this.camera.begin(this.ctx);
         if (this.mapLoaded){
+            this.ctx.drawImage(this.fontCanvas, 0, 0);
             this.ctx.drawImage(this.mapBackground, 0, 0);
             this.ctx.drawImage(this.mapBuffer, 0, 0);
-            this.ctx.drawImage(this.fontCanvas, 0, 0);
         } 
 
         if (this.player && this.map) {

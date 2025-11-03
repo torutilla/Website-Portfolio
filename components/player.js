@@ -7,6 +7,8 @@ import ImageLoader from "./type/imageLoader.js";
 import Area2D from "./collision/area2d.js";
 import CircleCollisionShape from "./collision/circleCollisionShape.js";
 import Circle from "./math/circle.js";
+import UserInterfaceController from "./systems/user_interface/uiController.js";
+
 export default class Player extends Entity {
     constructor(){
         const option = new SpriteImage({
@@ -101,10 +103,14 @@ export default class Player extends Entity {
     
     area_body_entered(body){
         console.log('entered', body);
+        const ui = new UserInterfaceController('main-ui');
+        ui.add_interaction_button(body);
     }
 
     area_body_exited(body){
         console.log('exited', body);
+        const ui = new UserInterfaceController('main-ui');
+        ui.remove_interaction_button(body);
     }
 }
 
