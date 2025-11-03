@@ -4,7 +4,9 @@ export default class UserInterfaceController extends EventBus{
     constructor(id){
         super();
         this.ui = document.getElementById(id);
+        this.dialouge_box = document.getElementById('dialouge-box');
         this.#scroll_fade();
+        this.dialouge_mappings = new Map();
     }
 
     hideMobileHud(id){
@@ -15,7 +17,7 @@ export default class UserInterfaceController extends EventBus{
     }
 
     #scroll_fade(){
-        const box = document.getElementById('dialouge-box');
+        const box = this.dialouge_box;
         box.addEventListener('scroll', ()=>{
             const scrollTop = box.scrollTop;
             const scrollHeight = box.scrollHeight;
@@ -27,7 +29,7 @@ export default class UserInterfaceController extends EventBus{
             let gradient = '';
             if(atTop){
                 gradient = 'linear-gradient(to bottom, black 80%, transparent 100%)';
-            }else if( atBottom){
+            }else if(atBottom){
                 gradient = 'linear-gradient(to top, black 80%, transparent 100%)';
             }else{
                 gradient = 'linear-gradient(to bottom, transparent 5%, black 20%, black 85%, transparent 100%)';
@@ -35,5 +37,21 @@ export default class UserInterfaceController extends EventBus{
     
             box.style.maskImage = gradient;
         })
+    }
+
+    add_interaction_button(entity){
+        const button = document.createElement('button');
+        button.className = 'dialouge-option';
+        button.id = entity.id;
+        button.innerHTML = "INTERACT";
+        this.dialouge_box.appendChild(button);
+        requestAnimationFrame(() => button.classList.add("show"));
+    }
+
+    remove_interaction_button(entity){
+        const button = document.getElementById(entity.id);
+        button.classList.remove('show');
+        requestAnimationFrame(() => button.classList.add("hide"));
+        button.addEventListener("transitionend", ()=> button.remove(), {once: true});
     }
 }
