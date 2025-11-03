@@ -15,6 +15,7 @@ InputManager.init();
 InputManager.add_action("move_left", ["a", "ArrowLeft"]);
 InputManager.add_action("move_right", ["d", "ArrowRight"]);
 InputManager.add_action("jump", [" ", "w", "ArrowUp"]);
+InputManager.add_action("interact", ["f"]);
 
 await ImageLoader.preloadAll([
     player_state.idle.src, 
@@ -53,3 +54,4 @@ await world.init();
 
 const game = new Game(world);
 game.start();
+
