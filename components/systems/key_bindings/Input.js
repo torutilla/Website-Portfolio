@@ -57,4 +57,8 @@ export default class InputManager{
         }
         return vector;
     }
+    
+    static get_action_key(key){
+        return InputManager.input_mappings[key].toUpperCase();
+    }
 }
