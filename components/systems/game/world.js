@@ -17,6 +17,7 @@ import { Parallax } from "../parallax/parallax.js";
 import { Me } from "./entities/me.js";
 import CustomFont from "../../type/fonts.js";
 import CanvasHandler from "../canvas/canvasHandler.js";
+import UserInterfaceController from "../user_interface/uiController.js";
 
 export default class World {
     /**
@@ -244,6 +245,7 @@ export default class World {
         this.camera.end(this.ctx);
     }
     update(deltaTime) {
+        UserInterfaceController.update();
         for (let entity of this.entities) {
             if (entity.process) entity.process(deltaTime);    
         }
@@ -256,6 +258,7 @@ export default class World {
         for (let entity of this.entities) {
             if (entity.physicsProcess) entity.physicsProcess(delta);
             CollisionSystem.physicsUpdate();
+            
             // if(entity.area) this.dynamicGrid.update(entity.area.collisionShape);
             // this.dynamicGrid.update(entity.collision_shape);
 

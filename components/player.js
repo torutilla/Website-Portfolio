@@ -31,6 +31,7 @@ export default class Player extends Entity {
                 new Circle(this.area_position, 70)
             )
         );
+        
         this.area.attach_owner(this);
         this.area.on('body_entered', this.area_body_entered);
         this.area.on('body_exited', this.area_body_exited);

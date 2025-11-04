@@ -34,7 +34,7 @@ export default class InputManager{
     /**
      * 
      * @param {string} action_name 
-     * @returns number
+     * @returns {number}
      */
     static get_action_strength(action_name){
         if(!this.input_mappings[action_name]) return 0;
