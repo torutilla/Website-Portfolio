@@ -1,4 +1,5 @@
 import EventBus from "../event/eventBus.js";
+import InputManager from "../key_bindings/Input.js";
 
 export default class UserInterfaceController extends EventBus{
     constructor(id){
@@ -7,6 +8,7 @@ export default class UserInterfaceController extends EventBus{
         this.dialouge_box = document.getElementById('dialouge-box');
         this.#scroll_fade();
         this.dialouge_mappings = new Map();
+        this.interaction_keys = InputManager.get_action_keys('interact');
     }
 
     hideMobileHud(id){
@@ -43,7 +45,18 @@ export default class UserInterfaceController extends EventBus{
         const button = document.createElement('button');
         button.className = 'dialouge-option';
         button.id = entity.id;
-        button.innerHTML = "INTERACT";
+
+        const key = document.createElement('div');
+        key.className = 'interaction-key';
+        key.innerHTML = this.interaction_keys[0].toUpperCase();
+
+        const option = document.createElement('div');
+        option.className = 'interact-option';
+        option.innerHTML = "INTERACT";
+
+        button.appendChild(key);
+        button.appendChild(option);
+
         this.dialouge_box.appendChild(button);
         requestAnimationFrame(() => button.classList.add("show"));
     }
