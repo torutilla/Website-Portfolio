@@ -15,7 +15,7 @@ import CollisionSystem from "./objects/collisionSystem.js";
 import ImageLoader from "../../type/imageLoader.js";
 import { Parallax } from "../parallax/parallax.js";
 import { Me } from "./entities/me.js";
-import CustomFont from "../../type/fonts.js";
+import CustomCanvasFont from "../../type/fonts.js";
 import CanvasHandler from "../canvas/canvasHandler.js";
 import UserInterfaceController from "../user_interface/uiController.js";
 
@@ -79,7 +79,7 @@ export default class World {
         this.parallaxBackground = new Parallax()
         /**@type {CollisionShape[]} */ this.colliders = [];
 
-        this.fontHandler = new CustomFont();
+        this.fontHandler = new CustomCanvasFont();
         this.fontLoaded = false;
         CollisionSystem.init();
     }
@@ -121,7 +121,9 @@ export default class World {
     }
 
     drawMap(){
-        
+        // this.fontCanvas.width = this.map.width * this.currentTilemap.tileSize.x;
+        // this.fontCanvas.height = this.map.height * this.currentTilemap.tileSize.y;
+
         this.mapBackground.width = this.map.width * this.currentTilemap.tileSize.x;
         this.mapBackground.height = this.map.height * this.currentTilemap.tileSize.y; 
 
@@ -169,9 +171,9 @@ export default class World {
                 }
             }
         } 
-        for(let text of this.map.texts){
-            this.fontHandler.draw(this.fontCtx, text);
-        }
+        
+        const game = document.getElementById('game');
+        game.appendChild(this.fontCanvas);
         const me = this.entities.find(e => e instanceof Me);
         if(me){
             const pos = this.map.npc.find(e => {
@@ -208,24 +210,18 @@ export default class World {
     }
     draw(){   
         this.bg.clearRect(0, 0, this.background.width, this.background.height);
-        
         if(this.parallaxBackground.layers) this.parallaxBackground.draw(this.bg, this.camera);
-        
-        // this.transformCanvas(this.mapBackground);
-        // this.transformCanvas(this.mapForeground);
+        this.fontCtx.clearRect(0, 0, this.fontCanvas.width, this.fontCanvas.height)
+        this.camera.begin(this.fontCtx);
         this.camera.begin(this.ctx);
         if (this.mapLoaded){
-            this.ctx.drawImage(this.fontCanvas, 0, 0);
+            // this.ctx.drawImage(this.fontCanvas, 0, 0);
             this.ctx.drawImage(this.mapBackground, 0, 0);
             this.ctx.drawImage(this.mapBuffer, 0, 0);
+            for(let text of this.map.texts){
+                this.fontHandler.draw(this.fontCtx, text);
+            }
         } 
-
-        if (this.player && this.map) {
-            this.camera.focusOn(this.player);
-            this.player.collision_shape.position = this.map.playerposition;
-            
-        }
-
         for(let entity of this.entities){
             if(entity.draw) entity.draw(this.ctx, entity.position); 
             if(GlobalSettings.debugMode && entity.area) entity.area.debugDraw(this.ctx);
@@ -233,17 +229,13 @@ export default class World {
                 entity.collision_shape.debugDraw(this.ctx);
                 CollisionSystem.dynamicGrid.debugDraw(this.ctx);
                 CollisionSystem.staticGrid.debugDraw(this.ctx);
-                // this.dynamicGrid.debugDraw(this.ctx);
-                // this.staticGrid.debugDraw(this.ctx);
             } 
-            // if (entity instanceof Player && this.map){
-            //     this.camera.focusOn(entity);
-            //     entity.collision_shape.position = this.map.playerposition;
-            // } 
         }
         this.ctx.drawImage(this.mapForeground, 0, 0);
         this.camera.end(this.ctx);
+        this.camera.end(this.fontCtx);
     }
+
     update(deltaTime) {
         UserInterfaceController.update();
         for (let entity of this.entities) {
@@ -255,9 +247,15 @@ export default class World {
     }
 
     physicsUpdate(delta){
+        if (this.player && this.map) {
+            this.camera.focusOn(this.player);
+            this.player.collision_shape.position = this.map.playerposition;
+            
+        }
         for (let entity of this.entities) {
             if (entity.physicsProcess) entity.physicsProcess(delta);
             CollisionSystem.physicsUpdate();
+            
             
             // if(entity.area) this.dynamicGrid.update(entity.area.collisionShape);
             // this.dynamicGrid.update(entity.collision_shape);
@@ -275,7 +273,6 @@ export default class World {
             //         }    
             //     }
             // }
-            
             if (entity.updateAnimation) entity.updateAnimation();
         }
     }
@@ -290,6 +287,7 @@ export default class World {
             this.background, 
             {x: window.innerWidth, y: window.innerHeight}
         );
+
 
         this.zoom = this.world.width < 1366 ? 1 : 1.5;
         this.camera.zoom = this.zoom;
