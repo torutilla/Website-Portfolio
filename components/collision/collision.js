@@ -21,5 +21,7 @@ export default class Collision{
     attachOwner(owner) {
         this.owner = owner;
     }
+
+    update(){}
     
 }

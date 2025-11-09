@@ -32,7 +32,7 @@ export default class Camera2D {
             y: sy / this.zoom + this.y
         };
     }
-
+    
     begin(ctx) {
         ctx.save();
         ctx.scale(this.zoom, this.zoom);

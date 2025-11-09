@@ -19,7 +19,8 @@ export class Me extends Entity{
         super(options);
         // this.collision_shape.position.x = 520;
         this.collision_shape.collisionBlocking = false;
-        this.posOffset = new Vector2(0, 25)
+        this.posOffset = new Vector2(0, 25);
+        this.entity_name = "Christian";
         
     }
     

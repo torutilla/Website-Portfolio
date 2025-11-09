@@ -13,6 +13,7 @@ export default class Entity extends Sprite {
     constructor(sprite_option) {
         super(sprite_option);
         this.id = crypto.randomUUID();
+        this.entity_name = "Entity";
         this.center_point = new Vector2(this.sprite_option.sWidth / 2, this.sprite_option.sHeight/ 2);
         this.physics = new Physics(this, 800);
         this.collision_shape = new RectCollisionShape(

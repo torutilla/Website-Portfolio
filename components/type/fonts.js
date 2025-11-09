@@ -1,4 +1,4 @@
-export default class CustomFont{
+export default class CustomCanvasFont{
     static async preload(fonts){
         for(let font of fonts){
             const f = new FontFace(`${font.name}`, `url(${font.link})`)
@@ -8,12 +8,14 @@ export default class CustomFont{
     }
     /**@param {CanvasRenderingContext2D} ctx  */
     draw(ctx, text){
-        ctx.font = `${text.properties[1].value}px "PixelFont"`;
-        ctx.fillStyle = text.properties[0].value;
-        ctx.fillText(text.name.toUpperCase(), text.x, text.y)
-        ctx.shadowColor = 'rgba(0, 0, 0, 0.4)'; 
-        ctx.shadowOffsetX = 3; 
-        ctx.shadowOffsetY = 2; 
+        const size = text.properties[1].value;
+        const color = text.properties[0].value;
+        ctx.shadowColor = 'rgba(0, 0, 0, 0.5)'; 
+        ctx.shadowOffsetX = 2; 
+        ctx.shadowOffsetY = 1; 
         ctx.shadowBlur = 3; 
+        ctx.font = `${size}px "PixelFont"`;
+        ctx.fillStyle = color;
+        ctx.fillText(text.name.toUpperCase(), text.x, text.y)
     }
 }

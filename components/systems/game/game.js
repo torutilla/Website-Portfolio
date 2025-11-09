@@ -1,3 +1,4 @@
+
 export default class Game{
     constructor(world, physicsStep = 1000/ 60){
         this.world = world;
@@ -20,7 +21,7 @@ export default class Game{
         this.world.clear();
         this.world.update(deltaTime / 1000);
         this.world.draw();
-
+        
         requestAnimationFrame(this.loop)
     }
 

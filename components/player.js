@@ -7,6 +7,8 @@ import ImageLoader from "./type/imageLoader.js";
 import Area2D from "./collision/area2d.js";
 import CircleCollisionShape from "./collision/circleCollisionShape.js";
 import Circle from "./math/circle.js";
+import UserInterfaceController from "./systems/user_interface/uiController.js";
+
 export default class Player extends Entity {
     constructor(){
         const option = new SpriteImage({
@@ -26,11 +28,13 @@ export default class Player extends Entity {
         this.area_position = this.collision_shape.shape.getCenter();
         this.area = new Area2D(
             new CircleCollisionShape(
-                new Circle(this.area_position, 50)
+                new Circle(this.area_position, 70)
             )
         );
+        
         this.area.attach_owner(this);
         this.area.on('body_entered', this.area_body_entered);
+        this.area.on('body_exited', this.area_body_exited);
         // player_image.idle.src = player_state.idle.src;
         // player_image.run.src = player_state.run.src;
         // player_image.jump.src = player_state.jump.src;
@@ -99,7 +103,15 @@ export default class Player extends Entity {
     }
     
     area_body_entered(body){
-        console.log('entered');
+        console.log('entered', body);
+        const ui = new UserInterfaceController('main-ui');
+        ui.add_interaction_button(body);
+    }
+
+    area_body_exited(body){
+        console.log('exited', body);
+        const ui = new UserInterfaceController('main-ui');
+        ui.remove_interaction_button(body);
     }
 }
 

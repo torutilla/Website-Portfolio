@@ -7,25 +7,35 @@ export default class Area2D extends EventBus {
     constructor(shape) {
         super();
         this.collisionShape = shape;
-        this.overlaps = new Map();
+        this.overlaps = new Set();
         CollisionSystem.addArea(this);
+        this.entered = false;
+        
     }
+    
+    checkOverlap(shapes){
+        const currentOverlap = new Set();
+        
+        for(let shape of shapes){
 
-    getOverlaps(){
-        return this.overlaps;
-    }
-
-    addOverlap(overlap){
-        if(!this.overlaps.has(this.id)) {
-            this.emit('body_entered', overlap);
-            this.overlaps.set(this.id, new Set())
+            if(this.collidesWith(shape) && this.get_owner() != shape.owner){
+                currentOverlap.add(shape.owner);
+    
+                if(!this.overlaps.has(shape.owner) && !this.entered){
+                    this.emit('body_entered', shape.owner);
+                    this.entered = true;
+                }
+            }
         }
-        this.overlaps.get(this.id).add(overlap.id);
-    }
+        
+        for(let overlap of this.overlaps){
+            if(!currentOverlap.has(overlap)){
+                this.emit('body_exited', overlap);
+                this.entered = false;
+            }
+        }
 
-    removeOverlap(overlap){
-        this.overlaps.delete(overlap);
-        this.emit('body_exited', overlap);
+        this.overlaps =  currentOverlap;
     }
 
     getAABB() {
