@@ -236,6 +236,28 @@
                  "width":32,
                  "x":864,
                  "y":288
+                }, 
+                {
+                 "height":32,
+                 "id":26,
+                 "name":"Education",
+                 "properties":[
+                        {
+                         "name":"color",
+                         "type":"string",
+                         "value":"#fff"
+                        }, 
+                        {
+                         "name":"fontSize",
+                         "type":"int",
+                         "value":48
+                        }],
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":32,
+                 "x":1280,
+                 "y":288
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -299,7 +321,7 @@
          "y":0
         }],
  "nextlayerid":15,
- "nextobjectid":26,
+ "nextobjectid":27,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.10.2",

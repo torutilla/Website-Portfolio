@@ -48,6 +48,8 @@ export default class World {
         // this.fontCanvas.width = window.innerWidth;
         // this.fontCanvas.height = window.innerHeight;
 
+        this.game = document.getElementById('game');
+        this.game.appendChild(this.fontCanvas);
 
         /**@type {HTMLCanvasElement} */
         this.world = this.canvasHandler.getCanvas(canvasId);
@@ -172,8 +174,8 @@ export default class World {
             }
         } 
         
-        const game = document.getElementById('game');
-        game.appendChild(this.fontCanvas);
+        
+        
         const me = this.entities.find(e => e instanceof Me);
         if(me){
             const pos = this.map.npc.find(e => {
@@ -209,8 +211,7 @@ export default class World {
         this.ctx.clearRect(0, 0, this.world.width, this.world.height);
     }
     draw(){   
-        this.bg.clearRect(0, 0, this.background.width, this.background.height);
-        if(this.parallaxBackground.layers) this.parallaxBackground.draw(this.bg, this.camera);
+        
         this.fontCtx.clearRect(0, 0, this.fontCanvas.width, this.fontCanvas.height)
         this.camera.begin(this.fontCtx);
         this.camera.begin(this.ctx);
@@ -247,10 +248,12 @@ export default class World {
     }
 
     physicsUpdate(delta){
+        this.bg.clearRect(0, 0, this.background.width, this.background.height);
+        if(this.parallaxBackground.layers) this.parallaxBackground.draw(this.bg, this.camera);
+        
         if (this.player && this.map) {
             this.camera.focusOn(this.player);
             this.player.collision_shape.position = this.map.playerposition;
-            
         }
         for (let entity of this.entities) {
             if (entity.physicsProcess) entity.physicsProcess(delta);
@@ -285,6 +288,10 @@ export default class World {
         );
         this.canvasHandler.resizeCanvas(
             this.background, 
+            {x: window.innerWidth, y: window.innerHeight}
+        );
+        this.canvasHandler.resizeCanvas(
+            this.fontCanvas, 
             {x: window.innerWidth, y: window.innerHeight}
         );
 
