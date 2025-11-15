@@ -24,6 +24,10 @@ canvas{
     z-index: 998;
 }
 
+button:focus{
+    outline: none !important;
+}
+
 #dialouge-box{
     position: absolute;
     top: 50%;
@@ -101,7 +105,7 @@ canvas{
 }
 
 .dialouge-option:focus{
-    border: 0;
+    outline: none !important;
 }
 
 #dialogue-box::-webkit-scrollbar {
