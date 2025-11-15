@@ -2,7 +2,6 @@ import EventBus from "../event/eventBus.js";
 import InputManager from "../key_bindings/Input.js";
 
 export default class UserInterfaceController extends EventBus{
-    static interact_key_available = false;
     constructor(id){
         super();
         this.ui = document.getElementById(id);
@@ -12,9 +11,7 @@ export default class UserInterfaceController extends EventBus{
         this.interaction_keys = InputManager.get_action_keys('interact');
     }
     static update(){
-        if(UserInterfaceController.interact_key_available && InputManager.get_action_strength('interact') == 1){
-            console.log('interacted');
-        }
+        
     }
     hideMobileHud(id){
         document.getElementById(id).style.display = 'none';
@@ -61,20 +58,23 @@ export default class UserInterfaceController extends EventBus{
 
         button.appendChild(key);
         button.appendChild(option);
-        button.addEventListener('pointerdown', ()=>{
-            console.log('interacted');
-        });
-        button.addEventListener('keydown', ()=>{
-            console.log('interacted');
-        });
+
+        button._handler = (event)=>{
+            if(event.type == "pointerdown" || this.interaction_keys.includes(event.key)){
+                console.log("interacted");
+            }
+        }
+        
+        button.addEventListener('pointerdown', button._handler);
+        document.addEventListener('keydown', button._handler);
+
         this.dialouge_box.appendChild(button);
         requestAnimationFrame(() => button.classList.add("show"));
-        UserInterfaceController.interact_key_available = true;
     }
 
     remove_interaction_button(entity){
-        UserInterfaceController.interact_key_available = false;
         const button = document.getElementById(entity.id);
+        document.removeEventListener('keydown', button._handler);
         button.classList.remove('show');
         requestAnimationFrame(() => button.classList.add("hide"));
         button.addEventListener("transitionend", ()=> button.remove(), {once: true});
