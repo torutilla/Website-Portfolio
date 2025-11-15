@@ -4,11 +4,11 @@ import UserInterfaceController from "./components/systems/user_interface/uiContr
 const uiController = new UserInterfaceController('main-ui');
 export default function checkOrientation(){
     world.resizeWorld();
-    if(window.innerHeight > window.innerWidth){
-        document.getElementById('orientation-blocker').style.display = 'flex';
-    }else{
-        document.getElementById('orientation-blocker').style.display = 'none';
-    }
+    // if(window.innerHeight > window.innerWidth){
+    //     document.getElementById('orientation-blocker').style.display = 'flex';
+    // }else{
+    //     document.getElementById('orientation-blocker').style.display = 'none';
+    // }
     if(isDesktop()){
         uiController.hideMobileHud('mobile-hud');
     }else{
