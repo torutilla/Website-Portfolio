@@ -1,3 +1,3 @@
 export default class GlobalSettings{
-    static debugMode = false;
+    static debugMode = true;
 }

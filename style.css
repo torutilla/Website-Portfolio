@@ -17,6 +17,10 @@ canvas{
     height: 100vh;
 }
 
+button:focus{
+    outline: none !important;
+}
+
 .ui{
     position: absolute;
     width: 100dvw;
@@ -24,9 +28,14 @@ canvas{
     z-index: 998;
 }
 
-button:focus{
-    outline: none !important;
+.hide{
+    opacity: 0;
 }
+
+.show{
+    opacity: 1;
+}
+
 
 #dialouge-box{
     position: absolute;

@@ -11,7 +11,7 @@ export default class UserInterfaceController extends EventBus{
         this.interaction_keys = InputManager.get_action_keys('interact');
     }
     static update(){
-        
+
     }
     hideMobileHud(id){
         document.getElementById(id).style.display = 'none';
@@ -61,6 +61,7 @@ export default class UserInterfaceController extends EventBus{
 
         button._handler = (event)=>{
             if(event.type == "pointerdown" || this.interaction_keys.includes(event.key)){
+                this.ui.classList.add("hide");
                 console.log("interacted");
             }
         }
