@@ -1,63 +1,76 @@
-import Rect from "../../../math/rect.js";
+
 import Vector2 from "../../../math/vector.js"; 
 import ImageLoader from "../../../type/imageLoader.js";
-export default class Tilemap{
+export default class Tilemap {
     /**
-     * @param {string} imageSource  
-     * @param {Vector2} tileSize
-     * @param {Rect} imageRect 
-    */
-    constructor(imageSource, tileSize, imageRect){
-        this.image = null;
-        this.imageSource = imageSource;
-        this.tileSize = tileSize;
-        this.imageRect = imageRect;
-        this.rows = 0;
-        this.columns = 0;
+     * @param {{
+     *   firstGid: number,
+     *   imageSource: string,
+     *   tileSize: Vector2
+     * }[]} tilesets
+     */
+    constructor(tilesets) {
+        this.tilesets = tilesets.map(ts => ({
+            ...ts,
+            image: null,
+            rows: 0,
+            columns: 0
+        }));
     }
 
     async ensureLoaded() {
-        const img = await ImageLoader.load(this.imageSource);
-        this.image = img;
-        this.rows = this.getRowCount();
-        this.columns = this.getColumnCount();
-        if(this.image.complete && this.image.naturalHeight != 0){
-            console.log('Image loaded');
-            return;
+        for (const ts of this.tilesets) {
+            ts.image = await ImageLoader.load(ts.imageSource);
+            ts.columns = ts.image.width / ts.tileSize.x;
+            ts.rows = ts.image.height / ts.tileSize.y;
         }
+
+        this.tilesets.sort((a, b) => a.firstGid - b.firstGid);
     }
 
-    /** 
-     * @param {CanvasRenderingContext2D} ctx 
-     * @param {number} tileId
+    /**
+     * @param {CanvasRenderingContext2D} ctx
+     * @param {number} gid
      * @param {Vector2} position
      */
-    drawTile(ctx, tileId, position){
-        const coords = this.getCoordinatesFromId(tileId);
-        ctx.save();
+    drawTile(ctx, gid, position) {
+        if (gid === 0) return; 
+
+        const tileset = this.getTilesetFromGid(gid);
+        if (!tileset) return;
+
+        const localId = gid - tileset.firstGid;
+        const coords = this.getCoordinatesFromId(localId, tileset.columns);
+
         ctx.drawImage(
-            this.image, 
-            coords.x * this.tileSize.x,
-            coords.y * this.tileSize.y,
-            this.tileSize.x,
-            this.tileSize.y,
-            position.x * this.tileSize.x,
-            position.y * this.tileSize.y,
-            this.tileSize.x,
-            this.tileSize.y,
+            tileset.image,
+            coords.x * tileset.tileSize.x,
+            coords.y * tileset.tileSize.y,
+            tileset.tileSize.x,
+            tileset.tileSize.y,
+            position.x * tileset.tileSize.x,
+            position.y * tileset.tileSize.y,
+            tileset.tileSize.x,
+            tileset.tileSize.y
         );
-        ctx.restore();
-    }
-    getRowCount(){
-        return this.image.height / this.tileSize.x;
-    }
-    getColumnCount(){
-        return this.image.width / this.tileSize.y;
     }
 
-    getCoordinatesFromId(id) {
-        const row = Math.floor(id / this.columns);
-        const col = id % this.columns;
+    /**
+     * 
+     * @param {number} gid
+     */
+    getTilesetFromGid(gid) {
+        for (let i = this.tilesets.length - 1; i >= 0; i--) {
+            if (gid >= this.tilesets[i].firstGid) {
+                return this.tilesets[i];
+            }
+        }
+        return null;
+    }
+
+    getCoordinatesFromId(id, columns) {
+        const row = Math.floor(id / columns);
+        const col = id % columns;
         return new Vector2(col, row);
     }
 }

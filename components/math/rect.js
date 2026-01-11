@@ -6,12 +6,14 @@ export default class Rect{
      * @param {number} y 
      * @param {number} width 
      * @param {number} height 
+     * @param {number} gid
      */
-    constructor(x, y, width, height){
+    constructor(x, y, width, height, gid =null){
         this.x = x;
         this.y = y;
         this.width = width;
         this.height = height;
+        this.gid = gid;
     }
     getArea(){
         return this.width * this.height;

@@ -47,10 +47,8 @@ export const world = new World(
 );
 
 const player = new Player();
-const me = new Me();
 
 world.addEntity(player);
-world.addEntity(me);
 await world.init();
 
 const game = new Game(world);

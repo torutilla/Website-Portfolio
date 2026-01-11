@@ -18,6 +18,9 @@ import { Me } from "./entities/me.js";
 import CustomCanvasFont from "../../type/fonts.js";
 import CanvasHandler from "../canvas/canvasHandler.js";
 import UserInterfaceController from "../user_interface/uiController.js";
+import Area2D from "../../collision/area2d.js";
+import CircleCollisionShape from "../../collision/circleCollisionShape.js";
+import Circle from "../../math/circle.js";
 
 
 export default class World {
@@ -35,6 +38,9 @@ export default class World {
         
         this.mapBackground = this.canvasHandler.createCanvas();
         this.mapBackgroundCtx = this.mapBackground.getContext('2d');
+
+        this.mapUndertile = this.canvasHandler.createCanvas();
+        this.mapUndertileCtx = this.mapUndertile.getContext('2d');
 
         this.mapBuffer = this.canvasHandler.createCanvas();
         this.mapBufferCtx = this.mapBuffer.getContext('2d');
@@ -65,17 +71,13 @@ export default class World {
         /** @type {Entity[]} */ this.entities = [];
         /** @type {GameObject[]} */ this.world_objects = [];
 
-        this.zoom = size.x < 1366 ? 1 : 1.5;
+        this.zoom = size.x < 1366 ? 1 : 1.2;
         this.camera = new Camera2D(0, 0, this.zoom, this.world);
 
         this.level = null;
         this.map = null;
 
-        this.currentTilemap = new Tilemap(
-            terrainTilemap.src,
-            terrainTilemap.size, 
-            terrainTilemap.rect,
-        );
+        this.currentTilemap = null;
         this.mapLoaded = false;
         this.collider = new Collider();
         
@@ -88,32 +90,41 @@ export default class World {
     }
 
     async init(){
-        const levelSrc = "../../../assets/TiledMap/WebsitePortolioMap.tmj";
+        const levelSrc = "/assets/TiledMap/interactive-resume.tmj";
         this.level = new Level(levelSrc);
         try {
             this.map = await this.level.loadTiledMap();
+            this.currentTilemap = new Tilemap(this.map.tilesets);
+            this.addInteractiveObjects();
             await this.currentTilemap.ensureLoaded();
             await this.initializeBg();
             this.drawMap();
             this.player = this.entities.find(e => e instanceof Player);
             this.mapLoaded = true;  
-            const rects = this.collider.getRectFromTiles(this.map.data, this.map.width, this.map.height);
+            const rects = this.collider.getRectFromTiles(this.map.tiles, this.map.width, this.map.height);
             for(let rect of rects){
+                const tileset = this.currentTilemap.getTilesetFromGid(rect.gid);
+                const ts = tileset.tileSize;
+
                 const pixelRect = new Rect(
-                    rect.x * this.currentTilemap.tileSize.x,
-                    rect.y * this.currentTilemap.tileSize.y,
-                    rect.width * this.currentTilemap.tileSize.x,
-                    rect.height * this.currentTilemap.tileSize.y
+                    rect.x * ts.x,
+                    rect.y * ts.y,
+                    rect.width * ts.x,
+                    rect.height * ts.y
                 );
                 const collision = new CollisionShape(pixelRect);
                 CollisionSystem.addStatic(collision);
                 this.colliders.push(collision);
                 // console.log(this.staticGrid.cells);
             }
-            
-            
+            for(let obj of this.map.objectCollisions){
+                const rect = new Rect(obj.x, obj.y, obj.width, obj.height);
+                const collision = new CollisionShape(rect);
+                CollisionSystem.addStatic(collision);
+                this.colliders.push(collision);
+            }
         } catch (error) {
-            console.error(`Error loading map: ${error}`);
+            console.error(`Error loading map: ${error.stack}`);
         } 
         for(let entity of this.entities){
             if(entity.init) await entity.init();
@@ -124,80 +135,80 @@ export default class World {
     drawMap(){
         // this.fontCanvas.width = this.map.width * this.currentTilemap.tileSize.x;
         // this.fontCanvas.height = this.map.height * this.currentTilemap.tileSize.y;
-
-        this.mapBackground.width = this.map.width * this.currentTilemap.tileSize.x;
-        this.mapBackground.height = this.map.height * this.currentTilemap.tileSize.y; 
+        const primaryTileset = this.currentTilemap.tilesets[0];
+        const ts = primaryTileset.tileSize;
+        
+        this.mapBackground.width = this.map.width * ts.x;
+        this.mapBackground.height = this.map.height * ts.y; 
 
         this.mapBuffer.width = this.mapBackground.width;
-        this.mapBuffer.height = this.mapBackground.width; 
+        this.mapBuffer.height = this.mapBackground.height; 
         
         this.mapForeground.width = this.mapBackground.width;
-        this.mapForeground.height = this.mapBackground.width; 
+        this.mapForeground.height = this.mapBackground.height; 
 
         for(let row = 0; row < this.map.height; row++){
             for(let col = 0; col < this.map.width; col++){
                 const index = row * this.map.width + col;
-                const tileId = this.map.data[index];
-                const overlayTileId = this.map.overlaydata[index];
-                const decorationsId = this.map.deco[index];
-                const backgroundId = this.map.bg[index];
-
+                const tileId = this.map.tiles[index];
+                const overlayTileId = this.map.overlayTiles[index];   
+                const collidableId = this.map.collidables[index];  
+                const backgroundId = this.map.background[index];
+                const underTileId = this.map.undertile[index];
                 if (backgroundId > 0) {
                     this.currentTilemap.drawTile(
                         this.mapBackgroundCtx,
-                        backgroundId - 1,
+                        backgroundId,
                         new Vector2(col, row)
                     ); 
                 }
-                if (decorationsId > 0) {
+                if (underTileId > 0) {
                     this.currentTilemap.drawTile(
-                        this.mapForegroundCtx,
-                        decorationsId - 1,
+                        this.mapUndertileCtx,
+                        underTileId,
                         new Vector2(col, row)
-                    );
+                    ); 
                 }
                 if (tileId > 0){
                     this.currentTilemap.drawTile(
                         this.mapBufferCtx,
-                        tileId - 1,                
+                        tileId,                
+                        new Vector2(col, row)      
+                    );
+                }
+                if (collidableId > 0){
+                    this.currentTilemap.drawTile(
+                        this.mapBufferCtx,
+                        collidableId,                
                         new Vector2(col, row)      
                     );
                 }
                 if(overlayTileId > 0){
                     this.currentTilemap.drawTile(
-                        this.mapBufferCtx,
-                        overlayTileId - 1,                
+                        this.mapForegroundCtx,
+                        overlayTileId,                
                         new Vector2(col, row)      
                     );
                 }
             }
         } 
-        
-        
-        
-        const me = this.entities.find(e => e instanceof Me);
-        if(me){
-            const pos = this.map.npc.find(e => {
-                if (e.type.toLowerCase() == "me") return e;
-            });
-            me.collision_shape.position = new Vector2(pos.x, pos.y);
-        }
+
     }
     async initializeBg(){
         this.background.style.backgroundColor = '#36422A';
-        const l1 = await ImageLoader.load(backgroundTrees.l1);
-        const l2 = await ImageLoader.load(backgroundTrees.l2);
-        const l3 = await ImageLoader.load(backgroundTrees.l3);
-        const clouds = await ImageLoader.load(backgroundClouds);
-        this.parallaxBackground.layers = [
-            {image: clouds, speed: 0.15},
-            {image: l1, speed: 0.25},
-            {image: l2, speed: 0.35},
-            {image: l3, speed: 0.5},
-        ].map(layer=>({
-            ...layer,
-            buffer: this.parallaxBackground.createCanvas(layer.image)
-        }));
+        // const l1 = await ImageLoader.load(backgroundTrees.l1);
+        // const l2 = await ImageLoader.load(backgroundTrees.l2);
+        // const l3 = await ImageLoader.load(backgroundTrees.l3);
+        // const clouds = await ImageLoader.load(backgroundClouds);
+        // this.parallaxBackground.layers = [
+        //     {image: clouds, speed: 0.15},
+        //     {image: l1, speed: 0.25},
+        //     {image: l2, speed: 0.35},
+        //     {image: l3, speed: 0.5},
+        // ].map(layer=>({
+        //     ...layer,
+        //     buffer: this.parallaxBackground.createCanvas(layer.image)
+        // }));
     }
 
     addEntity(entity){
@@ -217,6 +228,7 @@ export default class World {
         if (this.mapLoaded){
             // this.ctx.drawImage(this.fontCanvas, 0, 0);
             this.ctx.drawImage(this.mapBackground, 0, 0);
+            this.ctx.drawImage(this.mapUndertile, 0, 0);
             this.ctx.drawImage(this.mapBuffer, 0, 0);
             for(let text of this.map.texts){
                 this.fontHandler.draw(this.fontCtx, text);
@@ -252,7 +264,7 @@ export default class World {
         
         if (this.player && this.map) {
             this.camera.focusOn(this.player);
-            this.player.collision_shape.position = this.map.playerposition;
+            this.player.collision_shape.position = this.map.playerPosition;
         }
         for (let entity of this.entities) {
             if (entity.physicsProcess) entity.physicsProcess(delta);
@@ -279,6 +291,15 @@ export default class World {
         }
     }
 
+    addInteractiveObjects(){
+        const objects = this.map.interactiveObjects;
+        for(let obj of objects){
+            const circle = new CircleCollisionShape(new Circle(new Vector2(obj.x, obj.y), 30))
+            const area = new Area2D(circle)
+            const bodyEntered =()=>{ console.log("entered in: ", obj.x, obj.y)}
+            area.on('body_entered', bodyEntered)
+        }
+    }
 
     resizeWorld() {
         this.canvasHandler.resizeCanvas(

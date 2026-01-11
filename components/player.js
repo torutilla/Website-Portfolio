@@ -23,7 +23,7 @@ export default class Player extends Entity {
         this.position = new Vector2(250, 250);
         this.currentState = player_state.idle.name;
         this.collision_shape.position = new Vector2(320, 100);
-        this.movementSpeed = 150;
+        this.movementSpeed = 80;
         this.area_position = this.collision_shape.shape.getCenter();
         this.area = new Area2D(
             new CircleCollisionShape(
@@ -78,8 +78,7 @@ export default class Player extends Entity {
         
         this.position = this.collision_shape.position;
         this.area.collisionShape.updatePosition(this.collision_shape.shape.getCenter());
-       
-       
+
     }
 
     updateAnimation(){
