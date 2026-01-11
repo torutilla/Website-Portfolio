@@ -1,6 +1,5 @@
-import Rect from "../../../math/rect.js";
 import Vector2 from "../../../math/vector.js";
-import Tilemap from "../objects/tilemap.js";
+
 
 export default class Level{
     /**
@@ -14,11 +13,11 @@ export default class Level{
     async loadTiledMap() {
         const response = await fetch(this.levelPath);
         const data = await response.json();
-    
+        if(!data) return;
+        const images = this.getTilesetData(data);
         let mapData;
         let overlayTiles;
         let background;
-        let decorations;
         let npcs;
         let objects;
         let playerInitialPosition = Vector2.ZERO;
@@ -36,9 +35,6 @@ export default class Level{
                     if (layer.data) background = layer.data;
                     break;
     
-                case "decorations":
-                    if (layer.data) decorations = layer.data;
-                    break;
     
                 case "tiles":
                     if (layer.data) mapData = layer.data;
@@ -80,11 +76,13 @@ export default class Level{
             playerposition: playerInitialPosition,
             texts,
             overlaydata: overlayTiles,
-            deco: decorations,
             bg: background,
             npc: npcs,
             gameObjects: objects,
         };
     }
     
+    getTilesetData(data){
+        return data.tilesets;  
+    }
 }

@@ -14,14 +14,15 @@ import { Me } from "./components/systems/game/entities/me.js";
 InputManager.init();
 InputManager.add_action("move_left", ["a", "ArrowLeft"]);
 InputManager.add_action("move_right", ["d", "ArrowRight"]);
-InputManager.add_action("jump", [" ", "w", "ArrowUp"]);
+InputManager.add_action("move_up", ["w", "ArrowUp"]);
+InputManager.add_action("move_down", ["s", "ArrowDown"]);
 InputManager.add_action("interact", ["f"]);
 
 await ImageLoader.preloadAll([
     player_state.idle.src, 
-    player_state.run.src, 
-    player_state.jump.src, 
-    player_state.fall.src,
+    player_state.walk_side.src,
+    player_state.walk_up.src,
+    player_state.walk_down.src,
     terrainTilemap.src,
     backgroundClouds,
     npcs.me.idle.src,

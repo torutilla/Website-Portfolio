@@ -44,6 +44,15 @@ export default class Vector2{
         const magnitude = this.magnitude();
         return magnitude === 0? new Vector2(0, 0) : this.div(magnitude);
     }
+    normalizeSelf(){
+        const mag = this.magnitude();
+        if (mag !== 0) {
+            this.x /= mag;
+            this.y /= mag;
+        }
+        return this;
+    }
+    
     magnitude(){
         return Math.hypot(this.x, this.y); 
     }

@@ -4,11 +4,18 @@ import InputManager from "../key_bindings/Input.js";
 export default class UserInterfaceController extends EventBus{
     constructor(id){
         super();
-        this.ui = document.getElementById(id);
+        /**@type {HTMLElement} */
+        this.ui = document.getElementById(id); 
         this.dialouge_box = document.getElementById('dialouge-box');
         this.#scroll_fade();
         this.dialouge_mappings = new Map();
         this.interaction_keys = InputManager.get_action_keys('interact');
+    }
+    hideUI(){
+        this.ui.style.display = "none";
+    }
+    showUI(){
+        this.ui.style.display = "block";
     }
     static update(){
 
@@ -43,7 +50,12 @@ export default class UserInterfaceController extends EventBus{
         })
     }
 
-    add_interaction_button(entity){
+    /**@param {()=> void} onClick */
+    add_interaction_button(entity, onClick){
+        const pastBtn = document.getElementById(entity.id)
+        if(pastBtn){
+            pastBtn.remove()
+        } 
         const button = document.createElement('button');
         button.className = 'dialouge-option';
         button.id = entity.id;
@@ -61,7 +73,7 @@ export default class UserInterfaceController extends EventBus{
 
         button._handler = (event)=>{
             if(event.type == "pointerdown" || this.interaction_keys.includes(event.key)){
-                this.ui.classList.add("hide");
+                onClick();
                 console.log("interacted");
             }
         }
@@ -78,6 +90,5 @@ export default class UserInterfaceController extends EventBus{
         document.removeEventListener('keydown', button._handler);
         button.classList.remove('show');
         requestAnimationFrame(() => button.classList.add("hide"));
-        button.addEventListener("transitionend", ()=> button.remove(), {once: true});
     }
 }

@@ -39,8 +39,8 @@ button:focus{
 
 #dialouge-box{
     position: absolute;
-    top: 50%;
-    right: 20vw;
+    bottom: 10vh;
+    right: 5vw;
     overflow-y: auto;
     scroll-behavior: smooth;
     gap: 5px;
@@ -129,25 +129,28 @@ button:focus{
 #mobile-hud{
     position: absolute;
     align-items: end;
-    display: flex;
     justify-content: space-between;
-    padding: 2rem; 
+    padding: clamp(1rem, 2vw ,2rem); 
 }
 
 #mobile-hud div{
     display: flex;
-    gap: 20px;
+    gap: clamp(1rem, 2vw ,2rem);
 }
 
 .directional-button{
     font-family: 'Pixel Font';
-    font-size: clamp(1.5rem, 2rem, 5rem);
+    font-size: clamp(1.5rem, 3vw + 1.5rem, 5rem);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
     color: white;
     opacity: 50%;
     background-color: black;
     border-radius: 50%;
-    width: clamp(3rem, 10vw, 7rem);
-    height: clamp(3rem, 10vw, 7rem);
+    width: clamp(4rem, 10vw + 1.5rem, 7rem);
+    height: clamp(4rem, 10vw + 1.5rem, 7rem);
     user-select: none;               
     -webkit-user-select: none;      
     -ms-user-select: none;          
@@ -169,4 +172,12 @@ button:focus{
     font-size: 1.5rem;
     padding: 1rem;
     z-index: 9999;             
+}
+
+@media (min-width: 768px) {
+    #dialouge-box{
+    top: 50%;
+    bottom: auto;
+    right: 20vw;
+    }
 }

@@ -19,6 +19,7 @@ import CustomCanvasFont from "../../type/fonts.js";
 import CanvasHandler from "../canvas/canvasHandler.js";
 import UserInterfaceController from "../user_interface/uiController.js";
 
+
 export default class World {
     /**
      * @param {string} canvasId 
@@ -87,10 +88,8 @@ export default class World {
     }
 
     async init(){
-        
-        this.level = new Level(
-            '../../../assets/TiledMap/WebsitePortolioMap.tmj'
-        );
+        const levelSrc = "../../../assets/TiledMap/WebsitePortolioMap.tmj";
+        this.level = new Level(levelSrc);
         try {
             this.map = await this.level.loadTiledMap();
             await this.currentTilemap.ensureLoaded();

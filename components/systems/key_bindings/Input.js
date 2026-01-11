@@ -18,6 +18,7 @@ export default class InputManager{
         });
         document.addEventListener('keydown', (event)=>{
             InputManager.keys_pressed[event.key.toLowerCase()] = true;
+            
         });
         document.addEventListener('keyup', (event)=>{
             InputManager.keys_pressed[event.key.toLowerCase()] = false;
@@ -45,11 +46,12 @@ export default class InputManager{
      * @param {string} left 
      * @param {string} right 
      * @param {string} up 
+     * @param {string} down
      * @returns Vector2
      */
-    static get_vector(left, right, up){
+    static get_vector(left, right, up, down){
         const x = InputManager.get_action_strength(right) - InputManager.get_action_strength(left);
-        const y = 0 - InputManager.get_action_strength(up);
+        const y = InputManager.get_action_strength(down) - InputManager.get_action_strength(up);
         const vector = new Vector2(x, y);
         const length = vector.magnitude();
         if(length > 1){
