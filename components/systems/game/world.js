@@ -294,7 +294,7 @@ export default class World {
             const option = new SpriteImage({
                 imageSource: "/assets/ui/exclamation-7x8.png", 
                 sx: 0, sy: 0, 
-                sourceSize: {x: 28, y: 32}, 
+                sourceSize: {x: 32, y: 32}, 
                 destinationSize: {x: 16, y: 16}, 
                 totalFrames: 6, frameInterval: 0.1});
             const obj = new GameObject(option);

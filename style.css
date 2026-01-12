@@ -35,13 +35,16 @@ button:focus{
 .show{
     opacity: 1;
 }
+#background-canvas{
+    background-color: rgb(31, 31, 39);
+}
 
 
 #dialouge-box{
     position: absolute;
     bottom: 10vh;
     right: 5vw;
-    overflow-y: auto;
+    overflow-y: auto;   
     scroll-behavior: smooth;
     gap: 5px;
     display: flex;
@@ -129,11 +132,17 @@ button:focus{
 #mobile-hud{
     position: absolute;
     align-items: end;
-    justify-content: space-between;
+    
     padding: clamp(1rem, 2vw ,2rem); 
 }
+#controller{
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
 
-#mobile-hud div{
+#mobile-hud div div{
     display: flex;
     gap: clamp(1rem, 2vw ,2rem);
 }
@@ -172,6 +181,11 @@ button:focus{
     font-size: 1.5rem;
     padding: 1rem;
     z-index: 9999;             
+}
+
+#controller .vertical{
+    display: flex;
+    flex-direction: column;
 }
 
 @media (min-width: 768px) {
