@@ -3,11 +3,13 @@ import Vector2 from "../../math/vector.js";
 export default class InputManager{
     static keys_pressed = {};
     static input_mappings = {};
+    static pause_input = false;
     static init(){
         const mobileHud = document.getElementById('mobile-hud');
 
         mobileHud.addEventListener('pointerdown', (event)=>{
             if(event.target.classList.contains('directional-button')){
+                if(InputManager.pause_input) return;
                 const direction = event.target.dataset.direction;
                 if(direction) InputManager.keys_pressed[direction.toLowerCase()] = true;
             }

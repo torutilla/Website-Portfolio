@@ -12,19 +12,25 @@ import UserInterfaceController from "./systems/user_interface/uiController.js";
 export default class Player extends Entity {
     constructor(){
         const option = new SpriteImage({
-            imageSource: player_state.idle.src,
+            imageSource: player_state.idle_down.src,
             sx: 0, sy: 0,
-            sourceSize: {x: 64, y: 64},
-            destinationSize: {x: 48, y: 48},
-            totalFrames: player_state.idle.totalFrames, 
-            offset: {x: 10, y: 10}
+            sourceSize: {x: 32, y: 64},
+            destinationSize: {x: 32, y: 64},
+            totalFrames: player_state.idle_down.totalFrames, 
+            offset: {x: 10, y: 10},
+            
         }); 
         super(option);
         this.position = new Vector2(250, 250);
-        this.currentState = player_state.idle.name;
+        this.currentState = player_state.idle_down.name;
         this.collision_shape.position = new Vector2(320, 100);
-        this.movementSpeed = 80;
+        this.movementSpeed = 120;
         this.area_position = this.collision_shape.shape.getCenter();
+        this.sprite_option.offset.x = -this.sprite_option.dWidth + this.sprite_option.dWidth;
+        this.sprite_option.frameInterval = 0.09
+        this.collision_shape.shape.width = this.sprite_option.dWidth
+        this.collision_shape.shape.height = this.sprite_option.dHeight /3;
+        this.sprite_option.offset.y = this.sprite_option.dHeight /1.5;
         this.area = new Area2D(
             new CircleCollisionShape(
                 new Circle(this.area_position, 80)
@@ -32,11 +38,11 @@ export default class Player extends Entity {
         );
         this.uiController = new UserInterfaceController('main-ui');
         this.lastDir = new Vector2(0, 1); 
-
+        this.facing = "down";
         this.area.attach_owner(this);
         this.area.on('body_entered', (body) => this.area_body_entered(body));
         this.area.on('body_exited', (body) => this.area_body_exited(body));
-        // player_image.idle.src = player_state.idle.src;
+        // player_image.idle.src = player_state.idle_down.src;
         // player_image.run.src = player_state.run.src;
         // player_image.jump.src = player_state.jump.src;
         // player_image.fall.src = player_state.fall.src;
@@ -44,7 +50,9 @@ export default class Player extends Entity {
 
 
     async init(){
-        player_image.idle = await ImageLoader.load(player_state.idle.src);
+        player_image.idle_down = await ImageLoader.load(player_state.idle_down.src);
+        player_image.idle_up = await ImageLoader.load(player_state.idle_up.src);
+        player_image.idle_side = await ImageLoader.load(player_state.idle_side.src);
         player_image.walk_side = await ImageLoader.load(player_state.walk_side.src);
         player_image.walk_up = await ImageLoader.load(player_state.walk_up.src);
         player_image.walk_down = await ImageLoader.load(player_state.walk_down.src);
@@ -56,17 +64,17 @@ export default class Player extends Entity {
         
         if (dir.magnitude() > 0) {
             dir.normalizeSelf();
-            
         }
     
         this.physics.velocity.x = dir.x * this.movementSpeed;
         this.physics.velocity.y = dir.y * this.movementSpeed;
     
       
-        if (dir.x > 0) this.flipX = false;
-        else if (dir.x < 0) this.flipX = true;
+        // if (dir.x > 0) this.flipX = false;
+        // else this.flipX = true;
     
         this.lastDir = dir.clone();
+        
     }
     
     physicsProcess(delta){
@@ -82,23 +90,21 @@ export default class Player extends Entity {
     }
 
     updateAnimation(){
-    const vx = this.physics.velocity.x;
-    const vy = this.physics.velocity.y;
-
-    let newState = player_state.idle.name;
-
-    if (vx !== 0 || vy !== 0) {
+    const vx = this.lastDir.x;
+    const vy = this.lastDir.y;
+    
+    const moving = vx !== 0 || vy !== 0;
+    const base = moving ? "walk" : "idle";
+    if(moving){
         if (Math.abs(vy) > Math.abs(vx)) {
-            
-            newState = vy < 0
-                ? player_state.walk_up.name
-                : player_state.walk_down.name;
+            this.facing = vy < 0 ? "up" : "down";
         } else {
-            newState = player_state.walk_side.name;
+            this.facing = "side";
             this.flipX = vx < 0;
         }
     }
-    
+    const newState = player_state[`${base}_${this.facing}`].name;
+
     this.setAnimation(newState);
     }
 
@@ -107,8 +113,8 @@ export default class Player extends Entity {
         this.currentState = name;
         this.sprite_option.image = player_image[name];
         this.sprite_option.totalFrames = player_state[name].totalFrames;
-            this.currentFrame = 0;
-            this.frameTimer = 0;
+        this.currentFrame = 0;
+        this.frameTimer = 0;
         }
     }
     

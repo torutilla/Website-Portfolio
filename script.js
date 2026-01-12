@@ -9,7 +9,7 @@ import { backgroundClouds, backgroundTrees, terrainTilemap } from "./components/
 import CustomFont from "./components/type/fonts.js";
 import checkOrientation from "./orientationChecker.js";
 import { npcs } from "./components/npcConst.js";
-import { Me } from "./components/systems/game/entities/me.js";
+
 
 InputManager.init();
 InputManager.add_action("move_left", ["a", "ArrowLeft"]);
@@ -19,7 +19,9 @@ InputManager.add_action("move_down", ["s", "ArrowDown"]);
 InputManager.add_action("interact", ["f"]);
 
 await ImageLoader.preloadAll([
-    player_state.idle.src, 
+    player_state.idle_down.src, 
+    player_state.idle_up.src, 
+    player_state.idle_side.src, 
     player_state.walk_side.src,
     player_state.walk_up.src,
     player_state.walk_down.src,
@@ -29,6 +31,7 @@ await ImageLoader.preloadAll([
     backgroundTrees.l1,
     backgroundTrees.l2,
     backgroundTrees.l3,
+    "/assets/ui/exclamation-7x8.png",
 ]);
 
 await CustomFont.preload([{

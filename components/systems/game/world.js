@@ -10,18 +10,17 @@ import Rect from "../../math/rect.js";
 import Collider from "../../collision/collider.js";
 import CollisionShape from "../../collision/rectCollisionShape.js";
 import GlobalSettings from "../../../globalSettings.js";
-import { backgroundClouds, backgroundTrees, terrainTilemap } from "../../tilemapConst.js";
 import CollisionSystem from "./objects/collisionSystem.js";
-import ImageLoader from "../../type/imageLoader.js";
 import { Parallax } from "../parallax/parallax.js";
-import { Me } from "./entities/me.js";
 import CustomCanvasFont from "../../type/fonts.js";
 import CanvasHandler from "../canvas/canvasHandler.js";
 import UserInterfaceController from "../user_interface/uiController.js";
 import Area2D from "../../collision/area2d.js";
 import CircleCollisionShape from "../../collision/circleCollisionShape.js";
 import Circle from "../../math/circle.js";
-
+import RectCollisionShape from "../../collision/rectCollisionShape.js";
+import SpriteImage from "../../options/sprite_options.js";
+import ImageLoader from "../../type/imageLoader.js";
 
 export default class World {
     /**
@@ -71,7 +70,7 @@ export default class World {
         /** @type {Entity[]} */ this.entities = [];
         /** @type {GameObject[]} */ this.world_objects = [];
 
-        this.zoom = size.x < 1366 ? 1 : 1.2;
+        
         this.camera = new Camera2D(0, 0, this.zoom, this.world);
 
         this.level = null;
@@ -81,6 +80,7 @@ export default class World {
         this.mapLoaded = false;
         this.collider = new Collider();
         
+        this.ui = new UserInterfaceController('main-ui');
         this.parallaxBackground = new Parallax()
         /**@type {CollisionShape[]} */ this.colliders = [];
 
@@ -97,7 +97,7 @@ export default class World {
             this.currentTilemap = new Tilemap(this.map.tilesets);
             this.addInteractiveObjects();
             await this.currentTilemap.ensureLoaded();
-            await this.initializeBg();
+            
             this.drawMap();
             this.player = this.entities.find(e => e instanceof Player);
             this.mapLoaded = true;  
@@ -143,6 +143,9 @@ export default class World {
 
         this.mapBuffer.width = this.mapBackground.width;
         this.mapBuffer.height = this.mapBackground.height; 
+
+        this.mapUndertile.width = this.mapBackground.width;
+        this.mapUndertile.height = this.mapBackground.height; 
         
         this.mapForeground.width = this.mapBackground.width;
         this.mapForeground.height = this.mapBackground.height; 
@@ -194,22 +197,7 @@ export default class World {
         } 
 
     }
-    async initializeBg(){
-        this.background.style.backgroundColor = '#36422A';
-        // const l1 = await ImageLoader.load(backgroundTrees.l1);
-        // const l2 = await ImageLoader.load(backgroundTrees.l2);
-        // const l3 = await ImageLoader.load(backgroundTrees.l3);
-        // const clouds = await ImageLoader.load(backgroundClouds);
-        // this.parallaxBackground.layers = [
-        //     {image: clouds, speed: 0.15},
-        //     {image: l1, speed: 0.25},
-        //     {image: l2, speed: 0.35},
-        //     {image: l3, speed: 0.5},
-        // ].map(layer=>({
-        //     ...layer,
-        //     buffer: this.parallaxBackground.createCanvas(layer.image)
-        // }));
-    }
+    
 
     addEntity(entity){
         this.entities.push(entity);
@@ -242,6 +230,11 @@ export default class World {
                 CollisionSystem.dynamicGrid.debugDraw(this.ctx);
                 CollisionSystem.staticGrid.debugDraw(this.ctx);
             } 
+        }
+        for(let object of this.world_objects){
+            if(object.draw){ 
+                object.draw(this.ctx, object.position);   
+            }
         }
         this.ctx.drawImage(this.mapForeground, 0, 0);
         this.camera.end(this.ctx);
@@ -292,12 +285,43 @@ export default class World {
     }
 
     addInteractiveObjects(){
-        const objects = this.map.interactiveObjects;
+        
+        const objects = this.map.interactiveObjects.filter(obj=> obj.type =="interactive");
+        const arrows = this.map.interactiveObjects.filter(obj => obj.type == "arrow");
+        const areas = this.map.interactiveObjects.filter(obj => obj.type =="area");
+        
+        for(let indicator of arrows){
+            const option = new SpriteImage({
+                imageSource: "/assets/ui/exclamation-7x8.png", 
+                sx: 0, sy: 0, 
+                sourceSize: {x: 28, y: 32}, 
+                destinationSize: {x: 16, y: 16}, 
+                totalFrames: 6, frameInterval: 0.1});
+            const obj = new GameObject(option);
+            obj.position = new Vector2(indicator.x - option.dWidth /2, indicator.y - option.dHeight /2);
+            this.addObject(obj);
+        }
+        for(let area of areas){
+            const rect = new RectCollisionShape(new Rect(area.x, area.y, area.width, area.height))
+            const ar = new Area2D(rect);
+            const bodyEntered = ()=>{
+                console.log(area.name);
+            }
+            ar.on('body_entered', bodyEntered);
+        }
         for(let obj of objects){
             const circle = new CircleCollisionShape(new Circle(new Vector2(obj.x, obj.y), 30))
             const area = new Area2D(circle)
-            const bodyEntered =()=>{ console.log("entered in: ", obj.x, obj.y)}
-            area.on('body_entered', bodyEntered)
+            const bodyEntered =()=>{ 
+                console.log("entered in: ", obj.name, obj.x, obj.y);
+                this.ui.add_interaction_button(area, ()=>{}, obj.name)
+
+            }
+            const bodyExited = ()=>{
+                this.ui.remove_interaction_button(area);
+            }
+            area.on('body_entered', bodyEntered);
+            area.on('body_exited', bodyExited);
         }
     }
 

@@ -51,7 +51,7 @@ export default class UserInterfaceController extends EventBus{
     }
 
     /**@param {()=> void} onClick */
-    add_interaction_button(entity, onClick){
+    add_interaction_button(entity, onClick, btnText = "INTERACT"){
         const pastBtn = document.getElementById(entity.id)
         if(pastBtn){
             pastBtn.remove()
@@ -66,7 +66,7 @@ export default class UserInterfaceController extends EventBus{
 
         const option = document.createElement('div');
         option.className = 'interact-option';
-        option.innerHTML = "INTERACT";
+        option.innerHTML = btnText;
 
         button.appendChild(key);
         button.appendChild(option);
