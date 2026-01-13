@@ -21,7 +21,7 @@ import Circle from "../../math/circle.js";
 import RectCollisionShape from "../../collision/rectCollisionShape.js";
 import SpriteImage from "../../options/sprite_options.js";
 import ImageLoader from "../../type/imageLoader.js";
-
+import AreaTitleHandler from "../../ui/areaTitle.js";
 export default class World {
     /**
      * @param {string} canvasId 
@@ -70,7 +70,7 @@ export default class World {
         /** @type {Entity[]} */ this.entities = [];
         /** @type {GameObject[]} */ this.world_objects = [];
 
-        
+        this.areaTitleHandler = new AreaTitleHandler();
         this.camera = new Camera2D(0, 0, this.zoom, this.world);
 
         this.level = null;
@@ -84,7 +84,6 @@ export default class World {
         this.parallaxBackground = new Parallax()
         /**@type {CollisionShape[]} */ this.colliders = [];
 
-        this.fontHandler = new CustomCanvasFont();
         this.fontLoaded = false;
         CollisionSystem.init();
     }
@@ -218,9 +217,7 @@ export default class World {
             this.ctx.drawImage(this.mapBackground, 0, 0);
             this.ctx.drawImage(this.mapUndertile, 0, 0);
             this.ctx.drawImage(this.mapBuffer, 0, 0);
-            for(let text of this.map.texts){
-                this.fontHandler.draw(this.fontCtx, text);
-            }
+            
         } 
         for(let entity of this.entities){
             if(entity.draw) entity.draw(this.ctx, entity.position); 
@@ -304,12 +301,10 @@ export default class World {
         for(let area of areas){
             const rect = new RectCollisionShape(new Rect(area.x, area.y, area.width, area.height))
             const ar = new Area2D(rect);
-            const bodyEntered = ()=>{
-                console.log(area.name);
-            }
-            ar.on('body_entered', bodyEntered);
+            ar.on('body_entered', ()=>this.areaTitleHandler.addTitleText(area.name));
+            ar.on('body_exited', ()=> this.areaTitleHandler.removeText(area.name))
         }
-        for(let obj of objects){
+        for(let obj of objects) {
             const circle = new CircleCollisionShape(new Circle(new Vector2(obj.x, obj.y), 30))
             const area = new Area2D(circle)
             const bodyEntered =()=>{ 

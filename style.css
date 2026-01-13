@@ -3,6 +3,8 @@
     src: url(assets/fonts/editundo.ttf);
 }
 *{
+    color: rgb(241, 241, 241);
+    font-family: 'Pixel Font';
     box-sizing: border-box;
     margin: 0;
     border: 0;
@@ -42,7 +44,7 @@ button:focus{
 
 #dialouge-box{
     position: absolute;
-    bottom: 10vh;
+    bottom: 15vh;
     right: 5vw;
     overflow-y: auto;   
     scroll-behavior: smooth;
@@ -132,9 +134,10 @@ button:focus{
 #mobile-hud{
     position: absolute;
     align-items: end;
-    
     padding: clamp(1rem, 2vw ,2rem); 
 }
+
+
 #controller{
     width: 100%;
     display: flex;
@@ -145,6 +148,27 @@ button:focus{
 #mobile-hud div div{
     display: flex;
     gap: clamp(1rem, 2vw ,2rem);
+}
+
+#title-box{
+    overflow: hidden;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    position: absolute;
+    top: 10vh;
+}
+
+.area-title{
+    text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.85);
+    font-size: clamp(1rem, 2vw + 1rem, 3rem);
+}
+
+.slide-in{
+    animation: slide-in 0.3s linear;
+}
+.slide-out{
+    animation: slide-out 0.3s ease-out;
 }
 
 .directional-button{
@@ -188,10 +212,31 @@ button:focus{
     flex-direction: column;
 }
 
-@media (min-width: 768px) {
+@media (min-width: 600px) {
     #dialouge-box{
-    top: 50%;
-    bottom: auto;
-    right: 20vw;
+        top: 50%;
+        bottom: auto;
+        right: 20vw;
+    }
+}
+
+@keyframes slide-in {
+    from{
+        transform: translateY(-100%);
+        opacity: 0;
+    }
+    to{
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+@keyframes slide-out {
+    from{
+        transform: translateY(0);
+        opacity: 1;
+    }
+    to{
+        transform: translateY(-100%);
+        opacity: 0;
     }
 }
