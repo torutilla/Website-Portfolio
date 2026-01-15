@@ -34,7 +34,7 @@ export default class Sprite{
         ctx.drawImage(
             this.sprite_option.image,
             this.currentFrame * this.sprite_option.sWidth, 
-            this.sprite_option.sy, 
+            this.sprite_option.sy,  
             this.sprite_option.sWidth, 
             this.sprite_option.sHeight, 
             0,

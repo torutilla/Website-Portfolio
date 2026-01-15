@@ -2,11 +2,22 @@
     font-family: 'Pixel Font';
     src: url(assets/fonts/editundo.ttf);
 }
+:root{
+    --cursor-default: url("/assets/cursor/pointer_b_shaded.png") 0 0, auto;
+    --cursor-pointer: url("/assets/cursor/hand_small_point.png") 0 0, pointer;
+}
 *{
+    cursor: var(--cursor-default);
+    color: rgb(241, 241, 241);
+    font-family: 'Pixel Font';
     box-sizing: border-box;
     margin: 0;
     border: 0;
     overflow: hidden;
+}
+
+.interactable{
+    cursor: var(--cursor-pointer);
 }
 
 canvas{
@@ -17,6 +28,10 @@ canvas{
     height: 100vh;
 }
 
+button:focus{
+    outline: none !important;
+}
+
 .ui{
     position: absolute;
     width: 100dvw;
@@ -24,11 +39,23 @@ canvas{
     z-index: 998;
 }
 
-#dialouge-box{
+.hide{
+    opacity: 0;
+}
+
+.show{
+    opacity: 1;
+}
+#background-canvas{
+    background-color: rgb(31, 31, 39);
+}
+
+
+#interaction-box{
     position: absolute;
-    top: 50%;
-    right: 20vw;
-    overflow-y: auto;
+    bottom: 30vh;
+    right: 5vw;
+    overflow-y: auto;   
     scroll-behavior: smooth;
     gap: 5px;
     display: flex;
@@ -37,7 +64,6 @@ canvas{
     z-index: 999;
     scrollbar-width: none;       
     -ms-overflow-style: none;
-    height: 120px;
     mask-image: linear-gradient(to bottom, black 80%, transparent 100%);
     -webkit-mask-image: linear-gradient(to bottom, black 80%, transparent 100%);
     user-select: none;               
@@ -46,8 +72,11 @@ canvas{
     -webkit-tap-highlight-color: transparent;
     
 }
-
-.dialouge-option{
+.interact-option, .interact-option > *{
+    cursor: var(--cursor-pointer);
+}
+.interact-option{
+    
     flex-shrink: 0;
     opacity: 0;
     transform: translateY(20px);
@@ -59,7 +88,7 @@ canvas{
     background-color: transparent;
 }
 
-.dialouge-option .interaction-key{
+.interact-option .interaction-key{
     height: 35px;
     width: 35px;
     background-color: transparent; 
@@ -74,7 +103,7 @@ canvas{
     align-items: center;
 }
 
-.dialouge-option .interact-option{
+.interact-option .interact-option-text{
     height: 40px;
     width: 120px;
     background-color: transparent;
@@ -89,22 +118,22 @@ canvas{
     align-items: center;
 }
 
-.dialouge-option.show{
+.interact-option.show{
     opacity: 1;
     transform: translateY(0);
 }
 
-.dialouge-option.hide{
+.interact-option.hide{
     opacity: 0;
     transform: translateY(20px);
     transition: all 0.3s ease;
 }
 
-.dialouge-option:focus{
-    border: 0;
+.interact-option:focus{
+    outline: none !important;
 }
 
-#dialogue-box::-webkit-scrollbar {
+#interaction-box::-webkit-scrollbar {
     display: none;
 }
 
@@ -114,27 +143,62 @@ canvas{
 }
 
 #mobile-hud{
+    display: flex;
     position: absolute;
     align-items: end;
-    display: flex;
-    justify-content: space-between;
-    padding: 2rem; 
+    padding: clamp(1rem, 2vw ,2rem); 
 }
 
-#mobile-hud div{
+
+#controller{
+    width: 100%;
     display: flex;
-    gap: 20px;
+    justify-content: space-between;
+    align-items: center;
+}
+
+#mobile-hud div div{
+    display: flex;
+    gap: clamp(1rem, 2vw ,2rem);
+}
+
+#title-box{
+    overflow: hidden;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    position: absolute;
+    top: 10vh;
+}
+.paper{
+    background: url();
+}
+
+.area-title{
+    text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.85);
+    font-size: clamp(1rem, 2vw + 1rem, 3rem);
+}
+
+.slide-in{
+    animation: slide-in 0.3s linear;
+}
+.slide-out{
+    animation: slide-out 0.3s ease-out;
 }
 
 .directional-button{
     font-family: 'Pixel Font';
-    font-size: clamp(1.5rem, 2rem, 5rem);
+    font-size: clamp(1.5rem, 3vw + 1.5rem, 5rem);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
     color: white;
     opacity: 50%;
     background-color: black;
     border-radius: 50%;
-    width: clamp(3rem, 10vw, 7rem);
-    height: clamp(3rem, 10vw, 7rem);
+    width: clamp(4rem, 10vw + 1.5rem, 7rem);
+    height: clamp(4rem, 10vw + 1.5rem, 7rem);
     user-select: none;               
     -webkit-user-select: none;      
     -ms-user-select: none;          
@@ -156,4 +220,54 @@ canvas{
     font-size: 1.5rem;
     padding: 1rem;
     z-index: 9999;             
+}
+#controller .vertical{
+    display: flex;
+    flex-direction: column;
+}
+
+#modal-container{
+    background-color: rgba(0, 0, 0, 0.4);
+    display: none;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    justify-content: center;
+    align-items: center;
+    padding: 2rem;
+}
+
+@media (min-width: 600px) {
+    #interaction-box{
+        top: 50%;
+        bottom: auto;
+        right: 20vw;
+    }
+}
+
+@media (width > 768px){
+    #controller{
+        display: none;
+    }
+}
+
+@keyframes slide-in {
+    from{
+        transform: translateY(-100%);
+        opacity: 0;
+    }
+    to{
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+@keyframes slide-out {
+    from{
+        transform: translateY(0);
+        opacity: 1;
+    }
+    to{
+        transform: translateY(-100%);
+        opacity: 0;
+    }
 }

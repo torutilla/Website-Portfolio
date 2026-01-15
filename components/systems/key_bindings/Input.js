@@ -3,11 +3,13 @@ import Vector2 from "../../math/vector.js";
 export default class InputManager{
     static keys_pressed = {};
     static input_mappings = {};
+    static pause_input = false;
     static init(){
         const mobileHud = document.getElementById('mobile-hud');
 
         mobileHud.addEventListener('pointerdown', (event)=>{
             if(event.target.classList.contains('directional-button')){
+                if(InputManager.pause_input) return;
                 const direction = event.target.dataset.direction;
                 if(direction) InputManager.keys_pressed[direction.toLowerCase()] = true;
             }
@@ -17,7 +19,9 @@ export default class InputManager{
             if(direction) InputManager.keys_pressed[direction.toLowerCase()] = false;
         });
         document.addEventListener('keydown', (event)=>{
+            if(InputManager.pause_input) return;
             InputManager.keys_pressed[event.key.toLowerCase()] = true;
+            
         });
         document.addEventListener('keyup', (event)=>{
             InputManager.keys_pressed[event.key.toLowerCase()] = false;
@@ -45,11 +49,12 @@ export default class InputManager{
      * @param {string} left 
      * @param {string} right 
      * @param {string} up 
+     * @param {string} down
      * @returns Vector2
      */
-    static get_vector(left, right, up){
+    static get_vector(left, right, up, down){
         const x = InputManager.get_action_strength(right) - InputManager.get_action_strength(left);
-        const y = 0 - InputManager.get_action_strength(up);
+        const y = InputManager.get_action_strength(down) - InputManager.get_action_strength(up);
         const vector = new Vector2(x, y);
         const length = vector.magnitude();
         if(length > 1){

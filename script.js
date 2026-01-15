@@ -9,25 +9,29 @@ import { backgroundClouds, backgroundTrees, terrainTilemap } from "./components/
 import CustomFont from "./components/type/fonts.js";
 import checkOrientation from "./orientationChecker.js";
 import { npcs } from "./components/npcConst.js";
-import { Me } from "./components/systems/game/entities/me.js";
+
 
 InputManager.init();
 InputManager.add_action("move_left", ["a", "ArrowLeft"]);
 InputManager.add_action("move_right", ["d", "ArrowRight"]);
-InputManager.add_action("jump", [" ", "w", "ArrowUp"]);
+InputManager.add_action("move_up", ["w", "ArrowUp"]);
+InputManager.add_action("move_down", ["s", "ArrowDown"]);
 InputManager.add_action("interact", ["f"]);
 
 await ImageLoader.preloadAll([
-    player_state.idle.src, 
-    player_state.run.src, 
-    player_state.jump.src, 
-    player_state.fall.src,
+    player_state.idle_down.src, 
+    player_state.idle_up.src, 
+    player_state.idle_side.src, 
+    player_state.walk_side.src,
+    player_state.walk_up.src,
+    player_state.walk_down.src,
     terrainTilemap.src,
     backgroundClouds,
     npcs.me.idle.src,
     backgroundTrees.l1,
     backgroundTrees.l2,
     backgroundTrees.l3,
+    "/assets/ui/exclamation-7x8.png",
 ]);
 
 await CustomFont.preload([{
@@ -36,7 +40,6 @@ await CustomFont.preload([{
     },
 ]);
 
-window.addEventListener('load', checkOrientation);
 window.addEventListener('resize', checkOrientation);
 window.addEventListener('orientationchange', checkOrientation);
 
@@ -46,10 +49,8 @@ export const world = new World(
 );
 
 const player = new Player();
-const me = new Me();
 
 world.addEntity(player);
-world.addEntity(me);
 await world.init();
 
 const game = new Game(world);
