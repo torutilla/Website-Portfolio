@@ -129,7 +129,7 @@ export default class Player extends Entity {
     area_body_exited(body){
         console.log('exited', body);
         this.uiController.remove_interaction_button(body);
-        this.uiController.showUI();
+        this.uiController.displayUI();
     }
 }
 

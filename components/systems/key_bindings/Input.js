@@ -19,6 +19,7 @@ export default class InputManager{
             if(direction) InputManager.keys_pressed[direction.toLowerCase()] = false;
         });
         document.addEventListener('keydown', (event)=>{
+            if(InputManager.pause_input) return;
             InputManager.keys_pressed[event.key.toLowerCase()] = true;
             
         });

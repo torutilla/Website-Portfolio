@@ -31,51 +31,50 @@ export default class World {
     constructor(canvasId, size){
         this.canvasId = canvasId;
         this.canvasHandler = new CanvasHandler();
-
         this.background = this.canvasHandler.getCanvas('background-canvas');
         /** @type {CanvasRenderingContext2D} */ this.bg = this.background.getContext('2d');
         
         this.mapBackground = this.canvasHandler.createCanvas();
         this.mapBackgroundCtx = this.mapBackground.getContext('2d');
-
+        
         this.mapUndertile = this.canvasHandler.createCanvas();
         this.mapUndertileCtx = this.mapUndertile.getContext('2d');
-
+        
         this.mapBuffer = this.canvasHandler.createCanvas();
         this.mapBufferCtx = this.mapBuffer.getContext('2d');
-
+        
         this.mapForeground = this.canvasHandler.createCanvas();
         this.mapForegroundCtx = this.mapForeground.getContext('2d');
         
         this.fontCanvas = this.canvasHandler.createCanvas();
         this.fontCtx = this.fontCanvas.getContext('2d');
-
+        
         this.player = null;
         // this.fontCanvas.width = window.innerWidth;
         // this.fontCanvas.height = window.innerHeight;
-
+        
         this.game = document.getElementById('game');
         this.game.appendChild(this.fontCanvas);
-
+        
         /**@type {HTMLCanvasElement} */
         this.world = this.canvasHandler.getCanvas(canvasId);
         /** @type {CanvasRenderingContext2D} */ this.ctx = this.world.getContext('2d');
-
+        
         this.world.width = size.x;
         this.world.height = size.y;
-
+        
         this.staticGrid = new SpatialGrid(64);
         this.dynamicGrid = new SpatialGrid(64);
-
+        
         /** @type {Entity[]} */ this.entities = [];
         /** @type {GameObject[]} */ this.world_objects = [];
-
+        
         this.areaTitleHandler = new AreaTitleHandler();
         this.camera = new Camera2D(0, 0, this.zoom, this.world);
-
+        
         this.level = null;
         this.map = null;
-
+        
         this.currentTilemap = null;
         this.mapLoaded = false;
         this.collider = new Collider();
@@ -83,11 +82,12 @@ export default class World {
         this.ui = new UserInterfaceController('main-ui');
         this.parallaxBackground = new Parallax()
         /**@type {CollisionShape[]} */ this.colliders = [];
-
+        
         this.fontLoaded = false;
         CollisionSystem.init();
+        this.resizeWorld();
     }
-
+    
     async init(){
         const levelSrc = "/assets/TiledMap/interactive-resume.tmj";
         this.level = new Level(levelSrc);
@@ -305,11 +305,12 @@ export default class World {
             ar.on('body_exited', ()=> this.areaTitleHandler.removeText(area.name))
         }
         for(let obj of objects) {
+            const uiType = obj.properties?.find(type=> type.name === "uiType");
             const circle = new CircleCollisionShape(new Circle(new Vector2(obj.x, obj.y), 30))
             const area = new Area2D(circle)
             const bodyEntered =()=>{ 
                 console.log("entered in: ", obj.name, obj.x, obj.y);
-                this.ui.add_interaction_button(area, ()=>{}, obj.name)
+                this.ui.add_interaction_button(area, ()=>{console.log('wew')}, obj.name)
 
             }
             const bodyExited = ()=>{

@@ -1,5 +1,6 @@
 
 export default class Game{
+    static paused = false;
     constructor(scene, physicsStep = 1000/ 60){
         this.scene = scene;
         this.lastTime = 0;
@@ -8,6 +9,7 @@ export default class Game{
         
     }
     loop = (timestamp) => {
+        if(Game.paused) return;
         const deltaTime = timestamp - this.lastTime;
         this.lastTime = timestamp;
         

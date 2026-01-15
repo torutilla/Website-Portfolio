@@ -10,9 +10,9 @@ export default function checkOrientation(){
     //     document.getElementById('orientation-blocker').style.display = 'none';
     // }
     if(isDesktop()){
-        uiController.hideMobileHud('mobile-hud');
+        uiController.hideMobileHud();
     }else{
-        uiController.showMobileHud('mobile-hud');
+        uiController.showMobileHud();
     }
 }
 
