@@ -239,7 +239,6 @@ export default class World {
     }
 
     update(deltaTime) {
-        UserInterfaceController.update();
         for (let entity of this.entities) {
             if (entity.process) entity.process(deltaTime);    
         }
@@ -310,7 +309,7 @@ export default class World {
             const area = new Area2D(circle)
             const bodyEntered =()=>{ 
                 console.log("entered in: ", obj.name, obj.x, obj.y);
-                this.ui.add_interaction_button(area, ()=>{console.log('wew')}, obj.name)
+                this.ui.add_interaction_button(area, ()=>{this.ui.showAreaUI(uiType.value)}, obj.name)
 
             }
             const bodyExited = ()=>{

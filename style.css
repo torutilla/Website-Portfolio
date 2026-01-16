@@ -1,6 +1,10 @@
 @font-face {
     font-family: 'Pixel Font';
-    src: url(assets/fonts/editundo.ttf);
+    src: url("assets/fonts/editundo.ttf");
+}
+@font-face {
+    font-family: 'Windows';
+    src: url("assets/fonts/PixelifySans-VariableFont_wght.ttf");
 }
 :root{
     --cursor-default: url("/assets/cursor/pointer_b_shaded.png") 0 0, auto;
@@ -163,6 +167,7 @@ button:focus{
 }
 
 #title-box{
+    text-align: center;
     overflow: hidden;
     width: 100%;
     display: flex;
@@ -226,6 +231,7 @@ button:focus{
     flex-direction: column;
 }
 
+
 #modal-container{
     background-color: rgba(0, 0, 0, 0.4);
     display: none;
@@ -234,8 +240,64 @@ button:focus{
     height: 100%;
     justify-content: center;
     align-items: center;
-    padding: 2rem;
+    inset: 0;
+    z-index: 999;
 }
+
+#Skills{
+    height: 100%;
+    width: 100%;
+    padding: 0.5rem;
+    display: grid;
+    justify-content: flex-start;
+    grid-template-columns: auto auto auto;
+    background: url("/assets//ui/HD-wallpaper-artistic-pixel-art-windows-xp-landscape.jpg") center/cover no-repeat fixed;
+}
+
+.skills-icon{
+    max-width: 4.5rem;
+    padding: 0.5rem;
+    align-items: center;
+    gap: 3px;
+    display: flex;
+    flex-direction: column;
+}
+.skills-icon:hover, .skills-icon:focus{
+    background-color: rgba(0, 174, 255, 0.4);
+}
+
+.skills-icon, .skills-icon > *:hover{
+    cursor: var(--cursor-pointer);
+}
+
+.skills-icon p{
+    font-size: 10px;
+    color:rgb(31, 31, 39);
+    font-family: 'Windows';
+    white-space: normal;
+    overflow-wrap: break-word;
+    word-break: break-word;
+    text-align: center;
+}
+
+.skills-icon img{
+    width: 2rem;
+    height: 2rem;
+}
+
+
+.close-button{
+    cursor: var(--cursor-pointer);
+    position: absolute;
+    z-index: 999;
+    top: 1rem;
+    right: 1rem;
+    height: 30px;
+    width: 30px;
+    border-radius: 50%;
+    background: url('/assets/ui/cross_small.png') center no-repeat;
+}
+
 
 @media (min-width: 600px) {
     #interaction-box{

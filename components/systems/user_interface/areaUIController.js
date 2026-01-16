@@ -9,20 +9,43 @@ export default class AreaUIController extends BaseUI{
             "education":Skills,
             "contact": Skills,
             "skills": Skills,
-            "experience":Skills,
             "projects": Skills,
         }
     }
-
-    display(type){
-        InputManager.pause_input = !InputManager.pause_input;
-        document.addEventListener('keydown', (e)=>{
-            if(e.key.toLowerCase() =="escape"){
-                this.emit('on_ui_close');
-            }
-        })
-        const area = this.areasUI[type];
-        const ui = area();
+    display(){
+        this.ui.style.display = 'flex';
     }
+    hide(){
+        this.ui.style.display = 'none';
+    }
+
+    displayArea(type) {
+        const ui = this.areasUI[type]();
+        const button = document.createElement('button');
+        button.className = "close-button";
+    
+        const handleClose = () => {
+            this.emit('on_ui_close');
+            this.hide();
+            this.ui.removeChild(button);
+            this.ui.removeChild(ui);
+            InputManager.pause_input = false;
+            document.removeEventListener('keydown', this._escHandler);
+        };
+    
+        this._escHandler = (e) => {
+            if (e.key === "Escape") handleClose();
+        };
+    
+        button.onclick = handleClose;
+    
+        InputManager.pause_input = true;
+        this.display();
+    
+        document.addEventListener('keydown', this._escHandler);
+    
+        this.ui.append(button, ui);
+    }
+    
     
 }

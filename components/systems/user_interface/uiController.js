@@ -21,9 +21,6 @@ export default class UserInterfaceController extends EventBus{
     showMobileHud(){
         this.mobileHud.display();
     }
-    static update(){
-
-    }
 
     /**@param {()=> void} onInteract */
     add_interaction_button(entity, onInteract, btnText = "INTERACT"){
@@ -36,7 +33,11 @@ export default class UserInterfaceController extends EventBus{
     }
 
     showAreaUI(type){
-        
+        this.areaController.displayArea(type);
+        const handleClose = () =>{
+            console.log("area_closed");
+        }
+        this.areaController.on('on_ui_close', handleClose)
     }
 
 }
