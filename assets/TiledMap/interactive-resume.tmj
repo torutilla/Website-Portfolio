@@ -520,7 +520,7 @@
                 {
                  "height":0,
                  "id":66,
-                 "name":"About Me",
+                 "name":"Me",
                  "point":true,
                  "properties":[
                         {
@@ -580,8 +580,8 @@
                  "type":"arrow",
                  "visible":true,
                  "width":0,
-                 "x":223.5,
-                 "y":383.334
+                 "x":207.5,
+                 "y":385.334
                 }, 
                 {
                  "height":0,

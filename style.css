@@ -244,12 +244,16 @@ button:focus{
     z-index: 999;
 }
 
-#Skills{
+.section{
     height: 100%;
     width: 100%;
+}
+
+.skills-ui{
     padding: 0.5rem;
     display: grid;
     justify-content: flex-start;
+    align-items: flex-start;
     grid-template-columns: auto auto auto;
     background: url("/assets//ui/HD-wallpaper-artistic-pixel-art-windows-xp-landscape.jpg") center/cover no-repeat fixed;
 }

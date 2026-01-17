@@ -5,10 +5,8 @@ const techstack = [
     "firebase", "googlemapsapi", "vercel", "arduino",
 ];
 export default function Skills(){
-    
     const div = document.createElement('div');
-    div.id = "Skills";
-    const container = document.createElement('div');
+    div.classList.add('skills-ui', 'section');
     const desktopIcons = techstack.map((stack)=> {
         return Icon({name: `${stack}.png`, src: `/assets/ui/icons/${stack}.png`});
     })
@@ -18,7 +16,7 @@ export default function Skills(){
 
 function Icon({name, src}){
     const div = document.createElement('div');
-    div.className = 'skills-icon';
+    div.classList.add('skills-icon');
     const p = document.createElement('p');
     p.innerHTML = name;
     const img = document.createElement('img');

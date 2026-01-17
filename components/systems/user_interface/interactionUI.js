@@ -35,7 +35,7 @@ export default class InteractionUI extends BaseUI{
     addOption(entity, btnText = "INTERACT"){
         const pastBtn = document.getElementById(entity.id)
         if(pastBtn){
-            pastBtn.remove()
+            this.ui.removeChild(pastBtn);
         } 
         const button = document.createElement('button');
         button.classList.add('interact-option')
@@ -67,11 +67,12 @@ export default class InteractionUI extends BaseUI{
 
     removeOption(entity){
         const button = document.getElementById(entity.id);
+        if(!button) return;
         document.removeEventListener('keydown', button._handler);
         button.addEventListener('transitionend', () => {
             if (button.parentNode === this.ui) {
-                console.log('removed');
                 this.ui.removeChild(button);
+                console.log('removed interact option');
                 if(!this.ui.children) this.hide();
             }
         }, { once: true });

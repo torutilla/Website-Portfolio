@@ -31,6 +31,7 @@ await ImageLoader.preloadAll([
     backgroundTrees.l1,
     backgroundTrees.l2,
     backgroundTrees.l3,
+    "/assets/ui/book.png",
     "/assets/ui/exclamation-7x8.png",
 ]);
 

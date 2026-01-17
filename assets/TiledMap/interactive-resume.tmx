@@ -172,7 +172,7 @@
    </properties>
    <point/>
   </object>
-  <object id="66" name="About Me" type="interactive" x="446.5" y="123.5">
+  <object id="66" name="Me" type="interactive" x="446.5" y="123.5">
    <properties>
     <property name="uiType" value="about"/>
    </properties>
@@ -190,7 +190,7 @@
    </properties>
    <point/>
   </object>
-  <object id="80" type="arrow" x="223.5" y="383.334">
+  <object id="80" type="arrow" x="207.5" y="385.334">
    <point/>
   </object>
   <object id="81" type="arrow" x="286" y="164.667">
