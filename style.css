@@ -30,6 +30,7 @@ canvas{
     left: 0;
     width: 100vw;
     height: 100vh;
+    image-rendering: pixelated;
 }
 
 button:focus{
@@ -80,7 +81,9 @@ button:focus{
     cursor: var(--cursor-pointer);
 }
 .interact-option{
-    
+    user-select: none;
+    -webkit-user-select: none; 
+    -ms-user-select: none; 
     flex-shrink: 0;
     opacity: 0;
     transform: translateY(20px);
@@ -151,6 +154,7 @@ button:focus{
     position: absolute;
     align-items: end;
     padding: clamp(1rem, 2vw ,2rem); 
+    
 }
 
 
@@ -159,6 +163,9 @@ button:focus{
     display: flex;
     justify-content: space-between;
     align-items: center;
+    user-select: none;               
+    -webkit-user-select: none;      
+    -ms-user-select: none;        
 }
 
 #mobile-hud div div{
@@ -204,9 +211,11 @@ button:focus{
     border-radius: 50%;
     width: clamp(4rem, 10vw + 1.5rem, 7rem);
     height: clamp(4rem, 10vw + 1.5rem, 7rem);
-    user-select: none;               
-    -webkit-user-select: none;      
-    -ms-user-select: none;          
+    user-select: none;
+    -webkit-user-select: none;
+    -webkit-touch-callout: none;
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;     
     -webkit-tap-highlight-color: transparent;
 }
 
@@ -247,6 +256,9 @@ button:focus{
 .section{
     height: 100%;
     width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .skills-ui{
@@ -289,6 +301,9 @@ button:focus{
     height: 2rem;
 }
 
+.canvas-book-ui{
+    position: relative;
+}
 
 .close-button{
     cursor: var(--cursor-pointer);

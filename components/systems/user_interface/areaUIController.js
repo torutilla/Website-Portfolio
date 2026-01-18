@@ -30,9 +30,9 @@ export default class AreaUIController extends BaseUI{
         button.classList.add('close-button');
     
         const handleClose = () => {
+            this.ui.innerHTML = "";
             this.emit('on_ui_close');
             this.hide();
-            this.ui.innerHTML = "";
             document.removeEventListener('keydown', this._escHandler);
         };
     

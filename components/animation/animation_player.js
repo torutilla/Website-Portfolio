@@ -1,5 +1,6 @@
+import EventBus from "../systems/event/eventBus.js";
 import Sprite from "../type/sprite.js";
-export default class AnimationPlayer {
+export default class AnimationPlayer extends EventBus {
     /**
      * @param {Sprite} sprite
      * @param {Object} options
@@ -7,6 +8,7 @@ export default class AnimationPlayer {
      * @param {boolean} options.autoPlay
      */
     constructor(sprite, { loop = true, autoPlay = true } = {}) {
+        super();
         this.sprite = sprite;
         this.loop = loop;
         this.playing = autoPlay;

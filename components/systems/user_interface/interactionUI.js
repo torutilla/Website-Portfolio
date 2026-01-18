@@ -1,11 +1,12 @@
 import BaseUI from "./baseUI.js";
 import InputManager from "../key_bindings/Input.js";
+import debounce from "../../utils/debounce.js";
 export default class InteractionUI extends BaseUI{
     constructor(id){
         super(id);
         this.#scroll_fade();
         this.interaction_keys = InputManager.get_action_keys('interact');
-        
+        this.paused = false;
     }
     hide(){
         this.ui.style.display = 'none';
@@ -32,7 +33,7 @@ export default class InteractionUI extends BaseUI{
             box.style.maskImage = gradient;
         })
     }
-    addOption(entity, btnText = "INTERACT"){
+    addOption(entity, btnText = "INTERACT", pauseOnInteract = false){
         const pastBtn = document.getElementById(entity.id)
         if(pastBtn){
             this.ui.removeChild(pastBtn);
@@ -51,13 +52,16 @@ export default class InteractionUI extends BaseUI{
 
         button.appendChild(key);
         button.appendChild(option);
-
+        const debounceInteract = debounce(()=>{
+            if(pauseOnInteract && this.paused) return;
+            this.paused = true;
+            this.emit('interact');
+        }, 150)
         button._handler = (event)=>{
             if(event.type == "pointerdown" || this.interaction_keys.includes(event.key?.toLowerCase())){
-                this.emit('interact');
+                debounceInteract();
             }
         }
-        
         button.addEventListener('pointerdown', button._handler);
         document.addEventListener('keydown', button._handler);
 
@@ -83,4 +87,9 @@ export default class InteractionUI extends BaseUI{
 
         });
     }
+
+    handleOnClose(){
+        this.paused = false;
+    }
+
 }

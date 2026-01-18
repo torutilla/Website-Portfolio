@@ -24,7 +24,7 @@ export default class UserInterfaceController extends EventBus{
 
     /**@param {()=> void} onInteract */
     add_interaction_button(entity, onInteract, btnText = "INTERACT"){
-        this.interactionController.addOption(entity, btnText);
+        this.interactionController.addOption(entity, btnText, true);
         entity._onInteract = onInteract;
         this.interactionController.on('interact', entity._onInteract);
     }
@@ -37,15 +37,14 @@ export default class UserInterfaceController extends EventBus{
         }
     }
 
-    showAreaUI(type, entity){
+    showAreaUI(type){
         this.mobileHud.hide();
-        this.interactionController.off('interact', entity._onInteract)
         InputManager.pause_input = true;
         this.areaController.displayArea(type);
         const handleClose = () =>{
+            this.interactionController.handleOnClose();
             this.mobileHud.display();
             InputManager.pause_input = false;
-            this.interactionController.on('interact', entity._onInteract);
         }
         this.areaController.on('on_ui_close', handleClose)
     }

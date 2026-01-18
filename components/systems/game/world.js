@@ -309,7 +309,7 @@ export default class World {
             const area = new Area2D(circle)
             const bodyEntered =()=>{ 
                 console.log("entered in: ", obj.name, obj.x, obj.y);
-                this.ui.add_interaction_button(area, ()=>{this.ui.showAreaUI(uiType.value, area)}, obj.name)
+                this.ui.add_interaction_button(area, ()=> this.ui.showAreaUI(uiType.value), obj.name)
 
             }
             const bodyExited = ()=>{
