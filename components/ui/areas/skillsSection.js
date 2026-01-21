@@ -1,10 +1,14 @@
+import AudioPlayer from "../../audio/audio_player.js";
+
 const techstack = [
     "typescript", "javascript", "dart", "python", "html", 
     "css", "flutter", "react", "tailwind", "nodejs", "expressjs", 
     "godot", "flame", "git", "github", "mysql", "postgresql", 
     "firebase", "googlemapsapi", "vercel", "arduino",
 ];
+const audio = new AudioPlayer('/assets/audio/windows-xp-login.wav')
 export default function Skills(){
+    audio.play();
     const div = document.createElement('div');
     div.classList.add('skills-ui', 'section');
     const desktopIcons = techstack.map((stack)=> {

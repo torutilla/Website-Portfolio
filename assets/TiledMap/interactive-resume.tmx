@@ -172,12 +172,6 @@
    </properties>
    <point/>
   </object>
-  <object id="66" name="Me" type="interactive" x="446.5" y="123.5">
-   <properties>
-    <property name="uiType" value="about"/>
-   </properties>
-   <point/>
-  </object>
   <object id="67" name="View" type="interactive" x="287.5" y="197">
    <properties>
     <property name="uiType" value="education"/>
@@ -194,9 +188,6 @@
    <point/>
   </object>
   <object id="81" type="arrow" x="286" y="164.667">
-   <point/>
-  </object>
-  <object id="82" type="arrow" x="447.333" y="72.6667">
    <point/>
   </object>
   <object id="83" type="arrow" x="812.667" y="330.667">

@@ -1,12 +1,14 @@
 import BaseUI from "./baseUI.js";
 import InputManager from "../key_bindings/Input.js";
 import debounce from "../../utils/debounce.js";
+import AudioPlayer from "../../audio/audio_player.js";
 export default class InteractionUI extends BaseUI{
     constructor(id){
         super(id);
         this.#scroll_fade();
         this.interaction_keys = InputManager.get_action_keys('interact');
         this.paused = false;
+        this.click_audio = new AudioPlayer('/assets/audio/confirm-tap.mp3');
     }
     hide(){
         this.ui.style.display = 'none';
@@ -56,6 +58,8 @@ export default class InteractionUI extends BaseUI{
             if(pauseOnInteract && this.paused) return;
             this.paused = true;
             this.emit('interact');
+            this.click_audio.stop();
+            this.click_audio.play();
         }, 150)
         button._handler = (event)=>{
             if(event.type == "pointerdown" || this.interaction_keys.includes(event.key?.toLowerCase())){

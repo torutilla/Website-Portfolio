@@ -336,11 +336,19 @@ button:focus{
     padding-top: clamp(2rem, 16vw + 0.8rem, 6rem);
     padding-bottom: clamp(2rem, 16vw + 0.8rem, 6rem);
 
-    padding-left: clamp(min(8vw, 2.5rem), 1.5vw, 3rem);
-    padding-right: clamp(min(8vw, 2.5rem), 1.5vw, 3rem);
+    padding-left: clamp(min(9vw, 2.7rem), 1.5vw, 3rem);
+    padding-right: clamp(min(9vw, 2.7rem), 1.5vw, 3rem);
     
     gap: clamp(1rem, 2vw + 1rem, 5rem);
     grid-template-columns: 1fr 1fr;
+}
+
+.canvas-book-content-details{
+    display: flex;
+    flex-direction: column;
+    gap: clamp(3px, 1.5vw, 0.4rem);
+    padding-top: clamp(5px, 1.5vw, 10px);
+    padding-left: clamp(2px, 1.5vw, 6px);
 }
 
 .close-button{
@@ -355,6 +363,14 @@ button:focus{
     background: url('/assets/ui/cross_small.png') center no-repeat;
 }
 
+#lobby-music-player{
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+}
 
 @media (min-width: 600px) {
     #interaction-box{

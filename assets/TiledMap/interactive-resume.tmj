@@ -519,24 +519,6 @@
                 }, 
                 {
                  "height":0,
-                 "id":66,
-                 "name":"Me",
-                 "point":true,
-                 "properties":[
-                        {
-                         "name":"uiType",
-                         "type":"string",
-                         "value":"about"
-                        }],
-                 "rotation":0,
-                 "type":"interactive",
-                 "visible":true,
-                 "width":0,
-                 "x":446.5,
-                 "y":123.5
-                }, 
-                {
-                 "height":0,
                  "id":67,
                  "name":"View",
                  "point":true,
@@ -594,18 +576,6 @@
                  "width":0,
                  "x":286,
                  "y":164.667
-                }, 
-                {
-                 "height":0,
-                 "id":82,
-                 "name":"",
-                 "point":true,
-                 "rotation":0,
-                 "type":"arrow",
-                 "visible":true,
-                 "width":0,
-                 "x":447.333,
-                 "y":72.6667
                 }, 
                 {
                  "height":0,

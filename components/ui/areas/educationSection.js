@@ -1,4 +1,5 @@
 import AnimationPlayer from "../../animation/animation_player.js";
+import AudioPlayer from "../../audio/audio_player.js";
 import Vector2 from "../../math/vector.js";
 import SpriteImage from "../../options/sprite_options.js";
 import Sprite from "../../type/sprite.js";
@@ -34,7 +35,9 @@ const info = {
         },
     ]
 }
+const audio = new AudioPlayer('/assets/audio/book-turn.mp3');
 export default function Education(){
+    audio.play()
     const div = document.createElement('div');
     div.classList.add('education-ui', 'section');
     
@@ -52,7 +55,6 @@ export default function Education(){
     
     canvas.width = baseSize.x;
     canvas.height = baseSize.y;
-    // canvasContainer.style.height = `${window.innerWidth < 768? 350 : sourceSize.y}px`;
     canvas.style.width = `100%`;
     canvas.style.height = `100%`;
 
@@ -88,7 +90,7 @@ export default function Education(){
     player.on('animation_finished', ()=>{
         canvasContainer.appendChild(content);
     })
-
+    
     return div;
 }
 
@@ -115,7 +117,7 @@ function ColumnCreator(sectionTitle, info){
     p.innerText = sectionTitle;
 
     const sectionContainer = document.createElement('div');
-    sectionContainer.style.paddingTop = window.innerWidth < 300? "5px" : "10px"
+    sectionContainer.classList.add('canvas-book-content-details');
     div.append(p, sectionContainer);
     for(let ex of info){
         const container = document.createElement('div');

@@ -9,6 +9,7 @@ import { backgroundClouds, backgroundTrees, terrainTilemap } from "./components/
 import CustomFont from "./components/type/fonts.js";
 import checkOrientation from "./orientationChecker.js";
 import { npcs } from "./components/npcConst.js";
+import AudioPlayer from "./components/audio/audio_player.js";
 
 
 InputManager.init();
@@ -49,6 +50,7 @@ export const world = new World(
     new Vector2(window.innerWidth, window.innerHeight)
 );
 
+
 const player = new Player();
 
 world.addEntity(player);
@@ -57,3 +59,8 @@ await world.init();
 const game = new Game(world);
 game.start();
 
+const audio = new AudioPlayer("/assets/audio/Pokemon RubySapphireEmerald- Littleroot Town.mp3", 36);
+audio.setVolume(0.7);
+document.addEventListener('keydown', () => {
+    audio.play();
+}, { once: true });
