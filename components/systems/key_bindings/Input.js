@@ -8,8 +8,8 @@ export default class InputManager{
         const mobileHud = document.getElementById('mobile-hud');
 
         mobileHud.addEventListener('pointerdown', (event)=>{
-            event.preventDefault();
             if(event.target.classList.contains('directional-button')){
+                event.preventDefault();
                 if(InputManager.pause_input) return;
                 const direction = event.target.dataset.direction;
                 if(direction) InputManager.keys_pressed[direction.toLowerCase()] = true;

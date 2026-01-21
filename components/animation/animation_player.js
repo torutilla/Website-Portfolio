@@ -38,6 +38,7 @@ export default class AnimationPlayer extends EventBus {
 
         if (!this.loop && this.sprite.currentFrame === this.sprite.sprite_option.totalFrames - 1) {
             this.playing = false;
+            this.emit('animation_finished');
         }
     }
 

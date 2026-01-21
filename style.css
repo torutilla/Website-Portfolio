@@ -301,8 +301,46 @@ button:focus{
     height: 2rem;
 }
 
+.canvas-book-container{
+    position: relative;
+    max-width: 600px;
+}
+
 .canvas-book-ui{
     position: relative;
+    min-width: 250px;
+    
+}
+
+.canvas-book-content h3{
+    color: rgb(90, 58, 17);
+    font-size: clamp(1rem, 2vw + 0.5rem, 1.3rem);
+}
+
+.content-container p{
+    color: rgb(90, 58, 17);
+    font-family: Windows;
+    font-size: clamp(0.15rem, 1vw + 0.4rem, 0.8rem);
+}
+
+.content-container .content-heading{
+    font-weight: 900;
+    color: rgb(126, 52, 29);
+}
+
+.canvas-book-content{
+    position: absolute;
+    inset: 0;
+    z-index: 10;
+    display: grid;
+    padding-top: clamp(2rem, 16vw + 0.8rem, 6rem);
+    padding-bottom: clamp(2rem, 16vw + 0.8rem, 6rem);
+
+    padding-left: clamp(min(8vw, 2.5rem), 1.5vw, 3rem);
+    padding-right: clamp(min(8vw, 2.5rem), 1.5vw, 3rem);
+    
+    gap: clamp(1rem, 2vw + 1rem, 5rem);
+    grid-template-columns: 1fr 1fr;
 }
 
 .close-button{
