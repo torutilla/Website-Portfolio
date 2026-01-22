@@ -5,10 +5,8 @@ import Player from "./components/player.js";
 import InputManager from "./components/systems/key_bindings/Input.js";
 import ImageLoader from "./components/type/imageLoader.js";
 import { player_state } from "./components/playerConst.js";
-import { backgroundClouds, backgroundTrees, terrainTilemap } from "./components/tilemapConst.js";
 import CustomFont from "./components/type/fonts.js";
 import checkOrientation from "./orientationChecker.js";
-import { npcs } from "./components/npcConst.js";
 import AudioPlayer from "./components/audio/audio_player.js";
 
 
@@ -26,12 +24,6 @@ await ImageLoader.preloadAll([
     player_state.walk_side.src,
     player_state.walk_up.src,
     player_state.walk_down.src,
-    terrainTilemap.src,
-    backgroundClouds,
-    npcs.me.idle.src,
-    backgroundTrees.l1,
-    backgroundTrees.l2,
-    backgroundTrees.l3,
     "/assets/ui/book.png",
     "/assets/ui/exclamation-7x8.png",
 ]);
@@ -62,7 +54,7 @@ game.start();
 const audio = new AudioPlayer("/assets/audio/Littleroot Town.wav", 1.63);
 audio.setVolume(0.4);
 document.addEventListener('keydown', () => {
-    audio.play();
+    // audio.play();
 }, { once: true });
 
 const btn = document.getElementById("lobby-music-player")
