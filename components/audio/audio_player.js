@@ -1,4 +1,27 @@
 export default class AudioPlayer {
+    /**@type {AudioPlayer[]} */
+    static audioList = [];
+    /** @type {{ [src: string]: number }} */
+    static volumes = {};
+    static stopAll() {
+        for (const audio of this.audioList) {
+            audio.stop();
+        }
+    }
+    static muteAll() {
+        for (const audio of this.audioList) {
+            audio.gainNode.gain.setValueAtTime(
+                0,
+                AudioPlayer.context.currentTime
+            );
+        }
+    }
+    static restoreVolumes() {
+        for (const audio of this.audioList) {
+            const v = this.volumes[audio.src] ?? 1;
+            audio.setVolume(v);
+        }
+    }
     static context = new (window.AudioContext || window.webkitAudioContext)();
 
     /**
@@ -14,7 +37,6 @@ export default class AudioPlayer {
 
         this.gainNode = AudioPlayer.context.createGain();
         this.gainNode.connect(AudioPlayer.context.destination);
-
         this._loadAudio(src);
     }
 
@@ -22,6 +44,7 @@ export default class AudioPlayer {
         const res = await fetch(src);
         const buf = await res.arrayBuffer();
         this.buffer = await AudioPlayer.context.decodeAudioData(buf);
+        AudioPlayer.audioList.push(this);
     }
 
     play() {
@@ -38,8 +61,14 @@ export default class AudioPlayer {
             source.loopEnd = this.buffer.duration;
         }
 
+        source.onended = () => {
+            this._isPlaying = false;
+            this.source = null;
+        };
+
         source.start(0);
         this.source = source;
+        this._isPlaying = true;
     }
 
     stop() {
@@ -48,12 +77,19 @@ export default class AudioPlayer {
             this.source.disconnect();
             this.source = null;
         }
+        this._isPlaying = false;
     }
 
     setVolume(v = 1) {
+        const vol = Math.max(0, Math.min(1, v));
         this.gainNode.gain.setValueAtTime(
-            Math.max(0, Math.min(1, v)),
+            vol,
             AudioPlayer.context.currentTime
         );
+        AudioPlayer.volumes[this.src] = vol
+    }
+
+    isPlaying() {
+        return this._isPlaying && AudioPlayer.context.state === "running";
     }
 }

@@ -59,8 +59,19 @@ await world.init();
 const game = new Game(world);
 game.start();
 
-const audio = new AudioPlayer("/assets/audio/Pokemon RubySapphireEmerald- Littleroot Town.mp3", 36);
-audio.setVolume(0.7);
+const audio = new AudioPlayer("/assets/audio/Littleroot Town.wav", 1.63);
+audio.setVolume(0.4);
 document.addEventListener('keydown', () => {
     audio.play();
 }, { once: true });
+
+const btn = document.getElementById("lobby-music-player")
+let active = false;
+btn.addEventListener('click', ()=>{
+    if(!active){
+        AudioPlayer.muteAll()
+    }  else {
+        AudioPlayer.restoreVolumes();
+    }
+    active = !active;
+})
