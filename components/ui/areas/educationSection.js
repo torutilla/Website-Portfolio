@@ -4,6 +4,7 @@ import Vector2 from "../../math/vector.js";
 import SpriteImage from "../../options/sprite_options.js";
 import Sprite from "../../type/sprite.js";
 
+
 /** 
  * @type {{
  *   education: { name: string; course?: string; date: string }[];
@@ -28,6 +29,11 @@ const info = {
         },
     ],
     experience:[
+        {
+            name: "eClerx Philippines",
+            details: "Graphic Artist",
+            date: "2025",
+        },
         {
             name: "GoCrayons Digital Inc.",
             details: "Intern (Game Development & Website Auditing)",

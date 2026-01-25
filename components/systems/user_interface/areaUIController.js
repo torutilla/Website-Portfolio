@@ -1,6 +1,5 @@
 import BaseUI from "./baseUI.js";
 import Skills from "../../ui/areas/skillsSection.js";
-import AboutMe from "../../ui/areas/aboutMeSection.js";
 import Education from "../../ui/areas/educationSection.js";
 import Contacts from "../../ui/areas/contactsSection.js";
 import Projects from "../../ui/areas/projectsSection.js";
@@ -9,7 +8,6 @@ export default class AreaUIController extends BaseUI{
     constructor(id){
         super(id);
         this.areasUI = {
-            "about": ()=> AboutMe(),
             "education":()=> Education(),
             "contact": ()=> Contacts(),
             "skills": ()=> Skills(),
