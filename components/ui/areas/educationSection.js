@@ -2,6 +2,7 @@ import AnimationPlayer from "../../animation/animation_player.js";
 import AudioPlayer from "../../audio/audio_player.js";
 import Vector2 from "../../math/vector.js";
 import SpriteImage from "../../options/sprite_options.js";
+import { uiRenderer } from "../../systems/game/ui_renderer.js";
 import Sprite from "../../type/sprite.js";
 
 
@@ -74,22 +75,15 @@ export default function Education(){
         repeat: false, frameInterval: 100, offset: {x: 0, y: 50}})
 
     const book = new Sprite(option);
-    const player = new AnimationPlayer(book, {loop: false,  })
+    const player = new AnimationPlayer(book, {loop: false})
     option.image.onload = () => {
-        let lastTime = performance.now();
-
-        function animate(now) {
-            const delta = now - lastTime;
-            lastTime = now;
-
+        uiRenderer.addDrawable(()=>{
             ctx.clearRect(0, 0, canvas.width, canvas.height);
-            player.update(delta);
             player.draw(ctx, new Vector2(0, 0));
-
-            requestAnimationFrame(animate);
-        }
-
-        animate(lastTime);
+        });
+        uiRenderer.addUpdatable((delta)=>{
+            player.update(delta);
+        });
     };
 
     const content = Content();
