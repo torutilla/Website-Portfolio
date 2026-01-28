@@ -46,15 +46,22 @@ const projects = {
     ]
 }
 export default function Projects(){
+    let currentIndex = 0;
+    const projectList = [
+        {title: "Game Development", content: projects.game}, 
+        {title: "Mobile Development", content: projects.mobile}, 
+        {title: "Web Development", content: projects.web}, 
+        {title: "Graphic Design", content: projects.graphic}, 
+    ];
     const desk = document.createElement('div');
     desk.classList.add('desk-ui');
 
     const lbtn = document.createElement('button');
     const rbtn = document.createElement('button');
+    lbtn.dataset.direction= '-1'
+    rbtn.dataset.direction = '1'
     lbtn.classList.add('desk-left-btn');
     rbtn.classList.add('desk-right-btn');
-
-    
 
     const canvas = document.createElement('canvas');
     const ctx = canvas.getContext('2d');
@@ -66,7 +73,7 @@ export default function Projects(){
     const contentContainer = document.createElement('div');
     contentContainer.classList.add('desk-content-container');
     
-    let section = SectionCreator({title: "Game Development", content: projects.game});
+    let section = SectionCreator(projectList[currentIndex]);
 
     contentContainer.append(...section);
     
@@ -83,27 +90,50 @@ export default function Projects(){
         frameInterval: 60
     });
     const sprite = new Sprite(option);
-    const player = new AnimationPlayer(sprite, {loop: false});
-    
-    option.image.onload = () => {
-        uiRenderer.addDrawable(()=>{
+    const player = new AnimationPlayer(sprite, {loop: false, autoPlay:false});
+    const deskUI = {
+        update(dt) {
+            player.update(dt);
+        },
+        draw() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             player.draw(ctx, new Vector2(0, 0));
-        })
-        uiRenderer.addUpdatable((delta)=>{
-            player.update(delta);
-        })
+        }
+    };
+    option.image.onload = () => {
+        uiRenderer.addDrawable(deskUI)
+        uiRenderer.addUpdatable(deskUI)
     
     };
     canvasContainer.append(canvas);
-    player.on('animation_finished', ()=>canvasContainer.append(contentContainer))
+    player.on('animation_finished', ()=>{
+        if (!canvasContainer.contains(contentContainer)) {
+        canvasContainer.append(contentContainer);
+    }
+    })
+    canvasContainer.append(contentContainer);
     desk.append(canvasContainer, lbtn, rbtn);
 
-    const handleBtnClick= ()=>{
+    const handleBtnClick= (e)=>{
+        const direction = Number(e.currentTarget.dataset.direction);
+
+        currentIndex =
+        (currentIndex + direction + projectList.length) %
+        projectList.length;
+
         canvasContainer.removeChild(contentContainer);
-        console.log('clicked');
+
+        player.stop();
         player.play();
+        updateContent();
     }
+
+    const updateContent = () => {
+        contentContainer.replaceChildren(
+            ...SectionCreator(projectList[currentIndex])
+        );
+    };
+
     lbtn.addEventListener('click', handleBtnClick)
     rbtn.addEventListener('click', handleBtnClick)
     return desk;
