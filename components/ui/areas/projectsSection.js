@@ -3,6 +3,7 @@ import Vector2 from "../../math/vector.js"
 import AnimationPlayer from "../../animation/animation_player.js";
 import Sprite from "../../type/sprite.js";
 import { uiRenderer } from "../../systems/game/ui_renderer.js";
+import AudioPlayer from "../../audio/audio_player.js";
 
 /**@typedef {{title: string, stack: string[], description?: string}} Info */
 
@@ -40,12 +41,26 @@ const projects = {
     ],
     graphic:[
         {
-            title: "",
-            stack: []
+            title: "Meraki Tattoo",
+            stack: ["Photoshop", "Illustrator"]
+        },
+        {
+            title: "Busy Kitchen",
+            stack: ["Photoshop", "Illustrator"]
+        },
+        {
+            title: "Jen Sofia",
+            stack: ["Photoshop", "Illustrator"]
+        },
+        {
+            title: "Mobile Booking / Taxi App for Trike Vehicle (UI)",
+            stack: ["Figma"]
         },
     ]
 }
 export default function Projects(){
+    const clickAudio = new AudioPlayer('/assets/audio/confirm-tap.mp3');
+    const paperAudio = new AudioPlayer('/assets/audio/paperflip_1.mp3');
     let currentIndex = 0;
     const projectList = [
         {title: "Game Development", content: projects.game}, 
@@ -116,13 +131,13 @@ export default function Projects(){
 
     const handleBtnClick= (e)=>{
         const direction = Number(e.currentTarget.dataset.direction);
-
+        clickAudio.play();
         currentIndex =
         (currentIndex + direction + projectList.length) %
         projectList.length;
 
         canvasContainer.removeChild(contentContainer);
-
+        paperAudio.play();
         player.stop();
         player.play();
         updateContent();

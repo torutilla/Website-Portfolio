@@ -76,14 +76,19 @@ export default function Education(){
 
     const book = new Sprite(option);
     const player = new AnimationPlayer(book, {loop: false})
-    option.image.onload = () => {
-        uiRenderer.addDrawable(()=>{
+    const educationUI = {
+        update(dt){
+            player.update(dt);
+        },
+        draw(){
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             player.draw(ctx, new Vector2(0, 0));
-        });
-        uiRenderer.addUpdatable((delta)=>{
-            player.update(delta);
-        });
+
+        }
+    }
+    option.image.onload = () => {
+        uiRenderer.addDrawable(educationUI);
+        uiRenderer.addUpdatable(educationUI);
     };
 
     const content = Content();
