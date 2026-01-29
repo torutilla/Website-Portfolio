@@ -53,7 +53,7 @@ game.start();
 
 const audio = new AudioPlayer("/assets/audio/Littleroot Town.wav", 1.63);
 audio.setVolume(0.4);
-document.addEventListener('keydown', () => {
+document.addEventListener('pointerdown', () => {
     audio.play();
 }, { once: true });
 
