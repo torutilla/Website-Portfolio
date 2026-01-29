@@ -9,12 +9,14 @@ export default class InputManager{
 
         mobileHud.addEventListener('pointerdown', (event)=>{
             if(event.target.classList.contains('directional-button')){
+                event.preventDefault();
                 if(InputManager.pause_input) return;
                 const direction = event.target.dataset.direction;
                 if(direction) InputManager.keys_pressed[direction.toLowerCase()] = true;
             }
         });
         mobileHud.addEventListener('pointerup', (event)=>{
+            if (InputManager.pause_input) return;
             const direction = event.target.dataset.direction;
             if(direction) InputManager.keys_pressed[direction.toLowerCase()] = false;
         });
@@ -24,6 +26,7 @@ export default class InputManager{
             
         });
         document.addEventListener('keyup', (event)=>{
+            if (InputManager.pause_input) return;
             InputManager.keys_pressed[event.key.toLowerCase()] = false;
         });
     }   

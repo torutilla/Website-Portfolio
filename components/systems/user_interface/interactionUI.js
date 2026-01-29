@@ -1,11 +1,14 @@
 import BaseUI from "./baseUI.js";
 import InputManager from "../key_bindings/Input.js";
+import debounce from "../../utils/debounce.js";
+import AudioPlayer from "../../audio/audio_player.js";
 export default class InteractionUI extends BaseUI{
     constructor(id){
         super(id);
         this.#scroll_fade();
         this.interaction_keys = InputManager.get_action_keys('interact');
-        
+        this.paused = false;
+        this.click_audio = new AudioPlayer('/assets/audio/confirm-tap.mp3');
     }
     hide(){
         this.ui.style.display = 'none';
@@ -32,10 +35,10 @@ export default class InteractionUI extends BaseUI{
             box.style.maskImage = gradient;
         })
     }
-    addOption(entity, btnText = "INTERACT"){
+    addOption(entity, btnText = "INTERACT", pauseOnInteract = false){
         const pastBtn = document.getElementById(entity.id)
         if(pastBtn){
-            pastBtn.remove()
+            this.ui.removeChild(pastBtn);
         } 
         const button = document.createElement('button');
         button.classList.add('interact-option')
@@ -51,13 +54,18 @@ export default class InteractionUI extends BaseUI{
 
         button.appendChild(key);
         button.appendChild(option);
-
+        const debounceInteract = debounce(()=>{
+            if(pauseOnInteract && this.paused) return;
+            this.paused = true;
+            this.emit('interact');
+            this.click_audio.stop();
+            this.click_audio.play();
+        }, 150)
         button._handler = (event)=>{
             if(event.type == "pointerdown" || this.interaction_keys.includes(event.key?.toLowerCase())){
-                this.emit('interact');
+                debounceInteract();
             }
         }
-        
         button.addEventListener('pointerdown', button._handler);
         document.addEventListener('keydown', button._handler);
 
@@ -67,11 +75,12 @@ export default class InteractionUI extends BaseUI{
 
     removeOption(entity){
         const button = document.getElementById(entity.id);
+        if(!button) return;
         document.removeEventListener('keydown', button._handler);
         button.addEventListener('transitionend', () => {
             if (button.parentNode === this.ui) {
-                console.log('removed');
                 this.ui.removeChild(button);
+                console.log('removed interact option');
                 if(!this.ui.children) this.hide();
             }
         }, { once: true });
@@ -82,4 +91,9 @@ export default class InteractionUI extends BaseUI{
 
         });
     }
+
+    handleOnClose(){
+        this.paused = false;
+    }
+
 }

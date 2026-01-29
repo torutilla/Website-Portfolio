@@ -1,28 +1,51 @@
 import BaseUI from "./baseUI.js";
 import Skills from "../../ui/areas/skillsSection.js";
-import InputManager from "../key_bindings/Input.js";
+import Education from "../../ui/areas/educationSection.js";
+import Contacts from "../../ui/areas/contactsSection.js";
+import Projects from "../../ui/areas/projectsSection.js";
+import LeaveAreaSection from "../../ui/areas/leaveSection.js";
 export default class AreaUIController extends BaseUI{
     constructor(id){
         super(id);
         this.areasUI = {
-            "about": Skills,
-            "education":Skills,
-            "contact": Skills,
-            "skills": Skills,
-            "experience":Skills,
-            "projects": Skills,
+            "education":()=> Education(),
+            "contact": ()=> Contacts(),
+            "skills": ()=> Skills(),
+            "projects": ()=> Projects(),
+            "leave": ()=> LeaveAreaSection(),
         }
     }
-
-    display(type){
-        InputManager.pause_input = !InputManager.pause_input;
-        document.addEventListener('keydown', (e)=>{
-            if(e.key.toLowerCase() =="escape"){
-                this.emit('on_ui_close');
-            }
-        })
-        const area = this.areasUI[type];
-        const ui = area();
+    display(){
+        this.ui.style.display = 'flex';
     }
+    hide(){
+        this.ui.style.display = 'none';
+    }
+
+    displayArea(type) {
+        const ui = this.areasUI[type]();
+        const button = document.createElement('button');
+        button.classList.add('close-button');
+    
+        const handleClose = () => {
+            this.ui.innerHTML = "";
+            this.emit('on_ui_close');
+            this.hide();
+            document.removeEventListener('keydown', this._escHandler);
+        };
+    
+        this._escHandler = (e) => {
+            if (e.key === "Escape") handleClose();
+        };
+    
+        button.onclick = handleClose;
+    
+        this.display();
+    
+        document.addEventListener('keydown', this._escHandler);
+    
+        this.ui.append(button, ui);
+    }
+    
     
 }

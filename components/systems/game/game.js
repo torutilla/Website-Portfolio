@@ -1,3 +1,4 @@
+import { uiRenderer } from "./ui_renderer.js";
 
 export default class Game{
     static paused = false;
@@ -23,6 +24,9 @@ export default class Game{
         this.scene.clear();
         this.scene.update(deltaTime / 1000);
         this.scene.draw();
+
+        uiRenderer.draw();
+        uiRenderer.update(deltaTime);
         
         requestAnimationFrame(this.loop)
     }

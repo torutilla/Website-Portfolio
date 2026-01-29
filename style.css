@@ -1,10 +1,18 @@
 @font-face {
     font-family: 'Pixel Font';
-    src: url(assets/fonts/editundo.ttf);
+    src: url("assets/fonts/editundo.ttf");
+}
+@font-face {
+    font-family: 'Windows';
+    src: url("assets/fonts/PixelifySans-VariableFont_wght.ttf");
 }
 :root{
     --cursor-default: url("/assets/cursor/pointer_b_shaded.png") 0 0, auto;
     --cursor-pointer: url("/assets/cursor/hand_small_point.png") 0 0, pointer;
+    --text-brown: rgb(207, 172, 127);
+    --text-dark-brown:rgb(131, 92, 40);
+    --paper-shadow: rgb(223, 195, 160);
+
 }
 *{
     cursor: var(--cursor-default);
@@ -26,6 +34,7 @@ canvas{
     left: 0;
     width: 100vw;
     height: 100vh;
+    image-rendering: pixelated;
 }
 
 button:focus{
@@ -76,7 +85,9 @@ button:focus{
     cursor: var(--cursor-pointer);
 }
 .interact-option{
-    
+    user-select: none;
+    -webkit-user-select: none; 
+    -ms-user-select: none; 
     flex-shrink: 0;
     opacity: 0;
     transform: translateY(20px);
@@ -147,6 +158,7 @@ button:focus{
     position: absolute;
     align-items: end;
     padding: clamp(1rem, 2vw ,2rem); 
+    
 }
 
 
@@ -155,6 +167,9 @@ button:focus{
     display: flex;
     justify-content: space-between;
     align-items: center;
+    user-select: none;               
+    -webkit-user-select: none;      
+    -ms-user-select: none;        
 }
 
 #mobile-hud div div{
@@ -163,6 +178,7 @@ button:focus{
 }
 
 #title-box{
+    text-align: center;
     overflow: hidden;
     width: 100%;
     display: flex;
@@ -199,9 +215,11 @@ button:focus{
     border-radius: 50%;
     width: clamp(4rem, 10vw + 1.5rem, 7rem);
     height: clamp(4rem, 10vw + 1.5rem, 7rem);
-    user-select: none;               
-    -webkit-user-select: none;      
-    -ms-user-select: none;          
+    user-select: none;
+    -webkit-user-select: none;
+    -webkit-touch-callout: none;
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;     
     -webkit-tap-highlight-color: transparent;
 }
 
@@ -226,6 +244,7 @@ button:focus{
     flex-direction: column;
 }
 
+
 #modal-container{
     background-color: rgba(0, 0, 0, 0.4);
     display: none;
@@ -234,7 +253,253 @@ button:focus{
     height: 100%;
     justify-content: center;
     align-items: center;
-    padding: 2rem;
+    inset: 0;
+    z-index: 999;
+}
+
+.section{
+    height: 100%;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.skills-ui{
+    padding: 0.5rem;
+    display: grid;
+    justify-content: flex-start;
+    align-items: flex-start;
+    grid-template-columns: auto auto auto;
+    background: url("/assets//ui/HD-wallpaper-artistic-pixel-art-windows-xp-landscape.jpg") center/cover no-repeat fixed;
+}
+
+.skills-icon{
+    max-width: 4.5rem;
+    padding: 0.5rem;
+    align-items: center;
+    gap: 3px;
+    display: flex;
+    flex-direction: column;
+}
+.skills-icon:hover, .skills-icon:focus{
+    background-color: rgba(0, 174, 255, 0.4);
+}
+
+.skills-icon, .skills-icon > *:hover{
+    cursor: var(--cursor-pointer);
+}
+
+.skills-icon p{
+    font-size: 10px;
+    color:rgb(31, 31, 39);
+    font-family: 'Windows';
+    white-space: normal;
+    overflow-wrap: break-word;
+    word-break: break-word;
+    text-align: center;
+}
+
+.skills-icon img{
+    width: 2rem;
+    height: 2rem;
+}
+
+.canvas-book-container{
+    position: relative;
+    max-width: 600px;
+}
+
+.canvas-book-ui{
+    position: relative;
+    min-width: 250px;
+    
+}
+
+.canvas-book-content h3{
+    color: rgb(90, 58, 17);
+    font-size: clamp(1rem, 2vw + 0.5rem, 1.3rem);
+}
+
+.content-container p{
+    color: rgb(90, 58, 17);
+    font-family: Windows;
+    font-size: clamp(0.15rem, 1vw + 0.4rem, 0.8rem);
+}
+
+.content-container .content-heading{
+    font-weight: 900;
+    color: rgb(126, 52, 29);
+}
+
+.canvas-book-content{
+    position: absolute;
+    inset: 0;
+    z-index: 10;
+    display: grid;
+    padding-top: clamp(2rem, 16vw + 0.8rem, 6rem);
+    padding-bottom: clamp(2rem, 16vw + 0.8rem, 6rem);
+
+    padding-left: clamp(min(9vw, 2.7rem), 1.5vw, 3rem);
+    padding-right: clamp(min(9vw, 2.7rem), 1.5vw, 3rem);
+    
+    gap: clamp(1rem, 2vw + 1rem, 5rem);
+    grid-template-columns: 1fr 1fr;
+}
+
+.canvas-book-content-details{
+    display: flex;
+    flex-direction: column;
+    gap: clamp(3px, 1.5vw, 0.4rem);
+    padding-top: clamp(5px, 1.5vw, 10px);
+    padding-left: clamp(2px, 1.5vw, 6px);
+}
+
+.desk-ui{
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+    background: url("/assets//ui/desk.png") center/cover no-repeat fixed;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.desk-left-btn, .desk-right-btn{
+    position: absolute;
+    z-index: 999;
+    width: clamp(0.5rem,5vw + 1rem, 2.4rem);
+    height: clamp(0.5rem, 5vw + 1rem, 2.4rem);
+    cursor: var(--cursor-pointer);
+}
+
+.desk-left-btn{
+    left: 0;
+    background: url("/assets/ui/arrow_w.png") center/contain no-repeat;
+}
+.desk-right-btn{
+    right: 0;
+    background: url("/assets/ui/arrow_e.png") center/contain no-repeat;
+}
+
+.desk-content{
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    min-width: 400px;
+    max-width: 600px;
+    text-align: center;
+}
+
+.desk-title-container{
+    position: relative;
+    overflow: hidden;
+    padding: 0.7rem;
+}
+.desk-title-container img{
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+}
+
+.desk-title-container > *:not(img){
+    position: relative;
+    z-index: 1;
+}
+
+.desk-content canvas{
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+
+.desk-content .desk-content-container{
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    padding-top: clamp(4rem, 15vw, 6rem);
+    padding-bottom: clamp(4rem, 15vw, 6rem);
+    padding-left: clamp(3.7rem, 15vw, 5.5rem);
+    padding-right: clamp(3.7rem, 15vw, 5.5rem);
+}
+
+.desk-content-container h1{
+    color: rgb(54, 54, 54);
+    font-size: clamp(1.5rem, 4vw, 1.8rem);
+}
+
+.desk-content-container p{
+    font-family: 'Windows';
+    color: rgb(131, 92, 40);
+}
+
+.desk-content-container .project-content-container{
+    max-height: clamp(200px, 50vw, 380px);
+    display: flex;
+    flex-direction: column;
+    padding: clamp(0.6rem, 1.5vw, 2rem);
+    gap: 5px;
+    overflow-y: auto;
+}
+
+.project-content-container::-webkit-scrollbar-thumb{
+    cursor: var(--cursor-pointer);
+}
+.project-content-container::-webkit-scrollbar-track{
+    background: transparent;
+}
+
+.project-content{
+    padding: clamp(0.4rem, 1vw, 2rem);
+    text-align: left;
+    background-color: var(--paper-shadow);
+    border: 1.5px solid var(--text-brown);
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    min-height: clamp(50px, 13vh, 80px);
+}
+.project-content h3{
+    color: var(--text-dark-brown);
+}
+
+.tech-stack-container{
+    display: flex;
+    gap: 3px;
+}
+
+.tech-stack-container p{
+    font-size: clamp(0.75rem, 1.5vw, 1rem);
+    padding: clamp(2px, 0.3vw, 0.5rem);
+    border: 1px solid var(--text-brown);
+}
+
+
+.close-button{
+    cursor: var(--cursor-pointer);
+    position: absolute;
+    z-index: 999;
+    top: 1rem;
+    right: 1rem;
+    height: 30px;
+    width: 30px;
+    border-radius: 50%;
+    background: url('/assets/ui/cross_small.png') center no-repeat;
+}
+
+#lobby-music-player{
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    z-index: 998;
+    cursor: var(--cursor-pointer);
 }
 
 @media (min-width: 600px) {
