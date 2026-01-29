@@ -35,6 +35,9 @@ canvas{
     width: 100vw;
     height: 100vh;
     image-rendering: pixelated;
+    user-select: none;               
+    -webkit-user-select: none;      
+    -ms-user-select: none;       
 }
 
 button:focus{
