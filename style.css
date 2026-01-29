@@ -438,7 +438,7 @@ button:focus{
 }
 
 .desk-content-container .project-content-container{
-    max-height: clamp(200px, 50vw, 380px);
+    max-height: clamp(200px, 50vw, 330px);
     display: flex;
     flex-direction: column;
     padding: clamp(0.6rem, 1.5vw, 2rem);
@@ -461,7 +461,8 @@ button:focus{
     display: flex;
     flex-direction: column;
     gap: 10px;
-    min-height: clamp(50px, 13vh, 80px);
+    justify-content: center;
+    min-height: clamp(80px, 15vw, 100px);
 }
 .project-content h3{
     color: var(--text-dark-brown);
@@ -479,6 +480,12 @@ button:focus{
 }
 
 
+.contact-paper{
+    width: clamp(320px, 80vw, 700px);
+    image-rendering: pixelated;
+}
+
+
 .close-button{
     cursor: var(--cursor-pointer);
     position: absolute;
@@ -490,6 +497,8 @@ button:focus{
     border-radius: 50%;
     background: url('/assets/ui/cross_small.png') center no-repeat;
 }
+
+
 
 #lobby-music-player{
     position: absolute;
