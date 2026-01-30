@@ -4,6 +4,7 @@ import InteractionUI from "./interactionUI.js";
 import MobileHUD from "./mobileHUD.js";
 import InputManager from "../key_bindings/Input.js";
 import AudioPlayer from "../../audio/audio_player.js";
+import { isDesktop } from "../../utils/utils.js";
 export default class UserInterfaceController extends EventBus{
     constructor(id){
         super(id);
@@ -45,7 +46,7 @@ export default class UserInterfaceController extends EventBus{
         this.areaController.displayArea(type);
         const handleClose = () =>{
             this.interactionController.handleOnClose();
-            this.mobileHud.display();
+            if(!isDesktop()) this.mobileHud.display();
             InputManager.pause_input = false;
             this.close_audio.stop();
             this.close_audio.play();

@@ -504,10 +504,19 @@ button:focus{
     border: 1px solid var(--text-brown);
 }
 
-
+.contact-container{
+    position: relative;
+}
 .contact-paper{
     width: clamp(320px, 80vw, 700px);
     image-rendering: pixelated;
+}
+
+.contact-container .contact-content-container{
+    border: 1px solid black;
+    position: absolute;
+    inset: clamp(3rem, 10.5vw + 0.7rem, 6.7rem);
+    
 }
 
 
