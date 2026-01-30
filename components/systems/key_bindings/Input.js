@@ -14,12 +14,13 @@ export default class InputManager{
                 const direction = event.target.dataset.direction;
                 if(direction) InputManager.keys_pressed[direction.toLowerCase()] = true;
             }
-        });
+        }, { passive: false });
         mobileHud.addEventListener('pointerup', (event)=>{
             if (InputManager.pause_input) return;
+            event.preventDefault();
             const direction = event.target.dataset.direction;
             if(direction) InputManager.keys_pressed[direction.toLowerCase()] = false;
-        });
+        }, { passive: false });
         document.addEventListener('keydown', (event)=>{
             if(InputManager.pause_input) return;
             InputManager.keys_pressed[event.key.toLowerCase()] = true;

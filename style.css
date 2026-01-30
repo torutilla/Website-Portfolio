@@ -39,6 +39,7 @@ canvas{
     -webkit-user-select: none;      
     -ms-user-select: none;       
     touch-action: none;
+    -webkit-tap-highlight-color: transparent;
 }
 
 button:focus{
@@ -59,6 +60,7 @@ button:focus{
 .show{
     opacity: 1;
 }
+
 #background-canvas{
     background-color: rgb(31, 31, 39);
 }
@@ -103,6 +105,7 @@ button:focus{
     justify-content: center;
     align-items: center;
     background-color: transparent;
+    -webkit-tap-highlight-color: transparent;
 }
 
 .interact-option .interaction-key{
@@ -164,9 +167,16 @@ button:focus{
     position: absolute;
     align-items: end;
     padding: clamp(1rem, 2vw ,2rem); 
-    
+    -webkit-tap-highlight-color: transparent;
+    touch-action: none;
+    user-select: none;
+    -webkit-user-select: none; 
+    -ms-user-select: none; 
 }
 
+#mobile-hud.no-display{
+    display: none;
+}
 
 #controller{
     width: 100%;
@@ -175,12 +185,21 @@ button:focus{
     align-items: center;
     user-select: none;               
     -webkit-user-select: none;      
-    -ms-user-select: none;        
+    -ms-user-select: none;   
+    -webkit-tap-highlight-color: transparent;     
 }
 
 #mobile-hud div div{
     display: flex;
     gap: clamp(1rem, 2vw ,2rem);
+}
+
+.no-haptic-feedback{
+    touch-action: none;
+    user-select: none;
+    -webkit-user-select: none; 
+    -ms-user-select: none; 
+    -webkit-tap-highlight-color: transparent;
 }
 
 #title-box{
@@ -210,7 +229,7 @@ button:focus{
 
 .directional-button{
     font-family: 'Pixel Font';
-    font-size: clamp(1.5rem, 3vw + 1.5rem, 5rem);
+    font-size: clamp(1.5rem, 3vw + 1rem, 5rem);
     display: flex;
     justify-content: center;
     align-items: center;
@@ -219,8 +238,8 @@ button:focus{
     opacity: 50%;
     background-color: black;
     border-radius: 50%;
-    width: clamp(4rem, 10vw + 1.5rem, 7rem);
-    height: clamp(4rem, 10vw + 1.5rem, 7rem);
+    width: clamp(4rem, 8vw + 1.5rem, 7rem);
+    height: clamp(4rem,8vw + 1.5rem, 7rem);
     user-select: none;
     -webkit-user-select: none;
     -webkit-touch-callout: none;
@@ -255,8 +274,8 @@ button:focus{
     background-color: rgba(0, 0, 0, 0.4);
     display: none;
     position: absolute;
-    width: 100%;
-    height: 100%;
+    width: 100dvw;
+    height: 100dvh;
     justify-content: center;
     align-items: center;
     inset: 0;
@@ -276,7 +295,7 @@ button:focus{
     display: grid;
     justify-content: flex-start;
     align-items: flex-start;
-    grid-template-columns: auto auto auto;
+    grid-template-columns: repeat(3, auto);
     background: url("/assets//ui/HD-wallpaper-artistic-pixel-art-windows-xp-landscape.jpg") center/cover no-repeat fixed;
 }
 
@@ -504,8 +523,6 @@ button:focus{
     background: url('/assets/ui/cross_small.png') center no-repeat;
 }
 
-
-
 #lobby-music-player{
     position: absolute;
     top: 10px;
@@ -525,9 +542,39 @@ button:focus{
     }
 }
 
-@media (width > 768px){
-    #controller{
-        display: none;
+@media (orientation: landscape) and (max-height: 500px) {
+    #interaction-box{
+        top: 50%;
+        bottom: auto;
+        right: 30vw;
+    }
+    .skills-ui{
+        grid-template-columns: repeat(7, auto);
+    }
+
+    .canvas-book-container{
+        max-width: 400px;
+    }
+
+    .canvas-book-content{
+        padding-top: clamp(2rem, 16vw + 0.8rem, 4.6rem);
+        padding-bottom: clamp(2rem, 16vw + 0.8rem, 4.6rem);
+
+        padding-left: clamp(min(9vw, 2.7rem), 1.5vw, 2rem);
+        padding-right: clamp(min(9vw, 2.7rem), 1.5vw, 2rem);
+    }
+
+    .content-container p{
+        font-size: clamp(0.15rem, 1vw + 0.4rem, 0.7rem);
+    }
+    .desk-content{
+        max-width: 400px;
+    }
+    .desk-content .desk-content-container{
+        padding:clamp(4rem, 7vw, 4rem);
+    }
+    .desk-content .project-content-container{
+        max-height: clamp(200px, 30vw, 200px);
     }
 }
 

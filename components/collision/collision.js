@@ -1,4 +1,5 @@
 import Vector2 from "../math/vector.js";
+import devuuid from "../utils/devuuid.js";
 
 export default class Collision{
     constructor(){
@@ -6,7 +7,7 @@ export default class Collision{
         this.shape = null;
         this.position = Vector2.ZERO;
         this.collisionBlocking = true;
-        this.id = crypto.randomUUID();
+        this.id = crypto?.randomUUID ? crypto?.randomUUID() : devuuid();
     }
     getAABB(){ throw new Error('Not Implemented'); }
     updatePosition(pos){}

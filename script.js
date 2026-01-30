@@ -34,6 +34,7 @@ await CustomFont.preload([{
     },
 ]);
 
+window.addEventListener('load', checkOrientation);
 window.addEventListener('resize', checkOrientation);
 window.addEventListener('orientationchange', checkOrientation);
 
