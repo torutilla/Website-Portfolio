@@ -1,4 +1,4 @@
-import AudioPlayer from "../../audio/audio_player.js";
+import AudioManager from "../../audio/audioManager.js";
 
 const techstack = [
     "typescript", "javascript", "dart", "python", "html", 
@@ -6,8 +6,8 @@ const techstack = [
     "godot", "flame", "git", "github", "mysql", "postgresql", 
     "firebase", "googlemapsapi", "vercel", "arduino",
 ];
-const audio = new AudioPlayer('/assets/audio/windows-xp-login.wav')
 export default function Skills(){
+    const audio = AudioManager.get("windows_xp");
     audio.play();
     const div = document.createElement('div');
     div.classList.add('skills-ui', 'section');

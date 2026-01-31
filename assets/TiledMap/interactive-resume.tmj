@@ -468,7 +468,6 @@
         {
          "draworder":"topdown",
          "id":17,
-         "locked":true,
          "name":"InteractiveObjects",
          "objects":[
                 {
@@ -634,24 +633,6 @@
                  "width":189.333,
                  "x":61.3333,
                  "y":406.667
-                }, 
-                {
-                 "height":0,
-                 "id":94,
-                 "name":"Leave?",
-                 "point":true,
-                 "properties":[
-                        {
-                         "name":"uiType",
-                         "type":"string",
-                         "value":"leave"
-                        }],
-                 "rotation":0,
-                 "type":"interactive",
-                 "visible":true,
-                 "width":0,
-                 "x":318,
-                 "y":596
                 }],
          "opacity":1,
          "type":"objectgroup",

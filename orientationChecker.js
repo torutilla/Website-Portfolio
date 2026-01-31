@@ -1,22 +1,14 @@
 import { world } from "./script.js";
 import UserInterfaceController from "./components/systems/user_interface/uiController.js";
-
-const uiController = new UserInterfaceController('main-ui');
+import { isDesktop } from "./components/utils/utils.js";
 export default function checkOrientation(){
+    const uiController = new UserInterfaceController('main-ui');
     world.resizeWorld();
-    // if(window.innerHeight > window.innerWidth){
-    //     document.getElementById('orientation-blocker').style.display = 'flex';
-    // }else{
-    //     document.getElementById('orientation-blocker').style.display = 'none';
-    // }
     if(isDesktop()){
         uiController.hideMobileHud();
     }else{
         uiController.showMobileHud();
     }
+    
 }
 
-function isDesktop() {
-    const isTouch = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
-    return !isTouch && window.innerWidth >= 1280;
-}

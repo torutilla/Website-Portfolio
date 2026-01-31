@@ -19,3 +19,8 @@ export function fitSize(source, maxWidth, maxHeight) {
         Math.floor(source.y * ratio)
     );
 }
+
+export function isDesktop() {
+    const isTouch = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+    return !isTouch && window.innerWidth >= 1280;
+}

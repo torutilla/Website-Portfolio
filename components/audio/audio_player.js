@@ -1,37 +1,15 @@
 export default class AudioPlayer {
-    /**@type {AudioPlayer[]} */
-    static audioList = [];
-    /** @type {{ [src: string]: number }} */
-    static volumes = {};
-    static stopAll() {
-        for (const audio of this.audioList) {
-            audio.stop();
-        }
-    }
-    static muteAll() {
-        for (const audio of this.audioList) {
-            audio.gainNode.gain.setValueAtTime(
-                0,
-                AudioPlayer.context.currentTime
-            );
-        }
-    }
-    static restoreVolumes() {
-        for (const audio of this.audioList) {
-            const v = this.volumes[audio.src] ?? 1;
-            audio.setVolume(v);
-        }
-    }
     static context = new (window.AudioContext || window.webkitAudioContext)();
-
+    
     /**
-     * @param {string} src
-     * @param {number|null} loopPoint seconds
+     * @typedef {{id: string, src: string, loopPoint: number|null}} AudioOptions
+     * @param {AudioOptions}
      */
-    constructor(src, loopPoint = null) {
+    constructor({id, src, loopPoint = null}) {
+        this.id = id
         this.src = src;
         this.loopPoint = loopPoint;
-
+        this.volume = 1;
         this.buffer = null;
         this.source = null;
 
@@ -44,7 +22,6 @@ export default class AudioPlayer {
         const res = await fetch(src);
         const buf = await res.arrayBuffer();
         this.buffer = await AudioPlayer.context.decodeAudioData(buf);
-        AudioPlayer.audioList.push(this);
     }
 
     play() {
@@ -80,13 +57,17 @@ export default class AudioPlayer {
         this._isPlaying = false;
     }
 
+    mute(){
+        this.gainNode.gain.setValueAtTime(0, AudioPlayer.context.currentTime)
+    }
+
     setVolume(v = 1) {
         const vol = Math.max(0, Math.min(1, v));
         this.gainNode.gain.setValueAtTime(
             vol,
             AudioPlayer.context.currentTime
         );
-        AudioPlayer.volumes[this.src] = vol
+        this.volume = vol;
     }
 
     isPlaying() {

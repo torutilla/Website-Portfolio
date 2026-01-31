@@ -7,12 +7,12 @@ import Area2D from "../../../collision/area2d.js";
 import CircleCollisionShape from "../../../collision/circleCollisionShape.js";
 import RectCollisionShape from "../../../collision/rectCollisionShape.js";
 import CollisionSystem from "../objects/collisionSystem.js";
-
+import devuuid from "../../../utils/devuuid.js";
 export default class Entity extends Sprite {
     /** @param {SpriteImage} sprite_option */
     constructor(sprite_option) {
         super(sprite_option);
-        this.id = crypto.randomUUID();
+        this.id = crypto?.randomUUID ? crypto?.randomUUID() : devuuid();
         this.entity_name = "Entity";
         this.center_point = new Vector2(this.sprite_option.sWidth / 2, this.sprite_option.sHeight/ 2);
         this.physics = new Physics(this, 800);
@@ -29,7 +29,6 @@ export default class Entity extends Sprite {
         this.isGrounded = true;
         /**@type {null|Area2D} */
         this.area = null;
-        console.log("Entity Collision Shape ID:", this.collision_shape.id);
     }
 
     async init(){

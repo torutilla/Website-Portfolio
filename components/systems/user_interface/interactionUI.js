@@ -1,14 +1,14 @@
 import BaseUI from "./baseUI.js";
 import InputManager from "../key_bindings/Input.js";
 import debounce from "../../utils/debounce.js";
-import AudioPlayer from "../../audio/audio_player.js";
+import AudioManager from "../../audio/audioManager.js";
 export default class InteractionUI extends BaseUI{
     constructor(id){
         super(id);
         this.#scroll_fade();
         this.interaction_keys = InputManager.get_action_keys('interact');
         this.paused = false;
-        this.click_audio = new AudioPlayer('/assets/audio/confirm-tap.mp3');
+        this.click_audio = AudioManager.get("ui_confirm");
     }
     hide(){
         this.ui.style.display = 'none';

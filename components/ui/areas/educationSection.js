@@ -1,5 +1,5 @@
 import AnimationPlayer from "../../animation/animation_player.js";
-import AudioPlayer from "../../audio/audio_player.js";
+import AudioManager from "../../audio/audioManager.js";
 import Vector2 from "../../math/vector.js";
 import SpriteImage from "../../options/sprite_options.js";
 import { uiRenderer } from "../../systems/game/ui_renderer.js";
@@ -42,8 +42,8 @@ const info = {
         },
     ]
 }
-const audio = new AudioPlayer('/assets/audio/book-turn.mp3');
 export default function Education(){
+    const audio = AudioManager.get("book_turn");
     audio.play()
     const div = document.createElement('div');
     div.classList.add('education-ui', 'section');

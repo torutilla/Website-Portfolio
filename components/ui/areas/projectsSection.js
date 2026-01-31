@@ -4,6 +4,7 @@ import AnimationPlayer from "../../animation/animation_player.js";
 import Sprite from "../../type/sprite.js";
 import { uiRenderer } from "../../systems/game/ui_renderer.js";
 import AudioPlayer from "../../audio/audio_player.js";
+import AudioManager from "../../audio/audioManager.js";
 
 /**@typedef {{title: string, stack: string[], description?: string}} Info */
 
@@ -59,8 +60,8 @@ const projects = {
     ]
 }
 export default function Projects(){
-    const clickAudio = new AudioPlayer('/assets/audio/confirm-tap.mp3');
-    const paperAudio = new AudioPlayer('/assets/audio/paperflip_1.mp3');
+    const clickAudio = AudioManager.get('ui_confirm');
+    const paperAudio = AudioManager.get('paperflip');
     let currentIndex = 0;
     const projectList = [
         {title: "Game Development", content: projects.game}, 
