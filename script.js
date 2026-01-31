@@ -8,7 +8,7 @@ import { player_state } from "./components/playerConst.js";
 import CustomFont from "./components/type/fonts.js";
 import checkOrientation from "./orientationChecker.js";
 import AudioManager from "./components/audio/audioManager.js";
-
+import HomeScreen from "./components/systems/user_interface/homeScreen.js";
 AudioManager.add(
     {   id: "bgm",
         src: "/assets/audio/Littleroot Town.wav", 
@@ -66,13 +66,12 @@ export const world = new World(
     'game-canvas', 
     new Vector2(window.innerWidth, window.innerHeight)
 );
-const player = new Player();
-world.addEntity(player);
+
 await world.init();
 const game = new Game(world);
 game.start();
 
-const audio = AudioManager.get("bgm");
-document.addEventListener('pointerdown', () => {
-    // audio.play();
-}, { once: true });
+const homescreen = new HomeScreen();
+homescreen.start();
+
+

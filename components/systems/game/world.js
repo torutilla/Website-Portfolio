@@ -20,7 +20,6 @@ import CircleCollisionShape from "../../collision/circleCollisionShape.js";
 import Circle from "../../math/circle.js";
 import RectCollisionShape from "../../collision/rectCollisionShape.js";
 import SpriteImage from "../../options/sprite_options.js";
-import ImageLoader from "../../type/imageLoader.js";
 import AreaTitleHandler from "../../ui/areaTitle.js";
 export default class World {
     /**
@@ -49,7 +48,7 @@ export default class World {
         this.fontCanvas = this.canvasHandler.createCanvas();
         this.fontCtx = this.fontCanvas.getContext('2d');
         
-        this.player = null;
+        
         // this.fontCanvas.width = window.innerWidth;
         // this.fontCanvas.height = window.innerHeight;
         
@@ -86,6 +85,7 @@ export default class World {
         this.fontLoaded = false;
         CollisionSystem.init();
         this.resizeWorld();
+        this.player = null;
     }
     
     async init(){
@@ -98,7 +98,7 @@ export default class World {
             await this.currentTilemap.ensureLoaded();
             
             this.drawMap();
-            this.player = this.entities.find(e => e instanceof Player);
+
             this.mapLoaded = true;  
             const rects = this.collider.getRectFromTiles(this.map.tiles, this.map.width, this.map.height);
             for(let rect of rects){
@@ -125,6 +125,8 @@ export default class World {
         } catch (error) {
             console.error(`Error loading map: ${error.stack}`);
         } 
+        this.player = new Player();
+        this.addEntity(this.player);
         for(let entity of this.entities){
             if(entity.init) await entity.init();
         }

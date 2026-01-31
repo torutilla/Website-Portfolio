@@ -602,6 +602,36 @@ button:focus{
     background: url("/assets/ui/icons/audio-off.png") center/cover no-repeat;
 }
 
+#home-screen{
+    background-color: rgba(0, 0, 0, 0.4);
+    position: absolute;
+    inset: 0;
+    width: 100dvw;
+    height: 100dvh;
+    z-index: 999;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+}
+
+#home-screen h1{
+    font-size: clamp(1rem, 3vw + 1rem, 4rem);
+}
+
+#home-screen p{
+    animation: fade-in-out 2s ease-in-out infinite;
+}
+
+.fade-out{
+    animation: fade-out 1s ease-out;
+}
+.credits-button{
+    position: absolute;
+    bottom: 0;
+    right: 0;
+}
+
 @media (min-width: 600px) {
     #interaction-box{
         top: 50%;
@@ -663,6 +693,27 @@ button:focus{
     }
     to{
         transform: translateY(-100%);
+        opacity: 0;
+    }
+}
+
+@keyframes fade-out {
+    from{
+        opacity: 1;
+    }
+    to{
+        opacity: 0;
+    }
+}
+
+@keyframes fade-in-out {
+     0% {
+        opacity: 0;
+    }
+    50% {
+        opacity: 1;
+    }
+    100% {
         opacity: 0;
     }
 }
