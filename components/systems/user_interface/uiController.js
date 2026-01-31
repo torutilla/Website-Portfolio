@@ -3,15 +3,17 @@ import  AreaUIController from "./areaUIController.js";
 import InteractionUI from "./interactionUI.js";
 import MobileHUD from "./mobileHUD.js";
 import InputManager from "../key_bindings/Input.js";
-import AudioPlayer from "../../audio/audio_player.js";
 import { isDesktop } from "../../utils/utils.js";
+import AudioManager from "../../audio/audioManager.js";
+import SoundsUI from "./soundsUI.js";
 export default class UserInterfaceController extends EventBus{
     constructor(id){
         super(id);
         this.interactionController = new InteractionUI('interaction-box');
         this.areaController = new AreaUIController('modal-container');
         this.mobileHud = new MobileHUD('mobile-hud');
-        this.close_audio = new AudioPlayer('/assets/audio/ui-click.mp3');
+        this.close_audio = AudioManager.get("ui_close");
+        this.soundsUserInterface = new SoundsUI();
     }
     
     hideDialougeBox(){

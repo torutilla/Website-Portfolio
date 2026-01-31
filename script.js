@@ -7,8 +7,33 @@ import ImageLoader from "./components/type/imageLoader.js";
 import { player_state } from "./components/playerConst.js";
 import CustomFont from "./components/type/fonts.js";
 import checkOrientation from "./orientationChecker.js";
-import AudioPlayer from "./components/audio/audio_player.js";
+import AudioManager from "./components/audio/audioManager.js";
 
+AudioManager.add(
+    {   id: "bgm",
+        src: "/assets/audio/Littleroot Town.wav", 
+        loopPoint: 1.63
+    },
+    {   id: "ui_close",
+        src: "/assets/audio/ui-click.mp3",
+    },
+    {
+        id: "ui_confirm",
+        src: "/assets/audio/confirm-tap.mp3",
+    },
+    {
+        id: "paperflip",
+        src: "/assets/audio/paperflip_1.mp3",
+    },
+    {
+        id: "book_turn",
+        src: "/assets/audio/book-turn.mp3",
+    },
+    {
+        id: "windows_xp",
+        src: "/assets/audio/windows-xp-login.wav",
+    }
+);
 
 InputManager.init();
 InputManager.add_action("move_left", ["a", "ArrowLeft"]);
@@ -29,42 +54,25 @@ await ImageLoader.preloadAll([
 ]);
 
 await CustomFont.preload([{
-        name: "PixelFont",
-        link: "/assets/fonts/editundo.ttf",
-    },
+    name: "PixelFont",
+    link: "/assets/fonts/editundo.ttf",
+},
 ]);
 
 window.addEventListener('load', checkOrientation);
 window.addEventListener('resize', checkOrientation);
 window.addEventListener('orientationchange', checkOrientation);
-
 export const world = new World(
     'game-canvas', 
     new Vector2(window.innerWidth, window.innerHeight)
 );
-
-
 const player = new Player();
-
 world.addEntity(player);
 await world.init();
-
 const game = new Game(world);
 game.start();
 
-const audio = new AudioPlayer("/assets/audio/Littleroot Town.wav", 1.63);
-audio.setVolume(0.4);
+const audio = AudioManager.get("bgm");
 document.addEventListener('pointerdown', () => {
-    audio.play();
+    // audio.play();
 }, { once: true });
-
-const btn = document.getElementById("lobby-music-player")
-let active = false;
-btn.addEventListener('click', ()=>{
-    if(!active){
-        AudioPlayer.muteAll()
-    }  else {
-        AudioPlayer.restoreVolumes();
-    }
-    active = !active;
-})

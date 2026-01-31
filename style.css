@@ -12,6 +12,8 @@
     --text-brown: rgb(207, 172, 127);
     --text-dark-brown:rgb(131, 92, 40);
     --paper-shadow: rgb(223, 195, 160);
+    --text-black: rgb(54, 54, 54);
+    --text-red: rgb(126, 52, 29);
 
 }
 *{
@@ -354,7 +356,7 @@ button:focus{
 
 .content-container .content-heading{
     font-weight: 900;
-    color: rgb(126, 52, 29);
+    color: var(--text-red);
 }
 
 .canvas-book-content{
@@ -453,7 +455,7 @@ button:focus{
 }
 
 .desk-content-container h1{
-    color: rgb(54, 54, 54);
+    color: var(--text-black);
     font-size: clamp(1.5rem, 4vw, 1.8rem);
 }
 
@@ -513,13 +515,54 @@ button:focus{
 }
 
 .contact-container .contact-content-container{
-    border: 1px solid black;
     position: absolute;
-    inset: clamp(3rem, 10.5vw + 0.7rem, 6.7rem);
-    
+    inset: clamp(3rem, 10.5vw + 0.7rem, 6.7rem); 
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+.contact-content-container h3{
+    font-size: clamp(1rem, 3.5vw, 2rem);
+    color: var(--text-red);
 }
 
+.contact-content-container p{
+    color: var(--text-black);
+    font-family: 'Windows';
+}
 
+.profile-pic{
+    width: clamp(2.5rem, 6vw, 4rem);
+    height: clamp(2.5rem, 6vw, 4rem);
+    padding: 5px;
+}
+.contact{
+    gap: clamp(0.4rem, 1vw, 1rem);
+}
+.contact, .contact > *{
+    cursor: var(--cursor-pointer);
+}
+.contact img{
+    width:clamp(0.6rem, 3vw, 1.5rem);
+    height: clamp(0.6rem, 3vw, 1.5rem);
+    object-fit: contain;
+}
+
+.contact p{
+    font-size: clamp(0.6rem, 3vw, 1.5rem);
+}
+
+.contact p:hover{
+    color: var(--text-dark-brown)
+}
+
+.avatar{
+    border-radius: 50%;
+    width: 100%;
+    height: 100%;
+    border: 1px solid var(--text-brown);
+}
 .close-button{
     cursor: var(--cursor-pointer);
     position: absolute;
@@ -532,15 +575,31 @@ button:focus{
     background: url('/assets/ui/cross_small.png') center no-repeat;
 }
 
+.flex{
+    display: flex;
+}
+
+.justify-center{
+    justify-content: center;
+}
+
+.align-center{
+    align-items: center;
+}
+
 #lobby-music-player{
+    background: url("/assets/ui/icons/audio-on.png") center/cover no-repeat;
     position: absolute;
     top: 10px;
     left: 10px;
     width: 30px;
     height: 30px;
     border-radius: 50%;
-    z-index: 998;
+    z-index: 999;
     cursor: var(--cursor-pointer);
+}
+#lobby-music-player.off{
+    background: url("/assets/ui/icons/audio-off.png") center/cover no-repeat;
 }
 
 @media (min-width: 600px) {

@@ -158,7 +158,7 @@
   <object id="79" x="865.5" y="160.5" width="26" height="28"/>
   <object id="96" x="545.333" y="180" width="27.3333" height="26"/>
  </objectgroup>
- <objectgroup id="17" name="InteractiveObjects" locked="1">
+ <objectgroup id="17" name="InteractiveObjects">
   <object id="64" name="Projects" type="interactive" x="752" y="86.6667">
    <properties>
     <property name="uiType" value="projects"/>
@@ -199,12 +199,6 @@
   <object id="88" name="Projects Area" type="area" x="534.667" y="110.667" width="360" height="177.333"/>
   <object id="89" name="Skills Area" type="area" x="585.333" y="316" width="313.333" height="228.334"/>
   <object id="90" name="Contacts Area" type="area" x="61.3333" y="406.667" width="189.333" height="104"/>
-  <object id="94" name="Leave?" type="interactive" x="318" y="596">
-   <properties>
-    <property name="uiType" value="leave"/>
-   </properties>
-   <point/>
-  </object>
  </objectgroup>
  <objectgroup id="10" name="PlayerPosition">
   <object id="1" name="Player" x="499.167" y="351.166" width="29.6667" height="32"/>
