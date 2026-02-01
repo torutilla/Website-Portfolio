@@ -3,7 +3,7 @@ import Vector2 from "../../math/vector.js";
 export default class InputManager{
     static keys_pressed = {};
     static input_mappings = {};
-    static pause_input = false;
+    static pause_input = true;
     static init(){
         const mobileHud = document.getElementById('mobile-hud');
 

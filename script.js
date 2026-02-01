@@ -12,7 +12,8 @@ import HomeScreen from "./components/systems/user_interface/homeScreen.js";
 AudioManager.add(
     {   id: "bgm",
         src: "/assets/audio/Littleroot Town.wav", 
-        loopPoint: 1.63
+        loopPoint: 1.63,
+        volume: 0.4,
     },
     {   id: "ui_close",
         src: "/assets/audio/ui-click.mp3",
