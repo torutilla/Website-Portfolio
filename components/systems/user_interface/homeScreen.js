@@ -1,4 +1,5 @@
 import AudioManager from "../../audio/audioManager.js";
+import InputManager from "../key_bindings/Input.js";
 import BaseUI from "./baseUI.js";
 
 export default class HomeScreen extends BaseUI{
@@ -14,11 +15,11 @@ export default class HomeScreen extends BaseUI{
             this.ui.classList.add('fade-out');
             this.ui.addEventListener('animationend', ()=>{
                 this.ui.style.display = 'none';
-                bgm.setVolume(0.4)
                 bgm.play();
-                document.removeEventListener('click', handler);
+                InputManager.pause_input = false;
+                this.ui.removeEventListener('click', handler);
             }, {once: true})
         }
-        document.addEventListener('click', handler)
+        this.ui.addEventListener('click', handler)
     }
 }
